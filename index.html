@@ -463,16 +463,17 @@
 
   function speakLiturgy() {
     if(!audioEnabled || !synth) return;
-    synth.cancel(); // Stop current speech
+    synth.cancel();
 
     const textToSpeak = LITURGY_CONTENT[currentStep]?.speakText;
     if(!textToSpeak) return;
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utterance.rate = 0.88; // Slightly slower for reverent pacing
-    utterance.pitch = 0.95; // Slightly deeper tone
 
-    // Attempt to pick a premium English voice if available on device
+    // OPTION A: DEEP, MEDITATIVE & SACRED
+    utterance.rate = 0.82;  // Slower pacing for reverence
+    utterance.pitch = 0.85; // Deeper, grounded tone
+
     const voices = synth.getVoices();
     const preferredVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Daniel') || v.name.includes('Serena')));
     if(preferredVoice) utterance.voice = preferredVoice;
