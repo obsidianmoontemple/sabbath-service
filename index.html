@@ -49,6 +49,7 @@
     padding: 24px 20px 80px;
   }
 
+  /* Header Arch */
   .hero {
     text-align: center;
     padding: 20px 10px 10px;
@@ -70,6 +71,7 @@
     color: var(--moonwhite);
   }
 
+  /* Voice Controls Bar */
   .voice-bar {
     background: var(--indigo);
     border: 1px solid var(--line);
@@ -99,6 +101,7 @@
     box-shadow: 0 0 8px var(--acid-green-glow);
   }
 
+  /* Altar Tapers Display */
   .altar-stage {
     background: var(--obsidian-card);
     border: 1px solid var(--line);
@@ -150,6 +153,7 @@
     text-transform: uppercase;
   }
 
+  /* Main Liturgy Card */
   .liturgy-card {
     background: var(--obsidian-card);
     border: 1px solid var(--line);
@@ -190,6 +194,7 @@
     color: var(--moonwhite);
   }
 
+  /* Interactive Elements */
   .interactive-zone {
     margin-top: 24px;
     padding-top: 20px;
@@ -219,6 +224,7 @@
     box-shadow: 0 0 10px var(--acid-green-glow);
   }
 
+  /* Form Elements */
   textarea, input[type=text] {
     width: 100%;
     background: var(--obsidian);
@@ -250,6 +256,7 @@
   }
   .btn:hover { background: #52ff38; }
 
+  /* Loving Cup Banner */
   .communion-banner {
     background: linear-gradient(135deg, var(--purple-deep), var(--indigo));
     border: 1px solid var(--acid-green);
@@ -276,6 +283,7 @@
 <body>
 
 <div class="wrap">
+
   <div class="hero">
     <svg class="arch-svg" viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
       <path d="M20 130 L20 60 Q20 10 110 10 Q200 10 200 60 L200 130" fill="none" stroke="#6e3ba7" stroke-width="1.5"/>
@@ -287,14 +295,17 @@
     <h1 class="title">Temple of the Obsidian Moon</h1>
   </div>
 
+  <!-- VOICE AUDIO BAR -->
   <div class="voice-bar">
-    <span style="color:var(--silver);">Spoken Liturgy Audio:</span>
+    <span style="color:var(--silver);">Officiant Spoken Voice:</span>
     <button class="voice-toggle active" id="voice-toggle-btn" onclick="toggleSpokenAudio()">Audio: ON 🔊</button>
   </div>
 
+  <!-- ALTAR TAPERS STAGE -->
   <div class="altar-stage">
     <div class="altar-title">The Altar of the Obsidian Moon</div>
     <div class="tapers-flex">
+      
       <div class="taper-item" id="taper-1">
         <svg class="taper-svg" viewBox="0 0 30 75">
           <rect x="11" y="28" width="8" height="45" rx="1" fill="#e8e2d0"/>
@@ -330,15 +341,18 @@
         </svg>
         <span class="taper-label">Unseen Path</span>
       </div>
+
     </div>
   </div>
 
+  <!-- LOVING CUP RITE BANNER -->
   <div class="communion-banner" id="communion-banner">
     <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; margin:0 0 8px; color:var(--moonwhite);">The Rite of the Loving Cup</h3>
     <p style="font-size:14px; color:var(--silver); margin:0 0 14px;">Pour your cup of cider &amp; break your bread with the High Priest and Coven.</p>
     <button class="btn" onclick="blessCup(this)">Partake &amp; Bless the Cup 🍷</button>
   </div>
 
+  <!-- DYNAMIC LITURGY CARD -->
   <div class="liturgy-card" id="liturgy-card">
     <span class="liturgy-step-badge" id="step-badge">Step 1 of 10</span>
     <h2 class="liturgy-title" id="step-title">Gathering in Sacred Space</h2>
@@ -346,14 +360,15 @@
       Connecting to High Priest sanctuary...
     </div>
 
+    <!-- INTERACTIVE CONTEXT ZONE -->
     <div class="interactive-zone" id="interactive-zone"></div>
   </div>
 
   <footer>Temple of the Obsidian Moon · A Safe Place for All Who Walk the Paths of Night</footer>
+
 </div>
 
 <script>
-  // Replace with your Google Apps Script Web App Deployment URL
   const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
 
   let currentStep = 1;
@@ -367,14 +382,19 @@
   let ambientOsc2 = null;
 
   function playSanctuaryChimeAndAmbience() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
 
     const chimeOsc = audioCtx.createOscillator();
     const chimeGain = audioCtx.createGain();
     
     chimeOsc.type = 'sine';
     chimeOsc.frequency.setValueAtTime(528, audioCtx.currentTime); 
+    
     chimeGain.gain.setValueAtTime(0.35, audioCtx.currentTime);
     chimeGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.5);
     
@@ -394,6 +414,7 @@
       
       ambientOsc1.frequency.setValueAtTime(110, audioCtx.currentTime);
       ambientOsc2.frequency.setValueAtTime(164.81, audioCtx.currentTime);
+
       ambGain.gain.setValueAtTime(0.02, audioCtx.currentTime);
 
       ambientOsc1.connect(ambGain);
@@ -415,8 +436,11 @@
   }
 
   function populateVoices() {
-    if (synth) availableVoices = synth.getVoices();
+    if (synth) {
+      availableVoices = synth.getVoices();
+    }
   }
+
   if (speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = populateVoices;
   }
@@ -428,11 +452,14 @@
     ) || voices.find(v => v.lang.includes('en'));
   }
 
+  /* Full Content Database */
   const LITURGY_CONTENT = {
     1: {
       title: "I. Gathering & Opening Silence",
       body: "<p>Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins.</p>",
-      officiantTeleprompter: ["Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins."],
+      officiantTeleprompter: [
+        "Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins."
+      ],
       interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Enter your name to register your presence at the hearth:</p>
         <input type="text" id="member-name" placeholder="Your Name or Initial">
         <button class="btn" onclick="registerPresence()">Join Circle</button>`
@@ -440,13 +467,17 @@
     2: {
       title: "II. Cleansing of Space & Centering",
       body: "<p>Before we strike the flame or speak our prayers, let us shed the dust of the week. Close your eyes. Drop your shoulders away from your ears. Unclench your jaw.</p><blockquote>In this space, you are not defined by what you have accomplished this week. You are held simply because you are here.</blockquote>",
-      officiantTeleprompter: ["Before we strike the flame or speak our prayers, let us shed the dust of the week. Close your eyes. Drop your shoulders away from your ears. Unclench your jaw. In this space, you are not defined by what you have accomplished this week. You are held simply because you are here."],
+      officiantTeleprompter: [
+        "Before we strike the flame or speak our prayers, let us shed the dust of the week. Close your eyes. Drop your shoulders away from your ears. Unclench your jaw. In this space, you are not defined by what you have accomplished this week. You are held simply because you are here."
+      ],
       interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Breathe deeply. Release what you carry.</p>`
     },
     3: {
       title: "III. Lighting of the Altar Tapers",
       body: "<p>The High Priest approaches the altar to light the three sacred tapers for the Ancestors, the Coven, and the Unseen Paths ahead.</p><blockquote>May these flames warm our spirit, illuminate our sanctuary, and signal to all weary souls that here, they have a home.</blockquote>",
-      officiantTeleprompter: ["I approach the altar to light the three sacred tapers for the Ancestors, the Coven, and the Unseen Paths ahead. As the sun dips below the horizon and the shadows lengthen, we strike the sacred flame. May these flames warm our spirit, illuminate our sanctuary, and signal to all weary souls that here, they have a home."],
+      officiantTeleprompter: [
+        "I approach the altar to light the three sacred tapers for the Ancestors, the Coven, and the Unseen Paths ahead. As the sun dips below the horizon and the shadows lengthen, we strike the sacred flame. May these flames warm our spirit, illuminate our sanctuary, and signal to all weary souls that here, they have a home."
+      ],
       interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Watch the altar tapers light above in real-time as the flames catch.</p>`
     },
     4: {
@@ -470,39 +501,51 @@
     5: {
       title: "V. Song or Poem of Devotion",
       body: "<blockquote>When the wheel of the week has turned its length,<br>And the hands are weary from proving strength,<br>We return to the hearth where the moonbeams lie,<br>Underneath the expanse of the evening sky.<br><br>Here is no judgment, here is no race,<br>Only the quiet, welcoming grace.<br>Pour out the cider, break open the bread,<br>By love and by spirit, our souls shall be fed.</blockquote>",
-      officiantTeleprompter: ["When the wheel of the week has turned its length, and the hands are weary from proving strength, we return to the hearth where the moonbeams lie, underneath the expanse of the evening sky. Here is no judgment, here is no race, only the quiet, welcoming grace. Pour out the cider, break open the bread, by love and by spirit, our souls shall be fed."],
+      officiantTeleprompter: [
+        "When the wheel of the week has turned its length, and the hands are weary from proving strength, we return to the hearth where the moonbeams lie, underneath the expanse of the evening sky. Here is no judgment, here is no race, only the quiet, welcoming grace. Pour out the cider, break open the bread, by love and by spirit, our souls shall be fed."
+      ],
       interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Reflect quietly on the words as the High Priest speaks.</p>`
     },
     6: {
       title: "VI. Pastoral Homily — Cultivating Joy",
       body: "<p>Listen to the High Priest's address on <strong>Cultivating Joy in the Sacred Path</strong>.</p><p>Remember: Joy on the spiritual path is not an accident; it is a deliberate, radical practice. Reclaim your delight in being alive.</p>",
-      officiantTeleprompter: ["Welcome to the pastoral homily on Cultivating Joy in the Sacred Path. When we dedicate ourselves to a spiritual path, it is remarkably easy to inherit a subconscious belief that devotion must be heavy to be real. But devotion without joy ceases to be a sanctuary. Joy on the spiritual path is a deliberate, radical practice. Reclaim your delight in the magical, beautiful experience of being alive."],
+      officiantTeleprompter: [
+        "Welcome to the pastoral homily on Cultivating Joy in the Sacred Path. When we dedicate ourselves to a spiritual path, it is remarkably easy to inherit a subconscious belief that devotion must be heavy to be real. But devotion without joy ceases to be a sanctuary. Joy on the spiritual path is a deliberate, radical practice. Reclaim your delight in the magical, beautiful experience of being alive."
+      ],
       interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Listen to the homily address.</p>`
     },
     7: {
       title: "VII. Coven Sharing & Open Reflections",
       body: "<p>If you wish to share a single word of gratitude, a quiet victory from your week, or a small joy found along the path, send it to the altar feed.</p>",
-      officiantTeleprompter: ["I open the floor now to the coven family. If anyone wishes to share a word of gratitude or share a quiet victory from your week, send it to the altar feed. The circle is listening."],
+      officiantTeleprompter: [
+        "I open the floor now to the coven family. If anyone wishes to share a word of gratitude or share a quiet victory from your week, send it to the altar feed. The circle is listening."
+      ],
       interactive: `<textarea id="gratitude-text" rows="2" placeholder="Share a gratitude or small joy..."></textarea>
         <button class="btn" onclick="submitPetition('Gratitude')">Offer Gratitude</button>`
     },
     8: {
       title: "VIII. The Rite of the Loving Cup & Shared Bread",
       body: "<p>Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week.</p>",
-      officiantTeleprompter: ["Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week."],
+      officiantTeleprompter: [
+        "Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week."
+      ],
       interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Prepare your cider and bread to partake with the coven above.</p>`
     },
     9: {
       title: "IX. Silent Petitions at the Altar of Ancestors",
       body: "<p>We hold space now for those who need healing, strength, or quiet light. Type your silent petition or ancestor prayer to be placed on the altar.</p>",
-      officiantTeleprompter: ["We turn our hearts to the Altar of Ancestors—to those who came before us, and those whose blood and spirit run through our veins. We hold space for your petitions."],
+      officiantTeleprompter: [
+        "We turn our hearts to the Altar of Ancestors—to those who came before us, and those whose blood and spirit run through our veins. We hold space for your petitions."
+      ],
       interactive: `<textarea id="ancestor-text" rows="3" placeholder="Write your petition or ancestor prayer..."></textarea>
         <button class="btn" onclick="submitPetition('Ancestor')">Place on Altar of Ancestors</button>`
     },
     10: {
       title: "X. Benediction & Recessional",
       body: "<blockquote>Go forth into this Sabbath Eve with lightened hearts, restored spirits, and joy in your step. The circle is open, yet ever unbroken. So mote it be!</blockquote>",
-      officiantTeleprompter: ["Go forth into this Sabbath Eve with lightened hearts, restored spirits, and joy in your step. The circle is open, yet ever unbroken. So mote it be!"],
+      officiantTeleprompter: [
+        "Go forth into this Sabbath Eve with lightened hearts, restored spirits, and joy in your step. The circle is open, yet ever unbroken. So mote it be!"
+      ],
       interactive: `<p style="font-size:13px; color:var(--acid-green); text-align:center;" id="screen-prompt-text">Blessed Be!</p>`
     }
   };
@@ -521,45 +564,72 @@
     }
   }
 
+  /* SPEECH ENGINE: STRICTLY Reads Admin/Officiant Teleprompter Lines for Coven */
   function speakLiturgy() {
     if(!audioEnabled || !nameEntered || !synth) return;
+
     synth.cancel();
 
-    if (availableVoices.length === 0) availableVoices = synth.getVoices();
+    if (availableVoices.length === 0) {
+      availableVoices = synth.getVoices();
+    }
+
     const currentData = LITURGY_CONTENT[currentStep] || LITURGY_CONTENT[1];
     const scriptLines = currentData.officiantTeleprompter || [];
 
     let speechQueue = [];
+
     scriptLines.forEach((line) => {
       const trimmed = line.trim();
       if (trimmed) {
         speechQueue.push({ type: "speech", text: trimmed });
-        if (currentStep === 4 || trimmed.includes("circle is listening") || trimmed.includes("hold space for your petitions")) {
-          speechQueue.push({ type: "pause", duration: 3500 });
+
+        // Pause automatically for response prompts
+        if (
+          currentStep === 4 || 
+          trimmed.includes("circle is listening") || 
+          trimmed.includes("hold space for your petitions")
+        ) {
+          speechQueue.push({ type: "pause", duration: 4000 });
         }
       }
     });
 
     let queueIndex = 0;
+
     function speakNextChunk() {
       if (!audioEnabled || !nameEntered || queueIndex >= speechQueue.length) return;
+
       const item = speechQueue[queueIndex];
 
       if (item.type === "pause") {
-        setTimeout(() => { queueIndex++; speakNextChunk(); }, item.duration);
+        setTimeout(() => {
+          queueIndex++;
+          speakNextChunk();
+        }, item.duration);
         return;
       }
 
       const utterance = new SpeechSynthesisUtterance(item.text);
-      utterance.rate = 0.80;
+      utterance.rate = 0.82;
       utterance.pitch = 0.50;
+      
       const voice = getLeaderVoice();
       if (voice) utterance.voice = voice;
 
-      utterance.onend = () => { queueIndex++; speakNextChunk(); };
-      utterance.onerror = () => { queueIndex++; speakNextChunk(); };
+      utterance.onend = () => {
+        queueIndex++;
+        speakNextChunk();
+      };
+
+      utterance.onerror = () => {
+        queueIndex++;
+        speakNextChunk();
+      };
+
       synth.speak(utterance);
     }
+
     speakNextChunk();
   }
 
@@ -575,12 +645,15 @@
         document.getElementById('taper-1').classList.toggle('lit', data.taper1);
         document.getElementById('taper-2').classList.toggle('lit', data.taper2);
         document.getElementById('taper-3').classList.toggle('lit', data.taper3);
+
         document.getElementById('communion-banner').classList.toggle('active', data.communionActive);
 
         if(data.currentStep !== currentStep) {
           currentStep = data.currentStep;
           renderStep();
-          if(nameEntered) speakLiturgy();
+          if(nameEntered) {
+            speakLiturgy();
+          }
         }
       }
     } catch(err) { console.error("Poll error:", err); }
@@ -600,6 +673,7 @@
   async function registerPresence() {
     const nameInput = document.getElementById('member-name');
     memberName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : 'Anonymous';
+    
     nameEntered = true;
 
     try {
@@ -655,5 +729,6 @@
     setInterval(pollState, 3000);
   });
 </script>
+
 </body>
 </html>
