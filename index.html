@@ -569,7 +569,7 @@
     const currentData = LITURGY_CONTENT[currentStep] || LITURGY_CONTENT[1];
     let speechQueue = [];
 
-    // Extract ONLY the Officiant Teleprompter Content (Male Voice)
+    // STRICTLY read ONLY the Officiant Teleprompter Text (Male Voice)
     const maleSentences = splitTextIntoSentences(currentData.officiantTeleprompter);
 
     maleSentences.forEach((sentence) => {
@@ -577,13 +577,13 @@
       if (trimmed) {
         speechQueue.push({ type: "speech", text: trimmed });
 
-        // Insert a pause after sentences that naturally invite a coven response or sharing
+        // Insert pause after sentences inviting coven response
         if (
-          currentStep === 4 || // Spoken Litany prompts
+          currentStep === 4 || 
           trimmed.includes("circle is listening") || 
           trimmed.includes("hold space for your petitions")
         ) {
-          speechQueue.push({ type: "pause", duration: 3500 }); // 3.5 second pause for coven response
+          speechQueue.push({ type: "pause", duration: 3500 });
         }
       }
     });
