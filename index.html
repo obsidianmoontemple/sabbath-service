@@ -497,13 +497,13 @@
       title: "V. Song or Poem of Devotion",
       body: "<blockquote>When the wheel of the week has turned its length,<br>And the hands are weary from proving strength,<br>We return to the hearth where the moonbeams lie,<br>Underneath the expanse of the evening sky.<br><br>Here is no judgment, here is no race,<br>Only the quiet, welcoming grace.<br>Pour out the cider, break open the bread,<br>By love and by spirit, our souls shall be fed.</blockquote>",
       officiantTeleprompter: "When the wheel of the week has turned its length, and the hands are weary from proving strength, we return to the hearth where the moonbeams lie, underneath the expanse of the evening sky. Here is no judgment, here is no race, only the quiet, welcoming grace. Pour out the cider, break open the bread, by love and by spirit, our souls shall be fed.",
-      interactive: ``
+      interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Reflect quietly on the words as the High Priest speaks.</p>`
     },
     6: {
       title: "VI. Pastoral Homily — Cultivating Joy",
       body: "<p>Listen to the High Priest's address on <strong>Cultivating Joy in the Sacred Path</strong>.</p><p>Remember: Joy on the spiritual path is not an accident; it is a deliberate, radical practice. Reclaim your delight in being alive.</p>",
       officiantTeleprompter: "Listen to the address on Cultivating Joy in the Sacred Path. When we dedicate ourselves to a spiritual path, it is remarkably easy to inherit a subconscious belief that devotion must be heavy to be real. But devotion without joy ceases to be a sanctuary. Joy on the spiritual path is a deliberate, radical practice. Reclaim your delight in the magical, beautiful experience of being alive.",
-      interactive: ``
+      interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Listen to the homily address.</p>`
     },
     7: {
       title: "VII. Coven Sharing & Open Reflections",
@@ -516,7 +516,7 @@
       title: "VIII. The Rite of the Loving Cup & Shared Bread",
       body: "<p>Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week.</p>",
       officiantTeleprompter: "Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week.",
-      interactive: ``
+      interactive: `<p style="font-size:13px; color:var(--silver);" id="screen-prompt-text">Prepare your cider and bread to partake with the coven above.</p>`
     },
     9: {
       title: "IX. Silent Petitions at the Altar of Ancestors",
@@ -657,7 +657,10 @@
     document.getElementById('step-badge').textContent = `Step ${currentStep} of 10`;
     document.getElementById('step-title').textContent = content.title;
     document.getElementById('step-body').innerHTML = content.body;
-    document.getElementById('interactive-zone').innerHTML = content.interactive;
+    
+    const zone = document.getElementById('interactive-zone');
+    zone.innerHTML = content.interactive || "";
+    zone.style.display = content.interactive ? 'block' : 'none';
   }
 
   async function registerPresence() {
