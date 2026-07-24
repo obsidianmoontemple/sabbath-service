@@ -399,8 +399,8 @@
     },
     4: {
       title: "IV. Invocation for Harmony & Spoken Litany",
-      body: "<p>Spirits of peace, Guardians of the Obsidian Moon, and the ancient forces of the land—be with us as we weave harmony into our lives.</p>",
-      speakText: "Spirits of peace, Guardians of the Obsidian Moon, and the ancient forces of the land—be with us as we weave harmony into our lives.",
+      body: "<p>Spirits of peace, Guardians of the Obsidian Moon, and the ancient forces of the land—be with us as we weave harmony into our lives.</p><p style='margin-top:12px;'><strong>Leader:</strong> From the exhaustion of relentless labor...</p><p><strong>Leader:</strong> From the noise and chatter of the outer world...</p><p><strong>Leader:</strong> From the weight of grief and heavy hearts...</p><p><strong>Leader:</strong> In our shared sacred walk...</p>",
+      speakText: "Spirits of peace, Guardians of the Obsidian Moon, and the ancient forces of the land—be with us as we weave harmony into our lives. From the exhaustion of relentless labor, grant us rest. From the noise and chatter of the outer world, grant us quiet mind. From the weight of grief and heavy hearts, grant us healing. In our shared sacred walk, we cultivate joy.",
       interactive: `<p style="font-size:13px; color:var(--silver); margin-bottom:6px;">Offer your spoken response with the coven:</p>
         <div class="response-chips">
           <button class="chip-btn" onclick="sendQuickLitany('Grant us rest')">"Grant us rest"</button>
@@ -463,16 +463,21 @@
 
   function speakLiturgy() {
     if(!audioEnabled || !synth) return;
-    synth.cancel();
+
+    // Reset voice queue to prevent browser lockups
+    synth.cancel(); 
+    if (synth.paused) {
+      synth.resume();
+    }
 
     const textToSpeak = LITURGY_CONTENT[currentStep]?.speakText;
     if(!textToSpeak) return;
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
 
-    // OPTION A: DEEP, MEDITATIVE & SACRED
-    utterance.rate = 0.82;  // Slower pacing for reverence
-    utterance.pitch = 0.85; // Deeper, grounded tone
+    // Option A: Meditative & Reverent
+    utterance.rate = 0.82;
+    utterance.pitch = 0.85;
 
     const voices = synth.getVoices();
     const preferredVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Daniel') || v.name.includes('Serena')));
