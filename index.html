@@ -298,7 +298,7 @@
   <!-- VOICE AUDIO BAR -->
   <div class="voice-bar">
     <span style="color:var(--silver);">Spoken Liturgy Audio:</span>
-    <button class="voice-toggle" id="voice-toggle-btn" onclick="toggleSpokenAudio()">Audio: OFF 🔇</button>
+    <button class="voice-toggle active" id="voice-toggle-btn" onclick="toggleSpokenAudio()">Audio: ON 🔊</button>
   </div>
 
   <!-- ALTAR TAPERS STAGE -->
@@ -374,14 +374,15 @@
   const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
 
   let currentStep = 1;
-  let audioEnabled = false;
+  let audioEnabled = true; // Default ready
+  let nameEntered = false; // Prevents audio until name submission
   let synth = window.speechSynthesis;
   let availableVoices = [];
   let audioCtx = null;
   let ambientOsc1 = null;
   let ambientOsc2 = null;
 
-  /* Ambient Drone & Chime Audio Engine */
+  /* Ambient Drone & Single Chime Sound Engine */
   function playSanctuaryChimeAndAmbience() {
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -390,14 +391,14 @@
       audioCtx.resume();
     }
 
-    // 1. Play 1 Chime Bell Sound
+    // 1. Play Single Bell Chime
     const chimeOsc = audioCtx.createOscillator();
     const chimeGain = audioCtx.createGain();
     
     chimeOsc.type = 'sine';
-    chimeOsc.frequency.setValueAtTime(528, audioCtx.currentTime); // 528 Hz Solfeggio frequency tone
+    chimeOsc.frequency.setValueAtTime(528, audioCtx.currentTime); 
     
-    chimeGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    chimeGain.gain.setValueAtTime(0.35, audioCtx.currentTime);
     chimeGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.5);
     
     chimeOsc.connect(chimeGain);
@@ -406,7 +407,7 @@
     chimeOsc.start();
     chimeOsc.stop(audioCtx.currentTime + 3.5);
 
-    // 2. Soft Ambient Background Pad
+    // 2. Continuous Low Pad Atmosphere
     if(!ambientOsc1) {
       ambientOsc1 = audioCtx.createOscillator();
       ambientOsc2 = audioCtx.createOscillator();
@@ -415,10 +416,10 @@
       ambientOsc1.type = 'triangle';
       ambientOsc2.type = 'sine';
       
-      ambientOsc1.frequency.setValueAtTime(110, audioCtx.currentTime); // Low A note
-      ambientOsc2.frequency.setValueAtTime(164.81, audioCtx.currentTime); // Low E note
+      ambientOsc1.frequency.setValueAtTime(110, audioCtx.currentTime);
+      ambientOsc2.frequency.setValueAtTime(164.81, audioCtx.currentTime);
 
-      ambGain.gain.setValueAtTime(0.02, audioCtx.currentTime); // Soft background level
+      ambGain.gain.setValueAtTime(0.02, audioCtx.currentTime);
 
       ambientOsc1.connect(ambGain);
       ambientOsc2.connect(ambGain);
@@ -460,13 +461,12 @@
     ) || availableVoices.find(v => v.lang.includes('en'));
   }
 
-  /* Sequence: Female Intro Screen -> Male Officiant Lines -> Stop */
   const LITURGY_CONTENT = {
     1: {
       title: "I. Gathering & Opening Silence",
       body: "<p>Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins.</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Welcome to the Temple of the Obsidian Moon. Please enter your name below to register your presence at the hearth." },
+        { speaker: "coven", text: "Welcome to the Temple of the Obsidian Moon. You have joined the circle." },
         { speaker: "leader", text: "Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins." }
       ],
       interactive: `<p style="font-size:13px; color:var(--silver);">Enter your name to register your presence at the hearth:</p>
@@ -577,18 +577,23 @@
     const btn = document.getElementById('voice-toggle-btn');
     btn.classList.toggle('active', audioEnabled);
     btn.textContent = audioEnabled ? 'Audio: ON 🔊' : 'Audio: OFF 🔇';
-    if(audioEnabled) {
-      playSanctuaryChimeAndAmbience();
-      speakLiturgy();
-    } else {
+    
+    if(!audioEnabled) {
       stopAmbience();
       if(synth) synth.cancel();
+    } else if (nameEntered) {
+      speakLiturgy();
     }
   }
 
-  /* Sequenced Audio Broadcaster: Chime -> Female Intro -> Male Leader -> Stops automatically */
+  // Helper to split text into chunks to prevent browser truncation limits
+  function splitTextIntoSentences(text) {
+    return text.match(/[^.!?]+[.!?]+/g) || [text];
+  }
+
+  /* Full Sequential Dialogue Broadcaster */
   function speakLiturgy() {
-    if(!audioEnabled || !synth) return;
+    if(!audioEnabled || !nameEntered || !synth) return;
 
     synth.cancel(); 
     if (synth.paused) {
@@ -602,23 +607,31 @@
     const dialogueQueue = LITURGY_CONTENT[currentStep]?.speakDialogue;
     if(!dialogueQueue || dialogueQueue.length === 0) return;
 
-    let phraseIndex = 0;
+    // Build sentence-by-sentence queue so full text is completely spoken
+    let speechQueue = [];
+    dialogueQueue.forEach(item => {
+      const sentences = splitTextIntoSentences(item.text);
+      sentences.forEach(sentence => {
+        speechQueue.push({ speaker: item.speaker, text: sentence.trim() });
+      });
+    });
 
-    function speakNextPhrase() {
-      // Stops cleanly when the step dialogue finishes
-      if (!audioEnabled || phraseIndex >= dialogueQueue.length) return;
+    let queueIndex = 0;
 
-      const item = dialogueQueue[phraseIndex];
+    function speakNextChunk() {
+      if (!audioEnabled || !nameEntered || queueIndex >= speechQueue.length) return;
+
+      const item = speechQueue[queueIndex];
       const utterance = new SpeechSynthesisUtterance(item.text);
 
       if (item.speaker === "leader") {
-        // Officiant / Teleprompter Line: Deep Mature Male
+        // Officiant / Teleprompter Voice
         utterance.rate = 0.80;
         utterance.pitch = 0.70; 
         const voice = getLeaderVoice();
         if (voice) utterance.voice = voice;
       } else {
-        // Screen / Coven Intro Prompt: Mature Female
+        // Coven / Intro Prompt Voice
         utterance.rate = 0.85;
         utterance.pitch = 0.95; 
         const voice = getCovenVoice();
@@ -626,15 +639,19 @@
       }
 
       utterance.onend = () => {
-        phraseIndex++;
-        speakNextPhrase();
+        queueIndex++;
+        speakNextChunk();
+      };
+
+      utterance.onerror = () => {
+        queueIndex++;
+        speakNextChunk();
       };
 
       synth.speak(utterance);
     }
 
-    // Small offset so the chime rings clearly right before speech starts
-    setTimeout(speakNextPhrase, 600);
+    speakNextChunk();
   }
 
   async function pollState() {
@@ -656,7 +673,9 @@
         if(data.currentStep !== currentStep) {
           currentStep = data.currentStep;
           renderStep();
-          speakLiturgy();
+          if(nameEntered) {
+            speakLiturgy();
+          }
         }
       }
     } catch(err) { console.error("Poll error:", err); }
@@ -671,7 +690,12 @@
   }
 
   async function registerPresence() {
-    const name = document.getElementById('member-name').value.trim() || 'Anonymous';
+    const nameInput = document.getElementById('member-name');
+    const name = nameInput ? nameInput.value.trim() : 'Anonymous';
+    
+    // Unlock Audio Sequence Only Once Name is Entered & Joined
+    nameEntered = true;
+
     try {
       await fetch(API_URL, {
         method: 'POST',
@@ -681,6 +705,12 @@
       });
       document.getElementById('interactive-zone').innerHTML = `<p style="color:var(--acid-green);">Welcome to the circle, ${name}.</p>`;
     } catch(err) { console.error(err); }
+
+    // Trigger Chime & Audio Intro Sequence now
+    if (audioEnabled) {
+      playSanctuaryChimeAndAmbience();
+      setTimeout(speakLiturgy, 500);
+    }
   }
 
   async function sendQuickLitany(text) {
