@@ -548,24 +548,25 @@
     return cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
   }
 
-  /* Admin Teleprompter ONLY Speech Logic */
+  /* HARDCODED ADMIN TELEPROMPTER SPEECH LOGIC */
   function speakLiturgy() {
     if(!audioEnabled || !nameEntered || !synth) return;
 
+    // Immediately kill any active speech to prevent screen/body text leaks
     synth.cancel(); 
-    if (synth.paused) {
-      synth.resume();
-    }
 
     if (availableVoices.length === 0) {
       availableVoices = synth.getVoices();
     }
 
     const currentData = LITURGY_CONTENT[currentStep] || LITURGY_CONTENT[1];
-    let speechQueue = [];
+    
+    // STRICT GUARANTEE: Pull directly and exclusively from officiantTeleprompter string
+    const teleprompterText = String(currentData.officiantTeleprompter || "");
+    if (!teleprompterText) return;
 
-    // ONLY process officiantTeleprompter
-    const maleSentences = splitTextIntoSentences(currentData.officiantTeleprompter);
+    let speechQueue = [];
+    const maleSentences = splitTextIntoSentences(teleprompterText);
 
     maleSentences.forEach((sentence) => {
       const trimmed = sentence.trim();
