@@ -374,15 +374,15 @@
   const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
 
   let currentStep = 1;
-  let audioEnabled = true; // Default ready
-  let nameEntered = false; // Prevents audio until name submission
+  let audioEnabled = true;
+  let nameEntered = false; // Strictly holds audio until name is registered
   let synth = window.speechSynthesis;
   let availableVoices = [];
   let audioCtx = null;
   let ambientOsc1 = null;
   let ambientOsc2 = null;
 
-  /* Ambient Drone & Single Chime Sound Engine */
+  /* Audio Engine: Single Chime Tone + Soft Drone Pad */
   function playSanctuaryChimeAndAmbience() {
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -391,7 +391,7 @@
       audioCtx.resume();
     }
 
-    // 1. Play Single Bell Chime
+    // Single Bell Chime Tone
     const chimeOsc = audioCtx.createOscillator();
     const chimeGain = audioCtx.createGain();
     
@@ -407,7 +407,7 @@
     chimeOsc.start();
     chimeOsc.stop(audioCtx.currentTime + 3.5);
 
-    // 2. Continuous Low Pad Atmosphere
+    // Continuous Low Ambient Background Pad
     if(!ambientOsc1) {
       ambientOsc1 = audioCtx.createOscillator();
       ambientOsc2 = audioCtx.createOscillator();
@@ -461,12 +461,13 @@
     ) || availableVoices.find(v => v.lang.includes('en'));
   }
 
+  /* Full Content Readout Mapping */
   const LITURGY_CONTENT = {
     1: {
       title: "I. Gathering & Opening Silence",
       body: "<p>Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins.</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Welcome to the Temple of the Obsidian Moon. You have joined the circle." },
+        { speaker: "coven", text: "Temple of the Obsidian Moon. Sabbath Eve Service. Step 1 of 10. Gathering and Opening Silence. Welcome to the Temple of the Obsidian Moon. Please enter your name below to register your presence at the hearth." },
         { speaker: "leader", text: "Welcome, family of the night and travellers of the sacred path. Settle your mind as the altar opens and our Sabbath Eve begins." }
       ],
       interactive: `<p style="font-size:13px; color:var(--silver);">Enter your name to register your presence at the hearth:</p>
@@ -477,7 +478,7 @@
       title: "II. Cleansing of Space & Centering",
       body: "<p>Before we strike the flame or speak our prayers, let us shed the dust of the week. Close your eyes. Drop your shoulders away from your ears. Unclench your jaw.</p><blockquote>In this space, you are not defined by what you have accomplished this week. You are held simply because you are here.</blockquote>",
       speakDialogue: [
-        { speaker: "coven", text: "Breathe deeply and release what you carry." },
+        { speaker: "coven", text: "Step 2 of 10. Cleansing of Space and Centering. Breathe deeply and release what you carry." },
         { speaker: "leader", text: "Before we strike the flame or speak our prayers, let us shed the dust of the week. Close your eyes. Drop your shoulders away from your ears. Unclench your jaw. In this space, you are not defined by what you have accomplished this week. You are held simply because you are here." }
       ],
       interactive: `<p style="font-size:13px; color:var(--silver);">Breathe deeply. Release what you carry.</p>`
@@ -486,8 +487,8 @@
       title: "III. Lighting of the Altar Tapers",
       body: "<p>The High Priest approaches the altar to light the three sacred tapers for the Ancestors, the Coven, and the Unseen Paths ahead.</p><blockquote>May these flames warm our spirit, illuminate our sanctuary, and signal to all weary souls that here, they have a home.</blockquote>",
       speakDialogue: [
-        { speaker: "coven", text: "Watch the altar tapers light above in real time as the flames catch." },
-        { speaker: "leader", text: "As the sun dips below the horizon and the shadows lengthen, we strike the sacred flame. May these flames warm our spirit, illuminate our sanctuary, and signal to all weary souls that here, they have a home." }
+        { speaker: "coven", text: "Step 3 of 10. Lighting of the Altar Tapers. Watch the altar tapers light above in real time as the flames catch." },
+        { speaker: "leader", text: "The High Priest approaches the altar to light the three sacred tapers for the Ancestors, the Coven, and the Unseen Paths ahead. As the sun dips below the horizon and the shadows lengthen, we strike the sacred flame. May these flames warm our spirit, illuminate our sanctuary, and signal to all weary souls that here, they have a home." }
       ],
       interactive: `<p style="font-size:13px; color:var(--silver);">Watch the altar tapers light above in real-time as the flames catch.</p>`
     },
@@ -495,7 +496,7 @@
       title: "IV. Invocation for Harmony & Spoken Litany",
       body: "<p>Spirits of peace, Guardians of the Obsidian Moon, and the ancient forces of the land—be with us as we weave harmony into our lives.</p><p style='margin-top:12px;'><strong>Leader:</strong> From the exhaustion of relentless labor...</p><p><strong>Leader:</strong> From the noise and chatter of the outer world...</p><p><strong>Leader:</strong> From the weight of grief and heavy hearts...</p><p><strong>Leader:</strong> In our shared sacred walk...</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Offer your spoken responses with the coven as prompted." },
+        { speaker: "coven", text: "Step 4 of 10. Invocation for Harmony and Spoken Litany. Offer your spoken response with the coven when prompted." },
         { speaker: "leader", text: "Spirits of peace, Guardians of the Obsidian Moon, and the ancient forces of the land—be with us as we weave harmony into our lives." },
         { speaker: "leader", text: "From the exhaustion of relentless labor..." },
         { speaker: "coven", text: "Grant us rest." },
@@ -518,7 +519,7 @@
       title: "V. Song or Poem of Devotion",
       body: "<blockquote>When the wheel of the week has turned its length,<br>And the hands are weary from proving strength,<br>We return to the hearth where the moonbeams lie,<br>Underneath the expanse of the evening sky.<br><br>Here is no judgment, here is no race,<br>Only the quiet, welcoming grace.<br>Pour out the cider, break open the bread,<br>By love and by spirit, our souls shall be fed.</blockquote>",
       speakDialogue: [
-        { speaker: "coven", text: "Listen to the devotional poem." },
+        { speaker: "coven", text: "Step 5 of 10. Song or Poem of Devotion." },
         { speaker: "leader", text: "When the wheel of the week has turned its length, and the hands are weary from proving strength, we return to the hearth where the moonbeams lie, underneath the expanse of the evening sky. Here is no judgment, here is no race, only the quiet, welcoming grace. Pour out the cider, break open the bread, by love and by spirit, our souls shall be fed." }
       ],
       interactive: ``
@@ -527,8 +528,8 @@
       title: "VI. Pastoral Homily — Cultivating Joy",
       body: "<p>Listen to the High Priest's address on <strong>Cultivating Joy in the Sacred Path</strong>.</p><p>Remember: Joy on the spiritual path is not an accident; it is a deliberate, radical practice. Reclaim your delight in being alive.</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Listen to the High Priest's address on Cultivating Joy." },
-        { speaker: "leader", text: "When we dedicate ourselves to a spiritual path, it is remarkably easy to inherit a subconscious belief that devotion must be heavy to be real. But devotion without joy ceases to be a sanctuary. Joy on the spiritual path is a deliberate, radical practice. Reclaim your delight in the magical, beautiful experience of being alive." }
+        { speaker: "coven", text: "Step 6 of 10. Pastoral Homily. Cultivating Joy in the Sacred Path." },
+        { speaker: "leader", text: "Listen to the address on Cultivating Joy in the Sacred Path. When we dedicate ourselves to a spiritual path, it is remarkably easy to inherit a subconscious belief that devotion must be heavy to be real. But devotion without joy ceases to be a sanctuary. Joy on the spiritual path is a deliberate, radical practice. Reclaim your delight in the magical, beautiful experience of being alive." }
       ],
       interactive: ``
     },
@@ -536,8 +537,8 @@
       title: "VII. Coven Sharing & Open Reflections",
       body: "<p>If you wish to share a single word of gratitude, a quiet victory from your week, or a small joy found along the path, send it to the altar feed.</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Share a gratitude or small joy in the box provided." },
-        { speaker: "leader", text: "I open the floor now to the family. If anyone wishes to speak a word of gratitude or share a quiet victory from your week, the circle is listening." }
+        { speaker: "coven", text: "Step 7 of 10. Coven Sharing and Open Reflections. Share a gratitude or small joy in the box below." },
+        { speaker: "leader", text: "If you wish to share a single word of gratitude, a quiet victory from your week, or a small joy found along the path, send it to the altar feed. I open the floor now to the family. If anyone wishes to speak a word of gratitude or share a quiet victory from your week, the circle is listening." }
       ],
       interactive: `<textarea id="gratitude-text" rows="2" placeholder="Share a gratitude or small joy..."></textarea>
         <button class="btn" onclick="submitPetition('Gratitude')">Offer Gratitude</button>`
@@ -546,7 +547,7 @@
       title: "VIII. The Rite of the Loving Cup & Shared Bread",
       body: "<p>Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week.</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Pour your cup of cider and break your bread with the High Priest and Coven." },
+        { speaker: "coven", text: "Step 8 of 10. The Rite of the Loving Cup and Shared Bread. Pour your cup of cider and break your bread with the High Priest and Coven." },
         { speaker: "leader", text: "Behold the grain and the sweet cider—the cup of life, warmth, and fellowship. As we drink from this Loving Cup, let its sweetness wash away the bitter words of the week." }
       ],
       interactive: ``
@@ -555,8 +556,8 @@
       title: "IX. Silent Petitions at the Altar of Ancestors",
       body: "<p>We hold space now for those who need healing, strength, or quiet light. Type your silent petition or ancestor prayer to be placed on the altar.</p>",
       speakDialogue: [
-        { speaker: "coven", text: "Write your petition or ancestor prayer to place upon the Altar." },
-        { speaker: "leader", text: "We turn our hearts to the Altar of Ancestors—to those who came before us, and those whose blood and spirit run through our veins. We hold space for your petitions." }
+        { speaker: "coven", text: "Step 9 of 10. Silent Petitions at the Altar of Ancestors. Write your petition or ancestor prayer to place upon the altar." },
+        { speaker: "leader", text: "We hold space now for those who need healing, strength, or quiet light. We turn our hearts to the Altar of Ancestors—to those who came before us, and those whose blood and spirit run through our veins. We hold space for your petitions." }
       ],
       interactive: `<textarea id="ancestor-text" rows="3" placeholder="Write your petition or ancestor prayer..."></textarea>
         <button class="btn" onclick="submitPetition('Ancestor')">Place on Altar of Ancestors</button>`
@@ -565,7 +566,7 @@
       title: "X. Benediction & Recessional",
       body: "<blockquote>Go forth into this Sabbath Eve with lightened hearts, restored spirits, and joy in your step. The circle is open, yet ever unbroken. So mote it be!</blockquote>",
       speakDialogue: [
-        { speaker: "coven", text: "Recess and receive the final blessing." },
+        { speaker: "coven", text: "Step 10 of 10. Benediction and Recessional. Blessed Be!" },
         { speaker: "leader", text: "Go forth into this Sabbath Eve with lightened hearts, restored spirits, and joy in your step. The circle is open, yet ever unbroken. So mote it be!" }
       ],
       interactive: `<p style="font-size:13px; color:var(--acid-green); text-align:center;">Blessed Be!</p>`
@@ -586,12 +587,11 @@
     }
   }
 
-  // Helper to split text into chunks to prevent browser truncation limits
   function splitTextIntoSentences(text) {
     return text.match(/[^.!?]+[.!?]+/g) || [text];
   }
 
-  /* Full Sequential Dialogue Broadcaster */
+  /* Robust Speech Queue */
   function speakLiturgy() {
     if(!audioEnabled || !nameEntered || !synth) return;
 
@@ -607,7 +607,6 @@
     const dialogueQueue = LITURGY_CONTENT[currentStep]?.speakDialogue;
     if(!dialogueQueue || dialogueQueue.length === 0) return;
 
-    // Build sentence-by-sentence queue so full text is completely spoken
     let speechQueue = [];
     dialogueQueue.forEach(item => {
       const sentences = splitTextIntoSentences(item.text);
@@ -625,13 +624,13 @@
       const utterance = new SpeechSynthesisUtterance(item.text);
 
       if (item.speaker === "leader") {
-        // Officiant / Teleprompter Voice
+        // Officiant Lines: Mature Male Tone
         utterance.rate = 0.80;
         utterance.pitch = 0.70; 
         const voice = getLeaderVoice();
         if (voice) utterance.voice = voice;
       } else {
-        // Coven / Intro Prompt Voice
+        // Coven/Screen Lines: Mature Female Tone
         utterance.rate = 0.85;
         utterance.pitch = 0.95; 
         const voice = getCovenVoice();
@@ -693,7 +692,7 @@
     const nameInput = document.getElementById('member-name');
     const name = nameInput ? nameInput.value.trim() : 'Anonymous';
     
-    // Unlock Audio Sequence Only Once Name is Entered & Joined
+    // Unlock Audio Sequence Only Once Name is Entered & Submitted
     nameEntered = true;
 
     try {
@@ -706,7 +705,7 @@
       document.getElementById('interactive-zone').innerHTML = `<p style="color:var(--acid-green);">Welcome to the circle, ${name}.</p>`;
     } catch(err) { console.error(err); }
 
-    // Trigger Chime & Audio Intro Sequence now
+    // Start Audio Sequence
     if (audioEnabled) {
       playSanctuaryChimeAndAmbience();
       setTimeout(speakLiturgy, 500);
