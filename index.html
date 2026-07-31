@@ -2,17 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lughnasadh Eve: The Temple of the Obsidian Moon</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lughnasadh Eve: Temple of the Obsidian Moon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400&display=swap');
     
-    :root { 
-      --bg-color: #050505; 
-      --text-main: #f1effa; 
-      --gold: #d4af37; 
-      --shadow-red: #4a0404; 
-    }
+    :root { --bg-color: #050505; --text-main: #f1effa; --gold: #d4af37; --shadow-red: #4a0404; --compass: #6e3ba7; }
     
     body, html { 
       margin: 0; padding: 0; height: 100vh; 
@@ -20,25 +15,20 @@
       font-family: 'Cormorant Garamond', serif; 
       display: flex; flex-direction: column; align-items: center; justify-content: center; 
       text-align: center; overflow: hidden; 
-      transition: all 3s ease-in-out; 
+      transition: background 3s ease-in-out; 
+      user-select: none; /* Prevents accidental text highlighting while interacting */
     }
 
     /* Phase Background Shifts */
     body.step-1 { background: radial-gradient(circle, #1a1005 0%, #050505 100%); }
     body.step-2 { background: radial-gradient(circle, #130d24 0%, #050505 100%); }
     body.step-3 { background: linear-gradient(180deg, #1a1005 0%, #050505 50%, #130d24 100%); }
-    body.step-4 { background: #000; } /* Pure Shadow */
-    body.breaking-active { background: radial-gradient(circle, #3a2b00 0%, #050505 100%); animation: flash 1s ease-out; }
+    body.step-4 { background: #000; } 
     body.step-6 { background: #050505; opacity: 0.8; }
+    body.breaking-active { background: radial-gradient(circle, #3a2b00 0%, #050505 100%); }
 
-    @keyframes flash {
-      0% { filter: brightness(1); }
-      20% { filter: brightness(3); background: var(--gold); }
-      100% { filter: brightness(1); }
-    }
-
-    /* Altar Tapers (Top of screen) */
-    .altar { position: absolute; top: 40px; display: flex; gap: 40px; }
+    /* The Digital Altar */
+    .altar { position: absolute; top: 40px; display: flex; gap: 40px; z-index: 5; }
     .taper { width: 10px; height: 40px; background: #333; border-radius: 5px 5px 0 0; position: relative; transition: all 1s ease; }
     .taper.lit::after {
       content: ''; position: absolute; top: -20px; left: -5px; width: 20px; height: 25px;
@@ -49,147 +39,234 @@
 
     /* Main Content Area */
     .ritual-content { max-width: 800px; padding: 40px; z-index: 10; transition: opacity 1s ease; }
-    h1 { font-size: 3rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; color: var(--gold); }
+    h1 { font-size: 3rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; color: var(--gold); transition: color 2s; }
     p { font-family: 'Work Sans', sans-serif; font-size: 1.2rem; line-height: 1.8; color: #ccc; }
     
     /* Interactive Shadow Input */
-    .interaction-zone { margin-top: 40px; display: none; }
+    .interaction-zone { margin-top: 40px; display: none; position: relative; }
     body.step-4 .interaction-zone { display: block; animation: fadeIn 2s forwards; }
+    
+    .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-50px) scale(1.1); opacity: 0; }
+
     input[type="text"] {
       width: 80%; padding: 15px; background: rgba(255,255,255,0.05); 
       border: 1px solid #444; color: #fff; text-align: center; 
-      font-family: 'Work Sans', sans-serif; font-size: 1rem; margin-bottom: 20px; border-radius: 4px;
+      font-family: 'Work Sans', sans-serif; font-size: 1.2rem; margin-bottom: 20px; border-radius: 4px;
     }
-    input[type="text"]:focus { outline: none; border-color: var(--gold); }
-    button {
+    input[type="text"]:focus { outline: none; border-color: #ff3860; box-shadow: 0 0 15px rgba(255,56,96,0.3); }
+    
+    .btn-magic {
       background: transparent; border: 1px solid var(--gold); color: var(--gold); 
       padding: 12px 30px; cursor: pointer; transition: 0.4s; 
       font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;
+      position: relative; overflow: hidden;
     }
-    button:hover { background: var(--gold); color: #000; }
+    .btn-magic:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
+    
+    .btn-shadow { border-color: #ff3860; color: #ff3860; }
+    .btn-shadow:hover { background: #ff3860; color: #fff; box-shadow: 0 0 20px #ff3860; }
 
+    /* Tactile Breaking Mechanic */
+    .tactile-harvest { display: none; margin-top: 30px; }
+    body.breaking-active .tactile-harvest { display: block; animation: fadeIn 2s forwards; }
+    .harvest-orb {
+      width: 120px; height: 120px; margin: 0 auto;
+      border-radius: 50%; background: radial-gradient(circle, #fff 0%, var(--gold) 40%, transparent 100%);
+      box-shadow: 0 0 30px var(--gold); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #000; font-family: 'Work Sans', sans-serif; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+      transition: transform 0.1s;
+    }
+    .harvest-orb:active { transform: scale(0.9); }
+    .harvest-orb.shattered { background: transparent; box-shadow: none; border: 2px dashed var(--gold); color: var(--gold); pointer-events: none; }
+
+    /* Magical Particle System */
+    .spark {
+      position: absolute; pointer-events: none; border-radius: 50%; z-index: 100;
+      animation: floatSpark 1s forwards;
+    }
+    @keyframes floatSpark {
+      0% { transform: scale(1) translateY(0); opacity: 0.8; }
+      100% { transform: scale(0) translateY(-40px); opacity: 0; }
+    }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body class="step-1">
 
-  <!-- The Digital Altar -->
   <div class="altar">
     <div class="taper" id="taper-1"></div>
     <div class="taper" id="taper-2"></div>
     <div class="taper" id="taper-3"></div>
   </div>
 
-  <!-- Liturgy Display -->
   <div class="ritual-content" id="ritual-display">
     <h1 id="phase-title">The Temple Gathers</h1>
     <p id="phase-text">Ensure your personal black candle is unlit. Have your dark bread ready on the altar. Await the High Priest.</p>
     
-    <!-- Shadow Casting Input (Only visible in Step 4) -->
+    <!-- Shadow Interaction -->
     <div class="interaction-zone" id="shadow-zone">
-      <input type="text" id="shadow-input" placeholder="Name the decay you offer to the dark...">
-      <br>
-      <button onclick="submitShadow()">Release to the Earth</button>
-      <p id="shadow-confirmation" style="display:none; color: #555; font-style: italic; margin-top: 20px;">The decay is accepted. The soil is rich.</p>
+      <div class="shadow-container" id="shadow-container">
+        <input type="text" id="shadow-input" placeholder="Name the decay you offer to the dark..." autocomplete="off">
+        <br>
+        <button class="btn-magic btn-shadow" onclick="submitShadow()">Release to the Earth</button>
+      </div>
+      <p id="shadow-confirmation" style="display:none; color: #ff3860; font-style: italic; margin-top: 20px; font-size: 1.4rem;">The decay is accepted. The soil is rich.</p>
+    </div>
+
+    <!-- The Breaking Interaction -->
+    <div class="tactile-harvest" id="harvest-zone">
+      <p style="color: var(--gold); margin-bottom: 20px; font-style: italic;">Tap the light to shatter the loaf and claim your harvest.</p>
+      <div class="harvest-orb" id="harvest-orb" onclick="strikeHarvest(event)">STRIKE</div>
     </div>
   </div>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
     
-    let localState = {
-      currentStep: 1,
-      taper1: false,
-      taper2: false,
-      taper3: false,
-      breakingActive: false
-    };
+    let localState = { currentStep: 1, taper1: false, taper2: false, taper3: false, breakingActive: false };
+    let strikes = 0;
 
     const COVEN_TEXT = {
-      1: { title: "Lughnasadh Eve", text: "Ensure your personal black candle is unlit. Have your dark bread ready on the altar. Await the High Priest." },
-      2: { title: "The Multicultural Compass", text: "The Compass is cast. We are between worlds." },
-      3: { title: "Invocation of Spirits", text: "Sun and Shadow, Bounty and Bone—be present with us tonight." },
-      4: { title: "Meditation on the Shadow", text: "Focus on your black candle. What decay must feed your new growth?" },
-      5: { title: "The Breaking of the Loaf", text: "Hold up your grain to the camera. We eat of our triumphs, and we eat of our shadows." },
+      1: { title: "Lughnasadh Eve", text: "Ensure your personal black candle is unlit. Have your dark bread ready on the altar." },
+      2: { title: "The Compass is Cast", text: "Air. Fire. Water. Earth. We are between worlds." },
+      3: { title: "Spirits & Ancestors", text: "Sun and Shadow, Bounty and Bone—be present with us tonight." },
+      4: { title: "The Shadow Work", text: "Focus on your black candle. What decay must feed your new growth?" },
+      5: { title: "The Dark Loaf", text: "Hold up your grain to the camera. We eat of our triumphs, and we eat of our shadows." },
       6: { title: "The Wheel Turns", text: "The harvest is claimed. The shadow is integrated. The ritual is complete." }
     };
 
-    async function pollState() {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'getRitualState' })
-        });
-        const data = await res.json();
-        
-        if (data.success) {
-          // Handle Step Changes
-          if (data.currentStep && data.currentStep !== localState.currentStep) {
-            localState.currentStep = data.currentStep;
-            document.body.className = 'step-' + localState.currentStep;
-            
-            // Re-trigger fade animation
-            const display = document.getElementById('ritual-display');
-            display.style.opacity = 0;
-            setTimeout(() => {
-              document.getElementById('phase-title').innerText = COVEN_TEXT[localState.currentStep].title;
-              document.getElementById('phase-text').innerText = COVEN_TEXT[localState.currentStep].text;
-              
-              // Reset shadow box if we left the shadow step
-              if(localState.currentStep !== 4) {
-                document.getElementById('shadow-input').style.display = 'inline-block';
-                document.getElementById('shadow-input').value = '';
-                document.querySelector('#shadow-zone button').style.display = 'inline-block';
-                document.getElementById('shadow-confirmation').style.display = 'none';
-              }
-              
-              display.style.opacity = 1;
-            }, 1000);
-          }
+    // --- CLIENT SIDE MAGIC SYSTEM ---
+    
+    // 1. Astral Dust (Mouse/Touch Particles)
+    document.addEventListener('mousemove', createSpark);
+    document.addEventListener('touchmove', (e) => { createSpark(e.touches[0]); });
 
-          // Handle Taper Lighting
-          document.getElementById('taper-1').classList.toggle('lit', data.taper1);
-          document.getElementById('taper-2').classList.toggle('lit', data.taper2);
-          document.getElementById('taper-3').classList.toggle('lit', data.taper3);
-
-          // Handle The Breaking Phase
-          if (data.communionActive !== localState.breakingActive) {
-            localState.breakingActive = data.communionActive;
-            if (localState.breakingActive) {
-              document.body.classList.add('breaking-active');
-              document.getElementById('phase-title').innerText = "CLAIM YOUR HARVEST";
-              document.getElementById('phase-title').style.color = "#fff";
-            } else {
-              document.body.classList.remove('breaking-active');
-              document.getElementById('phase-title').style.color = "var(--gold)";
-            }
-          }
-        }
-      } catch(err) { console.error("Astral interference...", err); }
+    function createSpark(e) {
+      if (Math.random() > 0.3) return; // Limit particle density so older phones don't lag
+      const spark = document.createElement('div');
+      spark.className = 'spark';
+      
+      // Determine magic color based on phase
+      let color = '#d4af37'; // Default Gold
+      if (localState.currentStep === 2) color = '#c092f0'; // Compass Purple
+      if (localState.currentStep === 4) color = '#ff3860'; // Shadow Red
+      
+      const size = Math.random() * 6 + 2;
+      spark.style.width = size + 'px';
+      spark.style.height = size + 'px';
+      spark.style.background = color;
+      spark.style.boxShadow = `0 0 10px ${color}`;
+      spark.style.left = e.pageX + 'px';
+      spark.style.top = e.pageY + 'px';
+      
+      document.body.appendChild(spark);
+      setTimeout(() => spark.remove(), 1000);
     }
 
-    // Submit Shadow Petition to the Google Sheet API
+    // 2. The Tactile Harvest (Interactive clicking)
+    function strikeHarvest(e) {
+      strikes++;
+      
+      // Create a massive burst of particles where they clicked
+      for(let i=0; i<15; i++) {
+        setTimeout(() => {
+          createSpark({ pageX: e.pageX + (Math.random()*100 - 50), pageY: e.pageY + (Math.random()*100 - 50) });
+        }, i * 20);
+      }
+
+      const orb = document.getElementById('harvest-orb');
+      
+      if(strikes >= 3) {
+        orb.classList.add('shattered');
+        orb.innerHTML = "CLAIMED";
+        document.body.style.animation = "none";
+        document.body.style.background = "#fff";
+        setTimeout(() => { document.body.style.background = ""; }, 150); // Lightning flash
+      } else {
+        orb.style.transform = "scale(1.2)";
+        setTimeout(() => { orb.style.transform = "scale(1)"; }, 100);
+      }
+    }
+
+    // 3. The Shadow Dissolve
     async function submitShadow() {
       const input = document.getElementById('shadow-input');
       const text = input.value.trim();
       if (!text) return;
 
-      // Hide input, show confirmation
-      input.style.display = 'none';
-      document.querySelector('#shadow-zone button').style.display = 'none';
-      document.getElementById('shadow-confirmation').style.display = 'block';
+      // Trigger the burning CSS animation
+      document.getElementById('shadow-container').classList.add('burn');
+      
+      setTimeout(() => {
+        document.getElementById('shadow-container').style.display = 'none';
+        document.getElementById('shadow-confirmation').style.display = 'block';
+      }, 1500);
 
+      // Send to the High Priest Dashboard
       try {
         await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'addPetition', name: 'Anonymous', type: 'Shadow', text: text })
         });
-      } catch (err) { console.error("Failed to cast shadow:", err); }
+      } catch (err) { console.error("Astral interference...", err); }
     }
 
-    // Check state every 3 seconds
+    // --- ENGINE POLLING ---
+    async function pollState() {
+      try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getRitualState' }) });
+        const data = await res.json();
+        
+        if (data.success) {
+          // Sync Step
+          if (data.currentStep && data.currentStep !== localState.currentStep) {
+            localState.currentStep = data.currentStep;
+            document.body.className = 'step-' + localState.currentStep;
+            
+            const display = document.getElementById('ritual-display');
+            display.style.opacity = 0;
+            setTimeout(() => {
+              document.getElementById('phase-title').innerText = COVEN_TEXT[localState.currentStep].title;
+              document.getElementById('phase-text').innerText = COVEN_TEXT[localState.currentStep].text;
+              
+              if(localState.currentStep !== 4) {
+                document.getElementById('shadow-container').classList.remove('burn');
+                document.getElementById('shadow-container').style.display = 'block';
+                document.getElementById('shadow-input').value = '';
+                document.getElementById('shadow-confirmation').style.display = 'none';
+              }
+              display.style.opacity = 1;
+            }, 1000);
+          }
+
+          // Sync Tapers
+          document.getElementById('taper-1').classList.toggle('lit', data.taper1);
+          document.getElementById('taper-2').classList.toggle('lit', data.taper2);
+          document.getElementById('taper-3').classList.toggle('lit', data.taper3);
+
+          // Sync Breaking Phase
+          if (data.communionActive !== localState.breakingActive) {
+            localState.breakingActive = data.communionActive;
+            if (localState.breakingActive) {
+              document.body.classList.add('breaking-active');
+              document.getElementById('phase-title').innerText = "THE LOAF IS BROKEN";
+              document.getElementById('phase-title').style.color = "#fff";
+              strikes = 0; 
+              const orb = document.getElementById('harvest-orb');
+              orb.classList.remove('shattered');
+              orb.innerHTML = "STRIKE";
+            } else {
+              document.body.classList.remove('breaking-active');
+              document.getElementById('phase-title').style.color = "var(--gold)";
+            }
+          }
+        }
+      } catch(err) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       setInterval(pollState, 3000);
     });
