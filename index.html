@@ -58,17 +58,19 @@
     .personal-candle.lit::after { content: ''; position: absolute; top: -40px; left: -15px; width: 60px; height: 70px; background: radial-gradient(circle, #fff 0%, #ffaa00 40%, transparent 100%); border-radius: 50%; filter: blur(4px); animation: flicker 0.1s infinite alternate; }
     .personal-candle.lit { border-color: transparent; cursor: default; }
 
-    /* STEP 2: COMPASS */
+    /* STEP 2: COMPASS NODES (Fully Interactive & Glowing) */
     .compass-container { position: relative; width: 300px; margin: 0 auto; }
     .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-    .node { width: 70px; height: 70px; border: 1px solid #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #333; background: rgba(0,0,0,0.2); pointer-events: none; transition: all 0.4s; }
-    .node.unlocked { border-color: #666; color: #aaa; cursor: pointer; background: rgba(0,0,0,0.5); }
-    .node.unlocked:hover { border-color: var(--path-accent); color: var(--path-accent); }
+    .node { width: 70px; height: 70px; border: 1px solid #666; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #aaa; background: rgba(0,0,0,0.5); cursor: pointer; transition: all 0.4s; }
+    .node:hover { border-color: var(--path-accent); color: var(--path-accent); }
     .node:active { transform: scale(0.9); }
-    .node.active-air { border-color: #fadd70 !important; color: #fadd70 !important; box-shadow: 0 0 20px rgba(250, 221, 112, 0.4); pointer-events: none; }
-    .node.active-fire { border-color: #ff3860 !important; color: #ff3860 !important; box-shadow: 0 0 20px rgba(255, 56, 96, 0.4); pointer-events: none; }
-    .node.active-water { border-color: #38bdf8 !important; color: #38bdf8 !important; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); pointer-events: none; }
-    .node.active-earth { border-color: #4ade80 !important; color: #4ade80 !important; box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); pointer-events: none; }
+    
+    /* Glowing active states */
+    .node.active-air { border-color: #fadd70 !important; color: #fadd70 !important; background: rgba(250, 221, 112, 0.15) !important; box-shadow: 0 0 20px rgba(250, 221, 112, 0.6); }
+    .node.active-fire { border-color: #ff3860 !important; color: #ff3860 !important; background: rgba(255, 56, 96, 0.15) !important; box-shadow: 0 0 20px rgba(255, 56, 96, 0.6); }
+    .node.active-water { border-color: #38bdf8 !important; color: #38bdf8 !important; background: rgba(56, 189, 248, 0.15) !important; box-shadow: 0 0 20px rgba(56, 189, 248, 0.6); }
+    .node.active-earth { border-color: #4ade80 !important; color: #4ade80 !important; background: rgba(74, 222, 128, 0.15) !important; box-shadow: 0 0 20px rgba(74, 222, 128, 0.6); }
+    
     .node-north { grid-column: 2; } .node-west { grid-column: 1; } .node-east { grid-column: 3; } .node-south { grid-column: 2; }
 
     .spirit-node { display: none; width: 80px; height: 80px; border: 2px dashed var(--path-accent); border-radius: 50%; margin: 20px auto 0 auto; align-items: center; justify-content: center; font-family: 'Cinzel Decorative', serif; font-size: 0.85rem; color: var(--path-accent); cursor: pointer; background: rgba(110, 59, 167, 0.2); box-shadow: 0 0 25px rgba(157, 91, 210, 0.6); animation: ghostPulse 2s infinite alternate; }
@@ -145,9 +147,9 @@
       </div>
     </div>
 
-    <!-- STEP 2: Compass Nodes -->
+    <!-- STEP 2: Compass Nodes (Directly Clickable & Glowing) -->
     <div class="interactive-layer" id="layer-step-2">
-      <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Listen to the casting. Tap the quarters as they are opened.</p>
+      <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Tap the quarters as they are opened to anchor the compass.</p>
       <div class="compass-container">
         <div class="compass-grid" id="compass-grid-box">
           <div class="node node-north" onclick="activateNode(this, 'earth')" id="node-earth">Earth</div>
@@ -175,7 +177,7 @@
       <p id="path-confirmation" style="display:none; color: var(--path-accent); font-style: italic; margin-top: 15px;">Path anchored successfully.</p>
     </div>
 
-    <!-- STEP 4: Divergent Path Work (Life vs Decay) -->
+    <!-- STEP 4: Divergent Path Work -->
     <div class="interactive-layer" id="layer-step-4">
       <div class="shadow-container" id="shadow-container">
         <input type="text" class="name-input" id="practitioner-name" placeholder="Your Name or Moniker" autocomplete="off">
@@ -217,7 +219,7 @@
     const LORE = {
       en: {
         1: { title: "Lughnasadh Eve", text: "Ensure your personal black candle is unlit. Have your dark bread ready on the altar." },
-        2: { title: "The Compass is Cast", text: "Listen closely. Nodes will unlock as each quarter is called." },
+        2: { title: "The Compass is Cast", text: "Tap the quarters as they are called to anchor the space." },
         3: { title: "Spirits & Ancestors", text: "Choose your path: Sunlight bounty or shadow transformation." },
         4: { title: "The Divergent Work", text: "Focus on your path. What vitality or decay do you offer?" },
         5: { title: "The Dark Loaf", text: "Hold up your grain to the camera. We eat of our triumphs, and we eat of our shadows." },
@@ -225,7 +227,7 @@
       },
       de: {
         1: { title: "Lughnasadh Vorabend", text: "Stelle sicher, dass deine persönliche schwarze Kerze nicht brennt." },
-        2: { title: "Der Kompass ist gewirkt", text: "Höre zu. Knoten werden freigeschaltet." },
+        2: { title: "Der Kompass ist gewirkt", text: "Tippe auf die Viertel, wenn sie gerufen werden." },
         3: { title: "Geister & Ahnen", text: "Wähle deinen Pfad: Sonnenfülle oder Schattenumwandlung." },
         4: { title: "Die Arbeit", text: "Konzentriere dich auf deinen Pfad." },
         5: { title: "Der Dunkle Laib", text: "Halte dein Korn in die Kamera." },
@@ -233,7 +235,7 @@
       },
       es: {
         1: { title: "Víspera de Lughnasadh", text: "Asegúrate de que tu vela negra esté apagada." },
-        2: { title: "La Brújula es Lanzada", text: "Escucha atentamente. Los nodos se desbloquearán paso a paso." },
+        2: { title: "La Brújula es Lanzada", text: "Toca los puntos cardinales para anclar el espacio." },
         3: { title: "Espíritus y Ancestros", text: "Elige tu camino: Abundancia solar o transformación de sombra." },
         4: { title: "El Trabajo Divergente", text: "¿Qué ofreces a la gran red de la vida?" },
         5: { title: "El Pan Oscuro", text: "Levanta tu grano hacia la cámara." },
@@ -241,7 +243,7 @@
       },
       fr: {
         1: { title: "Veille de Lughnasadh", text: "Assurez-vous que votre bougie noire est éteinte." },
-        2: { title: "La Boussole est Jetée", text: "Écoutez attentivement. Les nœuds se débloqueront." },
+        2: { title: "La Boussole est Jetée", text: "Appuyez sur les quarts pour ancrer l'espace." },
         3: { title: "Esprits et Ancêtres", text: "Choisissez votre voie : Abondance ou Ombre." },
         4: { title: "Le Travail", text: "Quelle décadence doit nourrir votre croissance ?" },
         5: { title: "Le Pain Noir", text: "Levez votre grain." },
@@ -249,7 +251,7 @@
       },
       yo: {
         1: { title: "Àṣálẹ́ Lughnasadh", text: "Rii daju pe abẹla dudu rẹ ko tan." },
-        2: { title: "A ti da kọmpasi naa", text: "Fetisi silẹ. Awọn aaye yoo ṣii bi a ṣe n pe wọn." },
+        2: { title: "A ti da kọmpasi naa", text: "Fọwọkan awọn aaye bi a ṣe n pe wọn." },
         3: { title: "Awọn Ẹmi", text: "Yan ọna rẹ." },
         4: { title: "Iṣẹ Naa", text: "Ibajẹ wo ni o gbọdọ bọ idagbasoke rẹ?" },
         5: { title: "Akara Dudu", text: "Gbe ọka rẹ soke." },
@@ -327,28 +329,34 @@
       }
     }
 
-    // PACED COMPASS UNLOCKING WITH CORRECT ELEMENT IDs
-    function startCompassUnlocking() {
+    // RESET & PREPARE COMPASS NODES (Fully Interactive Immediately)
+    function resetCompass() {
       activeNodesCount = 0;
-      document.querySelectorAll('.node').forEach(n => n.classList.remove('unlocked', 'active-air', 'active-fire', 'active-water', 'active-earth'));
+      document.querySelectorAll('.node').forEach(n => {
+        n.classList.remove('active-air', 'active-fire', 'active-water', 'active-earth');
+      });
       document.getElementById('spirit-node').style.display = 'none';
       document.getElementById('pentacle-container').style.display = 'none';
       document.getElementById('compass-grid-box').style.display = 'grid';
-
-      // Timed unlocking matching the script IDs precisely (node-air, node-fire, node-water, node-earth)
-      setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 4000);   // East (Air)
-      setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 11000); // South (Fire)
-      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 18000); // West (Water)
-      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 25000); // North (Earth)
     }
 
+    // ACTIVATE INDIVIDUAL NODES WITH GLOWING COLORS
     function activateNode(element, elementStr) {
-      if (element.classList.contains('unlocked') && !element.classList.contains('active-' + elementStr)) {
-        element.classList.add('active-' + elementStr);
+      const activeClass = 'active-' + elementStr;
+      if (!element.classList.contains(activeClass)) {
+        element.classList.add(activeClass);
         activeNodesCount++;
         const rect = element.getBoundingClientRect();
-        createSparkBurst(rect.left + 35, rect.top + 35, getComputedStyle(element).color, 8);
+        
+        let sparkColor = '#d4af37';
+        if (elementStr === 'air') sparkColor = '#fadd70';
+        if (elementStr === 'fire') sparkColor = '#ff3860';
+        if (elementStr === 'water') sparkColor = '#38bdf8';
+        if (elementStr === 'earth') sparkColor = '#4ade80';
 
+        createSparkBurst(rect.left + 35, rect.top + 35, sparkColor, 12);
+
+        // When all 4 quarters are clicked, awaken the Spirit node!
         if (activeNodesCount === 4) {
           setTimeout(() => {
             document.getElementById('spirit-node').style.display = 'flex';
@@ -475,7 +483,7 @@
       if (localState.currentStep === 1) document.getElementById('layer-step-1').style.display = 'block';
       if (localState.currentStep === 2) {
         document.getElementById('layer-step-2').style.display = 'block';
-        startCompassUnlocking();
+        resetCompass();
       }
       if (localState.currentStep === 3) document.getElementById('layer-step-3').style.display = 'block';
       if (localState.currentStep === 4) {
