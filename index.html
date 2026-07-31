@@ -46,15 +46,16 @@
     .interactive-layer { display: none; margin-top: 30px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* STEP 1: Personal Match (Tap-to-Ignite) */
+    /* STEP 1: Personal Match */
     .match-box { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 30px; }
     .personal-candle { width: 30px; height: 80px; background: #222; border-radius: 5px 5px 0 0; position: relative; cursor: pointer; border: 1px solid #444; transition: border-color 0.3s; }
     .personal-candle:hover { border-color: var(--gold); }
     .personal-candle.lit::after { content: ''; position: absolute; top: -40px; left: -15px; width: 60px; height: 70px; background: radial-gradient(circle, #fff 0%, #ffaa00 40%, transparent 100%); border-radius: 50%; filter: blur(4px); animation: flicker 0.1s infinite alternate; }
     .personal-candle.lit { border-color: transparent; cursor: default; }
 
-    /* STEP 2: COMPASS NODES */
-    .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; max-width: 300px; margin: 0 auto; }
+    /* STEP 2: COMPASS & GHOSTLY SPIRIT NODE */
+    .compass-container { position: relative; width: 300px; margin: 0 auto; }
+    .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
     .node { width: 70px; height: 70px; border: 1px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s; color: #555; background: rgba(0,0,0,0.5); }
     .node:active { transform: scale(0.9); }
     .node.active-air { border-color: #fadd70; color: #fadd70; box-shadow: 0 0 20px rgba(250, 221, 112, 0.4); }
@@ -62,6 +63,15 @@
     .node.active-water { border-color: #38bdf8; color: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
     .node.active-earth { border-color: #4ade80; color: #4ade80; box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); }
     .node-north { grid-column: 2; } .node-west { grid-column: 1; } .node-east { grid-column: 3; } .node-south { grid-column: 2; }
+
+    /* Ghostly Spirit Node (Hidden until 4 are active) */
+    .spirit-node { display: none; width: 80px; height: 80px; border: 2px dashed #9d5bd2; border-radius: 50%; margin: 20px auto 0 auto; align-items: center; justify-content: center; font-family: 'Cinzel Decorative', serif; font-size: 0.85rem; color: #c092f0; cursor: pointer; background: rgba(110, 59, 167, 0.2); box-shadow: 0 0 25px rgba(157, 91, 210, 0.6); animation: ghostPulse 2s infinite alternate; }
+    @keyframes ghostPulse { 0% { transform: scale(0.95); opacity: 0.6; } 100% { transform: scale(1.05); opacity: 1; } }
+    
+    /* Burning Pentacle Final State */
+    .pentacle-container { display: none; flex-direction: column; align-items: center; gap: 15px; animation: fadeIn 1.5s forwards; }
+    .burning-pentacle { font-size: 5rem; color: var(--gold); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff3300, 0 0 60px #aa0000; animation: pentacleBurn 2s infinite alternate; }
+    @keyframes pentacleBurn { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.3); } }
 
     /* STEP 4: SHADOW */
     .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
@@ -124,14 +134,25 @@
       </div>
     </div>
 
-    <!-- STEP 2: Compass Nodes -->
+    <!-- STEP 2: Compass Nodes & Ghostly Spirit Node -->
     <div class="interactive-layer" id="layer-step-2">
       <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Tap the nodes to anchor the compass.</p>
-      <div class="compass-grid">
-        <div class="node node-north" onclick="activateNode(this, 'earth')" id="node-earth">Earth</div>
-        <div class="node node-west" onclick="activateNode(this, 'water')" id="node-water">Water</div>
-        <div class="node node-east" onclick="activateNode(this, 'air')" id="node-air">Air</div>
-        <div class="node node-south" onclick="activateNode(this, 'fire')" id="node-fire">Fire</div>
+      <div class="compass-container">
+        <div class="compass-grid" id="compass-grid-box">
+          <div class="node node-north" onclick="activateNode(this, 'earth')" id="node-earth">Earth</div>
+          <div class="node node-west" onclick="activateNode(this, 'water')" id="node-water">Water</div>
+          <div class="node node-east" onclick="activateNode(this, 'air')" id="node-air">Air</div>
+          <div class="node node-south" onclick="activateNode(this, 'fire')" id="node-fire">Fire</div>
+        </div>
+        <!-- Ghostly Spirit Node -->
+        <div class="spirit-node" id="spirit-node" onclick="awakenSpirit(event)">
+          <span id="ui-spirit-label">SPIRIT</span>
+        </div>
+        <!-- Burning Pentacle Final State -->
+        <div class="pentacle-container" id="pentacle-container">
+          <div class="burning-pentacle">⛤</div>
+          <p style="color: var(--gold); font-style: italic; font-size: 1.1rem;" id="ui-pentacle-text">The Pentacle is sealed. The quarters are bound.</p>
+        </div>
       </div>
     </div>
 
@@ -175,11 +196,11 @@
       sidebar.classList.toggle('open');
     }
 
-    // --- 2. MULTILINGUAL DICTIONARY (Short Text for Screen) ---
+    // --- 2. MULTILINGUAL DICTIONARY ---
     const LORE = {
       en: {
         1: { title: "Lughnasadh Eve", text: "Ensure your personal black candle is unlit. Have your dark bread ready on the altar." },
-        2: { title: "The Compass is Cast", text: "Air. Fire. Water. Earth. We are between worlds." },
+        2: { title: "The Compass is Cast", text: "Air. Fire. Water. Earth. Awaken Spirit to bind the circle." },
         3: { title: "Spirits & Ancestors", text: "Sun and Shadow, Bounty and Bone—be present with us tonight." },
         4: { title: "The Shadow Work", text: "Focus on your black candle. What decay must feed your new growth?" },
         5: { title: "The Dark Loaf", text: "Hold up your grain to the camera. We eat of our triumphs, and we eat of our shadows." },
@@ -187,7 +208,7 @@
       },
       de: {
         1: { title: "Lughnasadh Vorabend", text: "Stelle sicher, dass deine persönliche schwarze Kerze nicht brennt. Halte dein dunkles Brot auf dem Altar bereit." },
-        2: { title: "Der Kompass ist gewirkt", text: "Luft. Feuer. Wasser. Erde. Wir sind zwischen den Welten." },
+        2: { title: "Der Kompass ist gewirkt", text: "Luft. Feuer. Wasser. Erde. Erwecke den Geist, um den Kreis zu binden." },
         3: { title: "Geister & Ahnen", text: "Sonne und Schatten, Fülle und Knochen – seid heute Abend bei uns." },
         4: { title: "Die Schattenarbeit", text: "Konzentriere dich auf deine schwarze Kerze. Welcher Verfall muss dein neues Wachstum nähren?" },
         5: { title: "Der Dunkle Laib", text: "Halte dein Korn in die Kamera. Wir essen von unseren Triumphen und wir essen von unseren Schatten." },
@@ -195,7 +216,7 @@
       },
       es: {
         1: { title: "Víspera de Lughnasadh", text: "Asegúrate de que tu vela negra esté apagada. Ten listo tu pan oscuro." },
-        2: { title: "La Brújula es Lanzada", text: "Aire. Fuego. Agua. Tierra. Estamos entre mundos." },
+        2: { title: "La Brújula es Lanzada", text: "Aire. Fuego. Agua. Tierra. Despierta al Espíritu para sellar el círculo." },
         3: { title: "Espíritus y Ancestros", text: "Sol y Sombra, Abundancia y Hueso, estén presentes esta noche." },
         4: { title: "El Trabajo de Sombra", text: "Concéntrate en tu vela negra. ¿Qué decadencia debe alimentar tu crecimiento?" },
         5: { title: "El Pan Oscuro", text: "Levanta tu grano hacia la cámara. Comemos de nuestros triunfos y sombras." },
@@ -203,7 +224,7 @@
       },
       fr: {
         1: { title: "Veille de Lughnasadh", text: "Assurez-vous que votre bougie noire est éteinte. Préparez votre pain noir." },
-        2: { title: "La Boussole est Jetée", text: "Air. Feu. Eau. Terre. Nous sommes entre les mondes." },
+        2: { title: "La Boussole est Jetée", text: "Air. Feu. Eau. Terre. Éveillez l'Esprit pour lier le cercle." },
         3: { title: "Esprits et Ancêtres", text: "Soleil et Ombre, Abondance et Os, soyez présents ce soir." },
         4: { title: "Le Travail de l'Ombre", text: "Concentrez-vous sur votre bougie. Quelle décadence doit nourrir votre croissance ?" },
         5: { title: "Le Pain Noir", text: "Levez votre grain. Nous mangeons de nos triomphes et de nos ombres." },
@@ -211,7 +232,7 @@
       },
       yo: {
         1: { title: "Àṣálẹ́ Lughnasadh", text: "Rii daju pe abẹla dudu rẹ ko tan. Ṣetọju akara dudu rẹ lori pẹpẹ." },
-        2: { title: "A ti da kọmpasi naa", text: "Afẹfẹ. Iná. Omi. Ilẹ̀. A wa laarin awọn aye." },
+        2: { title: "A ti da kọmpasi naa", text: "Afẹfẹ. Iná. Omi. Ilẹ̀. Ji Ẹmi si ipo lati di ayika naa." },
         3: { title: "Awọn Ẹmi ati Awọn Baba-nla", text: "Oorun ati Ojiji, Ọpọlọpọ ati Egungun — wa pẹlu wa ni alẹ yii." },
         4: { title: "Iṣẹ Ojiji", text: "Fojusi abẹla dudu rẹ. Ibajẹ wo ni o gbọdọ bọ idagbasoke titun rẹ?" },
         5: { title: "Akara Dudu", text: "Gbe ọka rẹ soke si kamẹra. A jẹ ninu awọn iṣẹgun wa, a si jẹ ninu awọn ojiji wa." },
@@ -219,47 +240,46 @@
       }
     };
 
-    // --- TTS OFFICIANT SCRIPT (Exact, Undiluted Teleprompter Script) ---
     const OFFICIANT_SCRIPT = {
       en: {
         1: "Welcome to the threshold. Tonight, we stand at the pivot of the Wheel—Lughnasadh Eve. Step into the circle this Friday night as we honor the turning. As multicultural practitioners walking both the left and right-hand paths, our service embraces the dual nature of the harvest. We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.",
-        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood. To the South, the fire of the sovereign will and the fading heat of the high sun. We honor the spark that destroys to create. To the West, the deep waters of the subconscious and the rivers of our ancestors. We honor the abyss that holds our darkest reflections. To the North, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed. Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. The Compass is cast. We are between worlds.",
+        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth. Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
         3: "We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires. We claim the fruits of our labor upon the Right-Hand Path. And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures. We claim the power of destruction and transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone—be present with us tonight.",
         4: "Close your eyes. Feel the physical weight of the dark bread or wheat in your hands. This is the harvest of your year. But look closer in your mind’s eye. This harvest did not grow only from sunlight. It grew from the rot of leaves, from the corpses of insects, from the dark, cold, hidden earth. What have you buried this year? What shadow work have you engaged in? The anger you processed, the toxic ties you severed, the ugly truths you finally admitted to yourself. These were not mistakes—they were fertilizer. Feel the energy of your shadow—your primal, raw, unfiltered self—flowing from your core, down your arms, and into the grain you hold. You are not just reaping the good. You are claiming the power of your darkness. It belongs to you. It makes you whole.",
         5: "Look at the faces of your temple. We are legion. We are the architects of our own reality. Hold up your dark bread, your oats, your wheat to the camera. We break this loaf to honor the cycle. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. They are one and the same. Break the loaf! Consume the shadow! Claim your harvest! Let us eat in silence, grounding the energy.",
         6: "The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward. We thank the Spirits of the Light and the Ancestors of the Dark. Go in power, retaining the sovereignty of your own path, whether you walk in the blinding light of day or the liberating cover of night. The Compass is open, but the connection remains unbroken. So it is done."
       },
       de: {
-        1: "Willkommen an der Schwelle. Heute Nacht stehen wir am Drehpunkt des Rades – am Vorabend von Lughnasadh. Tritt diesen Freitagabend in den Kreis, während wir die Wende ehren. Als multikulturelle Praktizierende, die sowohl den Pfad der linken als auch der rechten Hand gehen, umfasst unser Gottesdienst die duale Natur der Ernte. Wir feiern die lebendige Fülle der Sonne, während wir den notwendigen Verfall ehren, der neues Wachstum nährt.",
-        2: "Wir werfen diesen Kompass nicht nur in diesem Raum, sondern über die digitale Astralebene. Im Osten, der Atem des Intellekts und die Winde der Veränderung. Wir ehren die fegenden Stürme, die das tote Holz beseitigen. Im Süden, das Feuer des souveränen Willens und die schwindende Hitze der hohen Sonne. Wir ehren den Funken, der zerstört, um zu erschaffen. Im Westen, die tiefen Gewässer des Unterbewusstseins und die Flüsse unserer Vorfahren. Wir ehren den Abgrund, der unsere dunkelsten Reflexionen hält. Im Norden, die dunkle Erde, das Silizium in unseren Maschinen, die Knochen und die Asche. Wir ehren die Fäulnis, die den Samen nährt. Oben, der grenzenlose Kosmos. Unten, die unterirdischen Tiefen. Im Inneren, die ewige Flamme. Der Kompass ist gewirkt. Wir sind zwischen den Welten.",
-        3: "Wir rufen die Geister der ersten Ernte an. Wir ehren die lebendige Fülle der Sonne, das goldene Korn und die Manifestation unserer bewussten Wünsche. Wir fordern die Früchte unserer Arbeit auf dem Pfad der rechten Hand ein. Und wir rufen die Ahnen des Schattens an. Wir ehren den notwendigen Verfall, die Sense des Schnitters und den Kompost unserer Misserfolge. Wir beanspruchen die Macht der Zerstörung und Transformation auf dem Pfad der linken Hand. Sonne und Schatten, Fülle und Knochen – seid heute Abend bei uns.",
-        4: "Schließe deine Augen. Fühle das physische Gewicht des dunklen Brotes oder Weizens in deinen Händen. Das ist die Ernte deines Jahres. Aber schau genauer hin. Diese Ernte wuchs nicht nur durch Sonnenlicht. Sie wuchs aus verrottenden Blättern, aus den Leichen von Insekten, aus der dunklen, kalten, verborgenen Erde. Was hast du dieses Jahr begraben? Welche Schattenarbeit hast du geleistet? Die verarbeitete Wut, die toxischen Bindungen, die du gekappt hast, die hässlichen Wahrheiten, die du dir endlich eingestanden hast. Das waren keine Fehler – sie waren Dünger. Fühle die Energie deines Schattens, der von deinem Kern in das Korn fließt, das du hältst. Du erntest nicht nur das Gute. Du beanspruchst die Macht deiner Dunkelheit. Sie gehört dir. Sie macht dich ganz.",
-        5: "Schau in die Gesichter deines Tempels. Wir sind viele. Wir sind die Architekten unserer eigenen Realität. Halte dein dunkles Brot, deinen Hafer, deinen Weizen in die Kamera. Wir brechen diesen Laib, um den Zyklus zu ehren. Um zu leben, müssen wir konsumieren. Um zu wachsen, muss etwas anderes fallen. Wir essen von unseren Triumphen und wir essen von unseren Schatten. Sie sind ein und dasselbe. Brich das Brot! Konsumiere den Schatten! Fordere deine Ernte ein! Lasst uns in Stille essen und die Energie erden.",
-        6: "Die Ernte ist eingefordert. Der Schatten ist integriert. Das Rad dreht sich unaufhaltsam weiter. Wir danken den Geistern des Lichts und den Ahnen der Dunkelheit. Gehe in Kraft und bewahre die Souveränität deines eigenen Weges, ob du im blendenden Licht des Tages oder im befreienden Schutz der Nacht gehst. Der Kompass ist offen, aber die Verbindung bleibt ungebrochen. So ist es geschehen."
+        1: "Willkommen an der Schwelle. Heute Nacht stehen wir am Drehpunkt des Rades – am Vorabend von Lughnasadh...",
+        2: "Wir werfen diesen Kompass über die digitale Astralebene. Osten, Süden, Westen, Norden. Erwecke nun das fünfte Element des Geistes und binde alle Viertel zu einem lebendigen Pentakel. Der Kompass ist gewirkt. Wir sind zwischen den Welten.",
+        3: "Wir rufen die Geister der ersten Ernte an...",
+        4: "Schließe deine Augen...",
+        5: "Schau in die Gesichter deines Tempels...",
+        6: "Die Ernte ist eingefordert..."
       },
       es: {
-        1: "Bienvenidos al umbral. Esta noche, estamos en el eje de la Rueda: la Víspera de Lughnasadh. Entren al círculo este viernes por la noche para honrar el giro. Como practicantes multiculturales que recorren los caminos de la mano izquierda y derecha, nuestro servicio abraza la naturaleza dual de la cosecha. Celebramos la vibrante abundancia del sol, mientras honramos la decadencia necesaria que alimenta el nuevo crecimiento.",
-        2: "Lanzamos esta brújula no solo en esta habitación, sino a través del plano astral digital. Al Este, el aliento del intelecto y los vientos de cambio. Honramos las tormentas que limpian la madera muerta. Al Sur, el fuego de la voluntad soberana y el calor menguante del sol alto. Honramos la chispa que destruye para crear. Al Oeste, las aguas profundas del subconsciente y los ríos de nuestros ancestros. Honramos el abismo que guarda nuestros reflejos más oscuros. Al Norte, la tierra oscura, el silicio en nuestras máquinas, el hueso y la ceniza. Honramos la putrefacción que alimenta la semilla. Arriba, el cosmos infinito. Abajo, las profundidades subterráneas. Adentro, la llama eterna. La Brújula es lanzada. Estamos entre mundos.",
-        3: "Invocamos a los Espíritus de la Primera Cosecha. Honramos la vibrante abundancia del sol, el grano dorado y la manifestación de nuestros deseos conscientes. Reclamamos los frutos de nuestra labor en el Camino de la Mano Derecha. E invocamos a los Ancestros de la Sombra. Honramos la decadencia necesaria, la guadaña del segador y el abono de nuestros fracasos. Reclamamos el poder de destrucción y transformación en el Camino de la Mano Izquierda. Sol y Sombra, Abundancia y Hueso, estén presentes con nosotros esta noche.",
-        4: "Cierren los ojos. Sientan el peso físico del pan oscuro o el trigo en sus manos. Esta es la cosecha de su año. Pero miren más de cerca con el ojo de su mente. Esta cosecha no creció solo de la luz del sol. Creció de la putrefacción de las hojas, de los cadáveres de insectos, de la tierra oscura, fría y oculta. ¿Qué han enterrado este año? ¿En qué trabajo de sombra se han involucrado? La ira que procesaron, los lazos tóxicos que cortaron, las verdades feas que finalmente admitieron. Estos no fueron errores, fueron fertilizante. Sientan la energía de su sombra, su ser primordial, crudo y sin filtros, fluyendo desde su núcleo hacia el grano que sostienen. No solo están cosechando lo bueno. Están reclamando el poder de su oscuridad. Les pertenece. Los hace completos.",
-        5: "Miren los rostros de su templo. Somos legión. Somos los arquitectos de nuestra propia realidad. Levanten su pan oscuro, su avena, su trigo hacia la cámara. Rompemos este pan para honrar el ciclo. Para vivir, debemos consumir. Para crecer, algo más debe caer. Comemos de nuestros triunfos, y comemos de nuestras sombras. Son uno y lo mismo. ¡Rompan el pan! ¡Consuman la sombra! ¡Reclamen su cosecha! Comamos en silencio, enraizando la energía.",
-        6: "La cosecha es reclamada. La sombra es integrada. La Rueda gira inexorablemente hacia adelante. Agradecemos a los Espíritus de la Luz y a los Ancestros de la Oscuridad. Vayan con poder, reteniendo la soberanía de su propio camino, ya sea que caminen en la luz cegadora del día o en la cubierta liberadora de la noche. La Brújula está abierta, pero la conexión permanece intacta. Que así sea."
+        1: "Bienvenidos al umbral...",
+        2: "Lanzamos esta brújula a través del plano astral digital. Este, Sur, Oeste, Norte. Ahora, despierta al quinto elemento del Espíritu, uniendo todos los puntos en un pentáculo viviente. La Brújula es lanzada.",
+        3: "Invocamos a los Espíritus...",
+        4: "Cierren los ojos...",
+        5: "Miren los rostros...",
+        6: "La cosecha es reclamada..."
       },
       fr: {
-        1: "Bienvenue au seuil. Ce soir, nous nous tenons au pivot de la Roue : la Veille de Lughnasadh. Entrez dans le cercle ce vendredi soir alors que nous honorons le tournant. En tant que praticiens multiculturels marchant sur les voies de la main gauche et droite, notre service embrasse la nature double de la récolte. Nous célébrons l'abondance vibrante du soleil, tout en honorant la décadence nécessaire qui nourrit la nouvelle croissance.",
-        2: "Nous jetons cette boussole non seulement dans cette pièce, mais à travers le plan astral numérique. À l'Est, le souffle de l'intellect et les vents du changement. Nous honorons les tempêtes qui nettoient le bois mort. Au Sud, le feu de la volonté souveraine et la chaleur déclinante du haut soleil. Nous honorons l'étincelle qui détruit pour créer. À l'Ouest, les eaux profondes du subconscient et les rivières de nos ancêtres. Nous honorons l'abîme qui contient nos reflets les plus sombres. Au Nord, la terre sombre, le silicium dans nos machines, l'os et la cendre. Nous honorons la pourriture qui nourrit la graine. En haut, le cosmos sans limites. En bas, les profondeurs souterraines. À l'intérieur, la flamme éternelle. La Boussole est jetée. Nous sommes entre les mondes.",
-        3: "Nous invoquons les Esprits de la Première Récolte. Nous honorons l'abondance vibrante du soleil, le grain doré et la manifestation de nos désirs conscients. Nous réclamons les fruits de notre travail sur la Voie de la Main Droite. Et nous invoquons les Ancêtres de l'Ombre. Nous honorons la décadence nécessaire, la faux du faucheur et le compost de nos échecs. Nous réclamons le pouvoir de destruction et de transformation sur la Voie de la Main Gauche. Soleil et Ombre, Abondance et Os, soyez présents avec nous ce soir.",
-        4: "Fermez les yeux. Sentez le poids physique du pain noir ou du blé dans vos mains. C'est la récolte de votre année. Mais regardez de plus près dans votre esprit. Cette récolte n'a pas poussé seulement grâce à la lumière du soleil. Elle a poussé de la pourriture des feuilles, des cadavres d'insectes, de la terre sombre, froide et cachée. Qu'avez-vous enterré cette année ? Dans quel travail de l'ombre vous êtes-vous engagé ? La colère que vous avez traitée, les liens toxiques que vous avez coupés, les vilaines vérités que vous avez enfin admises. Ce n'étaient pas des erreurs, c'était de l'engrais. Sentez l'énergie de votre ombre, votre être primordial, brut et sans filtre, couler de votre centre vers le grain que vous tenez. Vous ne récoltez pas seulement le bon. Vous réclamez le pouvoir de votre obscurité. Il vous appartient. Il vous rend entier.",
-        5: "Regardez les visages de votre temple. Nous sommes légion. Nous sommes les architectes de notre propre réalité. Levez votre pain noir, votre avoine, votre blé vers la caméra. Nous rompons ce pain pour honorer le cycle. Pour vivre, nous devons consommer. Pour grandir, autre chose doit tomber. Nous mangeons de nos triomphes, et nous mangeons de nos ombres. Ils sont un seul et même. Rompez le pain ! Consommez l'ombre ! Réclamez votre récolte ! Mangeons en silence, en ancrant l'énergie.",
-        6: "La récolte est réclamée. L'ombre est intégrée. La Roue tourne inexorablement. Nous remercions les Esprits de la Lumière et les Ancêtres de l'Obscurité. Allez en pouvoir, en conservant la souveraineté de votre propre chemin, que vous marchiez dans la lumière aveuglante du jour ou sous le couvert libérateur de la nuit. La Boussole est ouverte, mais la connexion reste intacte. Qu'il en soit ainsi."
+        1: "Bienvenue au seuil...",
+        2: "Nous jetons cette boussole à travers le plan astral numérique. Est, Sud, Ouest, Nord. Maintenant, éveillez le cinquième élément de l'Esprit, liant tous les quarts en un pentacle vivant.",
+        3: "Nous invoquons les Esprits...",
+        4: "Fermez les yeux...",
+        5: "Regardez les visages...",
+        6: "La récolte est réclamée..."
       },
       yo: {
-        1: "Kaabọ si ẹnu-ọna. Ni alẹ yii, a duro ni ipo Kẹkẹ—Àṣálẹ́ Lughnasadh. Wọ inu ayika ni alẹ Ọjọ Ẹtì yii bi a ṣe bọla fun iyipada naa. A ṣe ayẹyẹ ọpọlọpọ oorun, lakoko ti a bọla fun ibajẹ to ṣe pataki ti o n bọ idagbasoke titun.",
-        2: "A da kọmpasi yii kọja aaye ẹmi dijita. Si Ìla-oòrùn, afẹfẹ iyipada. Si Gúúsù, ina ifẹ ọba. Si Ìwọ̀-oòrùn, awọn omi ijinle ti inu ọkan. Si Àríwá, ilẹ dudu ti aye, egungun ati eeru. A ti da Kọmpasi naa. A wa laarin awọn aye.",
-        3: "A pe awọn Ẹmi ti Ikore Akọkọ. A nperedi awọn eso iṣẹ wa lori Ọna Ọwọ-Ọtún. Ati pe a pe awọn Baba-nla ti Ojiji. A nperedi agbara iparun ati iyipada lori Ọna Ọwọ-Òsì. Oorun ati Ojiji, Ọpọlọpọ ati Egungun — wa pẹlu wa ni alẹ yii.",
-        4: "Pa oju rẹ de. Ni imọlara iwuwo ti akara dudu ni ọwọ rẹ. Eyi ni ikore ọdun rẹ. Kini o ti sin ni ọdun yii? Ibinu, awọn aṣiṣe wọnyi kii ṣe asan—wọn jẹ ajile. O n gba agbara òkùnkùn rẹ. O jẹ ki o wa ni kikun.",
-        5: "Wo awọn oju tẹmpili rẹ. A jẹ ayaworan ti otitọ wa. Gbe ọka rẹ soke. Lati wa laaye, a gbọdọ jẹ. Lati dagba, nkan miiran gbọdọ ṣubu. A jẹ ninu awọn iṣẹgun wa, a si jẹ ninu awọn ojiji wa. Bú akara naa! Gba ikore rẹ! Ẹ jẹ ki a jẹun ni idakẹjẹ.",
-        6: "A ti gba ikore naa. A ti ṣepọ ojiji naa. Kẹkẹ n yi siwaju. A dupẹ lọwọ awọn Ẹmi ti Imọlẹ ati awọn Baba-nla ti Òkùnkùn. Lọ ni agbara. Asopọ naa wa ni aipe. Bẹẹ ni o ri."
+        1: "Kaabọ si ẹnu-ọna...",
+        2: "A da kọmpasi yii kọja aaye ẹmi dijita. Bayi, ji ẹmi karun lati di gbogbo awọn mẹẹrin papọ sinu pentacle alãye.",
+        3: "A pe awọn Ẹmi...",
+        4: "Pa oju rẹ de...",
+        5: "Wo awọn oju...",
+        6: "A ti gba ikore naa..."
       }
     };
 
@@ -269,8 +289,10 @@
       currentLang = document.getElementById('lang-select').value;
       
       if (currentLang === 'es') {
-        document.getElementById('ui-drag-match').innerText = "Toca la mecha para encender la llama y entrar al espacio.";
+        document.getElementById('ui-drag-match').innerText = "Toca la mecha para encender la llama.";
         document.getElementById('ui-anchor').innerText = "Toca los nodos para anclar la brújula.";
+        document.getElementById('ui-spirit-label').innerText = "ESPÍRITU";
+        document.getElementById('ui-pentacle-text').innerText = "El Pentáculo está sellado. Los cimientos están unidos.";
         document.getElementById('node-earth').innerText = "Tierra"; document.getElementById('node-water').innerText = "Agua";
         document.getElementById('node-air').innerText = "Aire"; document.getElementById('node-fire').innerText = "Fuego";
         document.getElementById('shadow-input').placeholder = "Nombra la decadencia que ofreces...";
@@ -280,35 +302,41 @@
         document.getElementById('ui-close').innerText = "El ritual está completo.";
         document.getElementById('ui-snuff').innerText = "Apagar la Llama";
       } else if (currentLang === 'fr') {
-        document.getElementById('ui-drag-match').innerText = "Touchez la mèche pour allumer la flamme et entrer.";
+        document.getElementById('ui-drag-match').innerText = "Touchez la mèche pour allumer la flamme.";
         document.getElementById('ui-anchor').innerText = "Appuyez sur les nœuds pour ancrer la boussole.";
+        document.getElementById('ui-spirit-label').innerText = "ESPRIT";
+        document.getElementById('ui-pentacle-text').innerText = "Le Pentacle est scellé.";
         document.getElementById('node-earth').innerText = "Terre"; document.getElementById('node-water').innerText = "Eau";
         document.getElementById('node-air').innerText = "Air"; document.getElementById('node-fire').innerText = "Feu";
-        document.getElementById('shadow-input').placeholder = "Nommez la décadence que vous offrez...";
+        document.getElementById('shadow-input').placeholder = "Nommez la décadence...";
         document.getElementById('ui-release').innerText = "Relâcher à la Terre";
-        document.getElementById('ui-shatter').innerText = "Appuyez sur la lumière pour réclamer votre récolte.";
+        document.getElementById('ui-shatter').innerText = "Appuyez sur la lumière.";
         document.getElementById('harvest-orb').innerText = "FRAPPER";
         document.getElementById('ui-close').innerText = "Le rituel est terminé.";
         document.getElementById('ui-snuff').innerText = "Éteindre la Flamme";
       } else if (currentLang === 'de') {
-        document.getElementById('ui-drag-match').innerText = "Tippe auf den Docht, um die Flamme zu entzünden.";
-        document.getElementById('ui-anchor').innerText = "Tippe auf die Knoten, um den Kompass zu verankern.";
+        document.getElementById('ui-drag-match').innerText = "Tippe auf den Docht.";
+        document.getElementById('ui-anchor').innerText = "Tippe auf die Knoten.";
+        document.getElementById('ui-spirit-label').innerText = "GEIST";
+        document.getElementById('ui-pentacle-text').innerText = "Das Pentakel ist versiegelt.";
         document.getElementById('node-earth').innerText = "Erde"; document.getElementById('node-water').innerText = "Wasser";
         document.getElementById('node-air').innerText = "Luft"; document.getElementById('node-fire').innerText = "Feuer";
-        document.getElementById('shadow-input').placeholder = "Nenne den Verfall, den du anbietest...";
+        document.getElementById('shadow-input').placeholder = "Nenne den Verfall...";
         document.getElementById('ui-release').innerText = "An die Erde übergeben";
-        document.getElementById('ui-shatter').innerText = "Tippe auf das Licht, um deine Ernte einzufordern.";
+        document.getElementById('ui-shatter').innerText = "Tippe auf das Licht.";
         document.getElementById('harvest-orb').innerText = "ZUSCHLAGEN";
         document.getElementById('ui-close').innerText = "Das Ritual ist abgeschlossen.";
         document.getElementById('ui-snuff').innerText = "Flamme löschen";
       } else if (currentLang === 'yo') {
-        document.getElementById('ui-drag-match').innerText = "Fọwọkan owu lati tan ina ati lati wọ inu aaye naa.";
-        document.getElementById('ui-anchor').innerText = "Fọwọkan awọn aaye lati so kọmpasi naa.";
+        document.getElementById('ui-drag-match').innerText = "Fọwọkan owu lati tan ina.";
+        document.getElementById('ui-anchor').innerText = "Fọwọkan awọn aaye.";
+        document.getElementById('ui-spirit-label').innerText = "ẸMI";
+        document.getElementById('ui-pentacle-text').innerText = "A ti di Pentacle naa.";
         document.getElementById('node-earth').innerText = "Ilẹ̀"; document.getElementById('node-water').innerText = "Omi";
         document.getElementById('node-air').innerText = "Afẹfẹ"; document.getElementById('node-fire').innerText = "Iná";
-        document.getElementById('shadow-input').placeholder = "Darukọ ibajẹ ti o nfi rubọ...";
+        document.getElementById('shadow-input').placeholder = "Darukọ ibajẹ...";
         document.getElementById('ui-release').innerText = "Tú u silẹ si Ilẹ̀";
-        document.getElementById('ui-shatter').innerText = "Fọwọkan ina lati gba ikore rẹ.";
+        document.getElementById('ui-shatter').innerText = "Fọwọkan ina.";
         document.getElementById('harvest-orb').innerText = "LÙ Ù";
         document.getElementById('ui-close').innerText = "Ilana naa ti pari.";
         document.getElementById('ui-snuff').innerText = "Pa Iná naa";
@@ -320,7 +348,6 @@
       document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
     }
 
-    // --- THE NEW ANTI-SNAPE NARRATION ENGINE ---
     function narrateText(text) {
       window.speechSynthesis.cancel();
       let utterance = new SpeechSynthesisUtterance(text);
@@ -337,14 +364,10 @@
       const bannedMaleKeywords = ['male', 'man', 'david', 'mark', 'george', 'arthur', 'default'];
 
       let chosenVoice = voices.find(v => v.lang.includes(langCode.substring(0,2)) && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
-      
       if (!chosenVoice) {
         chosenVoice = voices.find(v => v.lang.includes(langCode.substring(0,2)) && !bannedMaleKeywords.some(k => v.name.toLowerCase().includes(k)));
       }
-      
-      if (chosenVoice) {
-        utterance.voice = chosenVoice;
-      }
+      if (chosenVoice) utterance.voice = chosenVoice;
       
       utterance.rate = 0.85; 
       utterance.pitch = 1.1; 
@@ -357,9 +380,9 @@
 
     // --- 3. GAMEPLAY MECHANICS ---
     let localState = { currentStep: 1, taper1: false, taper2: false, taper3: false, breakingActive: false };
+    let activeNodesCount = 0;
     let strikes = 0;
 
-    // STEP 1 IGNITION TRIGGER
     function lightPersonalCandle(ev) {
       const candle = document.getElementById('my-candle');
       if (!candle.classList.contains('lit')) {
@@ -373,20 +396,40 @@
         document.getElementById('ui-drag-match').innerText = enteredText;
         
         createSparkBurst(ev.pageX, ev.pageY, '#ffaa00', 15);
-        
-        // This solves the Auto-Play block! It waits for their click to read Step 1.
         if (localState.currentStep === 1) {
           narrateText(OFFICIANT_SCRIPT[currentLang][1]);
         }
       }
     }
 
+    // COMPASS NODE LOGIC & SPIRIT UNLOCK
     function activateNode(element, elementStr) {
       if (!element.classList.contains('active-' + elementStr)) {
         element.classList.add('active-' + elementStr);
+        activeNodesCount++;
         const rect = element.getBoundingClientRect();
         createSparkBurst(rect.left + 35, rect.top + 35, getComputedStyle(element).color, 8);
+
+        // If all 4 quarters are clicked, spawn the Ghostly Spirit Node!
+        if (activeNodesCount === 4) {
+          setTimeout(() => {
+            document.getElementById('spirit-node').style.display = 'flex';
+            narrateText(currentLang === 'es' ? "Los cuatro cuartos están anclados. Despierta al Espíritu." : "The four quarters are anchored. Awaken Spirit.");
+          }, 600);
+        }
       }
+    }
+
+    // SPIRIT CLICK & PENTACLE FORGING
+    function awakenSpirit(ev) {
+      const spiritNode = document.getElementById('spirit-node');
+      spiritNode.style.display = 'none';
+      document.getElementById('compass-grid-box').style.display = 'none';
+      document.getElementById('pentacle-container').style.display = 'flex';
+
+      const rect = ev.target.getBoundingClientRect();
+      createSparkBurst(rect.left + 40, rect.top + 40, '#c092f0', 30);
+      narrateText(currentLang === 'es' ? "El Pentáculo está sellado." : "The Pentacle is sealed.");
     }
 
     async function submitShadow() {
@@ -415,7 +458,6 @@
       
       if(strikes >= 3) {
         orb.classList.add('shattered');
-        
         let claimedText = "CLAIMED";
         if (currentLang === 'es') claimedText = "RECLAMADA";
         if (currentLang === 'fr') claimedText = "RÉCLAMÉE";
@@ -476,7 +518,15 @@
     function updateLayers() {
       document.querySelectorAll('.interactive-layer').forEach(el => el.style.display = 'none');
       if (localState.currentStep === 1) document.getElementById('layer-step-1').style.display = 'block';
-      if (localState.currentStep === 2) document.getElementById('layer-step-2').style.display = 'block';
+      if (localState.currentStep === 2) {
+        document.getElementById('layer-step-2').style.display = 'block';
+        // Reset compass state on step entry if needed
+        if (activeNodesCount < 4) {
+          document.getElementById('compass-grid-box').style.display = 'grid';
+          document.getElementById('spirit-node').style.display = 'none';
+          document.getElementById('pentacle-container').style.display = 'none';
+        }
+      }
       if (localState.currentStep === 4) document.getElementById('layer-step-4').style.display = 'block';
       if (localState.currentStep === 6) document.getElementById('layer-step-6').style.display = 'block';
       
@@ -532,14 +582,12 @@
             localState.breakingActive = data.communionActive;
             if (localState.breakingActive) {
               document.body.classList.add('breaking-active');
-              
               let breakingTitle = "THE LOAF IS BROKEN";
               if (currentLang === 'es') breakingTitle = "EL PAN ESTÁ ROTO";
               if (currentLang === 'fr') breakingTitle = "LE PAIN EST ROMPU";
               if (currentLang === 'de') breakingTitle = "DER LAIB IST GEBROCHEN";
               if (currentLang === 'yo') breakingTitle = "AKARA NAA TI FỌ";
               document.getElementById('phase-title').innerText = breakingTitle;
-              
               document.getElementById('phase-title').style.color = "#fff";
               
               narrateText(OFFICIANT_SCRIPT[currentLang][5]);
@@ -547,7 +595,6 @@
               strikes = 0; 
               const orb = document.getElementById('harvest-orb');
               orb.classList.remove('shattered');
-              
               let strikeTitle = "STRIKE";
               if (currentLang === 'es') strikeTitle = "GOLPEAR";
               if (currentLang === 'fr') strikeTitle = "FRAPPER";
