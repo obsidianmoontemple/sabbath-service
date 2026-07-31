@@ -233,25 +233,25 @@
       },
       es: {
         1: { title: "Víspera de Lughnasadh", text: "Asegúrate de que tu vela negra esté apagada." },
-        2: { title: "La Brújula es Lanzada", text: "Escucha atentamente." },
-        3: { title: "Espíritus y Ancestros", text: "Elige tu camino: Abundancia solar o transformación." },
+        2: { title: "La Brújula es Lanzada", text: "Escucha atentamente. Los nodos se desbloquearán paso a paso." },
+        3: { title: "Espíritus y Ancestros", text: "Elige tu camino: Abundancia solar o transformación de sombra." },
         4: { title: "El Trabajo Divergente", text: "¿Qué ofreces a la gran red de la vida?" },
         5: { title: "El Pan Oscuro", text: "Levanta tu grano hacia la cámara." },
         6: { title: "La Rueda Gira", text: "El ritual está completo." }
       },
       fr: {
         1: { title: "Veille de Lughnasadh", text: "Assurez-vous que votre bougie noire est éteinte." },
-        2: { title: "La Boussole est Jetée", text: "Écoutez attentivement." },
-        3: { title: "Esprits et Ancêtres", text: "Choisissez votre voie." },
-        4: { title: "Le Travail", text: "Concentrez-vous sur votre voie." },
+        2: { title: "La Boussole est Jetée", text: "Écoutez attentivement. Les nœuds se débloqueront." },
+        3: { title: "Esprits et Ancêtres", text: "Choisissez votre voie : Abondance ou Ombre." },
+        4: { title: "Le Travail", text: "Quelle décadence doit nourrir votre croissance ?" },
         5: { title: "Le Pain Noir", text: "Levez votre grain." },
         6: { title: "La Roue Tourne", text: "Le rituel est terminé." }
       },
       yo: {
         1: { title: "Àṣálẹ́ Lughnasadh", text: "Rii daju pe abẹla dudu rẹ ko tan." },
-        2: { title: "A ti da kọmpasi naa", text: "Fetisi silẹ." },
+        2: { title: "A ti da kọmpasi naa", text: "Fetisi silẹ. Awọn aaye yoo ṣii bi a ṣe n pe wọn." },
         3: { title: "Awọn Ẹmi", text: "Yan ọna rẹ." },
-        4: { title: "Iṣẹ Naa", text: "Fojusi lori ọna rẹ." },
+        4: { title: "Iṣẹ Naa", text: "Ibajẹ wo ni o gbọdọ bọ idagbasoke rẹ?" },
         5: { title: "Akara Dudu", text: "Gbe ọka rẹ soke." },
         6: { title: "Kẹkẹ N Yí", text: "Ilana naa ti pari." }
       }
@@ -273,7 +273,7 @@
     };
 
     let currentLang = 'en';
-    let chosenPathType = 'right'; // Default path
+    let chosenPathType = 'right';
 
     function changeLanguage() {
       currentLang = document.getElementById('lang-select').value;
@@ -327,6 +327,7 @@
       }
     }
 
+    // PACED COMPASS UNLOCKING WITH CORRECT ELEMENT IDs
     function startCompassUnlocking() {
       activeNodesCount = 0;
       document.querySelectorAll('.node').forEach(n => n.classList.remove('unlocked', 'active-air', 'active-fire', 'active-water', 'active-earth'));
@@ -334,10 +335,11 @@
       document.getElementById('pentacle-container').style.display = 'none';
       document.getElementById('compass-grid-box').style.display = 'grid';
 
-      setTimeout(() => { document.getElementById('node-east').classList.add('unlocked'); }, 4000);
-      setTimeout(() => { document.getElementById('node-south').classList.add('unlocked'); }, 11000);
-      setTimeout(() => { document.getElementById('node-west').classList.add('unlocked'); }, 18000);
-      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 25000);
+      // Timed unlocking matching the script IDs precisely (node-air, node-fire, node-water, node-earth)
+      setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 4000);   // East (Air)
+      setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 11000); // South (Fire)
+      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 18000); // West (Water)
+      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 25000); // North (Earth)
     }
 
     function activateNode(element, elementStr) {
@@ -367,7 +369,6 @@
       narrateText("The Pentacle is sealed.");
     }
 
-    // SELECT PATH & UPDATE THEME
     function selectPath(path) {
       chosenPathType = path;
       document.getElementById('btn-right').classList.remove('selected');
@@ -381,7 +382,6 @@
       
       document.getElementById('path-confirmation').style.display = 'block';
       
-      // Update Step 4 placeholder based on path
       const inputField = document.getElementById('path-input-field');
       if(path === 'right') {
         inputField.placeholder = "Name the vitality or triumph you harvest...";
@@ -392,7 +392,6 @@
       }
     }
 
-    // SUBMIT PATH WORK TO TEMPLE LEDGER (GOOGLE SHEET)
     async function submitPathWork() {
       const inputField = document.getElementById('path-input-field');
       const nameInput = document.getElementById('practitioner-name');
