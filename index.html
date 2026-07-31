@@ -47,7 +47,6 @@
     .interactive-layer { display: none; margin-top: 30px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Personal Candle */
     .match-box { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 30px; }
     .personal-candle { width: 30px; height: 80px; background: #222; border-radius: 5px 5px 0 0; position: relative; cursor: pointer; border: 1px solid #444; transition: border-color 0.3s; }
     .personal-candle:hover { border-color: var(--path-accent); }
@@ -55,7 +54,7 @@
     .personal-candle.snuffed-out { background: #111; border-color: #222; }
     .personal-candle.snuffed-out::after { display: none; }
 
-    /* COMPASS NODES (Locked until script progression) */
+    /* COMPASS NODES */
     .compass-container { position: relative; width: 300px; margin: 0 auto; }
     .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
     .node { width: 70px; height: 70px; border: 1px solid #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #444; background: rgba(0,0,0,0.2); pointer-events: none; transition: all 0.4s; }
@@ -77,13 +76,11 @@
     .burning-pentacle { font-size: 5rem; color: var(--path-accent); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff3300, 0 0 60px #aa0000; animation: pentacleBurn 2s infinite alternate; }
     @keyframes pentacleBurn { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.3); } }
 
-    /* STEP 3: PATH CHOICE */
     .path-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
     .path-btn { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 12px 20px; color: #aaa; font-family: 'Work Sans', sans-serif; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; }
     .path-btn:hover { border-color: var(--path-accent); color: var(--path-accent); }
     .path-btn.selected { background: var(--path-accent); border-color: #fff; color: #000; font-weight: 600; box-shadow: 0 0 20px var(--path-accent); pointer-events: none; }
 
-    /* STEP 4: SEGREGATED WORK */
     .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
     .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-50px) scale(1.1); opacity: 0; pointer-events: none; }
     input.name-input { width: 60%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #555; color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
@@ -91,7 +88,6 @@
     input.path-input { width: 90%; padding: 20px; background: transparent; border: none; border-bottom: 1px solid var(--path-accent); color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px var(--path-accent); }
     input.path-input:focus { outline: none; border-bottom-color: #fff; }
 
-    /* STEP 5: BREAD KNEADING */
     .bread-game-container { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 15px; }
     .dough-ball { width: 140px; height: 140px; background: radial-gradient(circle, #e6c687 0%, #8b5a2b 80%); border-radius: 50%; box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #3a1d05; font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: transform 0.1s; }
     .dough-ball:active { transform: scale(0.85); }
@@ -140,9 +136,9 @@
       </div>
     </div>
 
-    <!-- STEP 2: STAGGERED UNLOCKING COMPASS -->
+    <!-- STEP 2: COMPASS WITH EARTH-LOCKED SPIRIT NODE -->
     <div class="interactive-layer" id="layer-step-2">
-      <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Listen to the casting. Nodes unlock as each quarter is invoked.</p>
+      <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Listen to the casting. Quarters unlock as they are called.</p>
       <div class="compass-container">
         <div class="compass-grid" id="compass-grid-box">
           <div class="node node-north" onclick="activateNode(this, 'earth')" id="node-earth">Earth</div>
@@ -160,7 +156,7 @@
       </div>
     </div>
 
-    <!-- STEP 3: TRIPLE PATH CHOICE (Right, Left, Neutral) -->
+    <!-- STEP 3 -->
     <div class="interactive-layer" id="layer-step-3">
       <p style="color: var(--path-accent); font-style: italic; margin-bottom: 15px;" id="ui-path-prompt">Choose your focus for this harvest:</p>
       <div class="path-container">
@@ -171,7 +167,7 @@
       <p id="path-confirmation" style="display:none; color: var(--path-accent); font-style: italic; margin-top: 15px;">Path anchored successfully.</p>
     </div>
 
-    <!-- STEP 4: SEGREGATED PATH WORK -->
+    <!-- STEP 4 -->
     <div class="interactive-layer" id="layer-step-4">
       <div class="shadow-container" id="shadow-container">
         <input type="text" class="name-input" id="practitioner-name" placeholder="Your Name or Moniker" autocomplete="off">
@@ -181,7 +177,7 @@
       <p id="shadow-confirmation" style="display:none; color: var(--path-accent); font-style: italic; margin-top: 20px; font-size: 1.4rem;">The offering is recorded in the Temple Ledger.</p>
     </div>
 
-    <!-- STEP 5: BREAD KNEADING -->
+    <!-- STEP 5 -->
     <div class="interactive-layer" id="layer-step-5">
       <p style="color: var(--path-accent); margin-bottom: 15px; font-style: italic;" id="ui-bread-inst">Knead the dark dough. Tap rapidly to charge the harvest.</p>
       <div class="bread-game-container">
@@ -193,7 +189,7 @@
       <p id="bread-success" style="display:none; color: #fff; font-style: italic; margin-top: 15px; font-size: 1.3rem;">The loaf is broken! Harvest claimed.</p>
     </div>
 
-    <!-- STEP 6: CLOSING SNUFFING -->
+    <!-- STEP 6 -->
     <div class="interactive-layer" id="layer-step-6">
       <p style="color: #888; font-style: italic; margin-bottom: 20px;" id="ui-close">The ritual is complete. Tap your personal candle below to extinguish your flame and open the circle.</p>
       <div class="match-box">
@@ -262,12 +258,11 @@
       }
     };
 
-    // SEGREGATED SCRIPTS BASED ON PATH SELECTION (Step 4)
     const OFFICIANT_SCRIPT = {
       en: {
         1: "Welcome to the threshold. Tonight, we stand at the pivot of the Wheel—Lughnasadh Eve. Step into the circle this Friday night as we honor the turning. As multicultural practitioners walking both the left and right-hand paths, our service embraces the dual nature of the harvest. We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.",
-        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
-        3: "We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires. We claim the fruits of our labor uponaram the Right-Hand Path. And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures. We claim the power of transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone—be present with us tonight.",
+        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
+        3: "We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires. We claim the fruits of our labor upon the Right-Hand Path. And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures. We claim the power of transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone—be present with us tonight.",
         4: {
           right: "Close your eyes. Focus entirely on the Right-Hand Path. See the golden sunlight of your triumphs, the vibrant harvest you have gathered, the life and abundance you nurture. Name your offering of light to the temple ledger.",
           neutral: "Close your eyes. Focus upon the Weaving Path of Balance. Stand precisely at the threshold between sun and shadow, honoring both the light you harvest and the rest found within the dark. Name your balanced offering to the temple ledger.",
@@ -323,6 +318,7 @@
 
     let localState = { currentStep: 1, taper1: false, taper2: false, taper3: false };
     let activeNodesCount = 0;
+    let earthNodeClicked = false;
 
     function lightPersonalCandle(ev) {
       const candle = document.getElementById('my-candle');
@@ -336,9 +332,10 @@
       }
     }
 
-    // STAGGERED COMPASS UNLOCKING (Prevents early Earth node clicks)
+    // STRICT COMPASS UNLOCKING WITH EARTH LINKED TO SCRIPT TIMING (approx 29s to finish reading Earth)
     function startCompassUnlocking() {
       activeNodesCount = 0;
+      earthNodeClicked = false;
       document.querySelectorAll('.node').forEach(n => {
         n.classList.remove('unlocked', 'active-air', 'active-fire', 'active-water', 'active-earth');
       });
@@ -346,11 +343,11 @@
       document.getElementById('pentacle-container').style.display = 'none';
       document.getElementById('compass-grid-box').style.display = 'grid';
 
-      // Paced unlocks matching East -> South -> West -> North
-      setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 3000);   // East (Air)
-      setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 8000);  // South (Fire)
-      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 13000); // West (Water)
-      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 18000); // North (Earth)
+      // Paced unlocks matching the full script
+      setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 4000);   // East (Air)
+      setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 11000); // South (Fire)
+      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 18000); // West (Water)
+      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 26000); // North (Earth) - Finishes reading right around here!
     }
 
     function activateNode(element, elementStr) {
@@ -365,11 +362,15 @@
           if (elementStr === 'air') sparkColor = '#fadd70';
           if (elementStr === 'fire') sparkColor = '#ff3860';
           if (elementStr === 'water') sparkColor = '#38bdf8';
-          if (elementStr === 'earth') sparkColor = '#4ade80';
+          if (elementStr === 'earth') {
+            sparkColor = '#4ade80';
+            earthNodeClicked = true; // Mark Earth as completed
+          }
 
           createSparkBurst(rect.left + 35, rect.top + 35, sparkColor, 12);
 
-          if (activeNodesCount === 4) {
+          // Spirit node ONLY appears after all 4 quarters are clicked AND Earth reading/clicking is fully done
+          if (activeNodesCount === 4 && earthNodeClicked) {
             setTimeout(() => {
               document.getElementById('spirit-node').style.display = 'flex';
               narrateText("The four quarters are anchored. Awaken Spirit.");
@@ -465,7 +466,7 @@
       if (!candle.classList.contains('snuffed-out')) {
         candle.classList.add('snuffed-out');
         document.getElementById('closing-success').style.display = 'block';
-        createSparkBurst(ev.pageX, ev.pageY, '#9d5bd2', 20);
+        createSparkBurst(e.pageX, e.pageY, '#9d5bd2', 20);
         document.body.classList.add('snuffed');
       }
     }
@@ -541,7 +542,6 @@
               document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
               
               if (localState.currentStep > 1) {
-                  // Only read the specific segmented script for Step 4 based on path choice!
                   if (localState.currentStep === 4) {
                       narrateText(OFFICIANT_SCRIPT[currentLang][4][chosenPathType]);
                   } else {
