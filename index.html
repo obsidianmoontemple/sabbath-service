@@ -2,293 +2,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lughnasadh Eve Command Dashboard</title>
+  <title>Lughnasadh Eve: The Temple of the Obsidian Moon</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
-    :root { --obsidian: #07060a; --obsidian-card: #0e0a17; --indigo: #130d24; --indigo-2: #1b1233; --amethyst: #6e3ba7; --amethyst-glow: #9d5bd2; --amethyst-light: #c092f0; --silver: #adabcc; --moonwhite: #f1effa; --acid-green: #39ff14; --acid-green-glow: rgba(57, 255, 20, 0.4); --line: rgba(157, 91, 210, 0.22); }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--obsidian); color: var(--moonwhite); font-family: 'Work Sans', sans-serif; font-weight: 300; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; }
-    header { background: var(--indigo); border-bottom: 1px solid var(--line); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .brand { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--moonwhite); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 2px;}
-    .brand span { color: var(--acid-green); font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--acid-green); padding: 2px 6px; border-radius: 2px; }
-    .status-badge { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--acid-green); display: flex; align-items: center; gap: 8px; }
-    .dot { width: 8px; height: 8px; background: var(--acid-green); border-radius: 50%; box-shadow: 0 0 8px var(--acid-green); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{ opacity: 1; } 50%{ opacity: 0.3; } }
-    .layout { display: grid; grid-template-columns: 320px 1fr 340px; gap: 20px; padding: 20px; flex: 1; }
-    @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
-    .panel { background: var(--obsidian-card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-    .panel-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--amethyst-light); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 0; display: flex; justify-content: space-between; align-items: center; }
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400&display=swap');
     
-    /* Controls Panel */
-    .step-btn { background: var(--indigo-2); border: 1px solid var(--line); color: var(--moonwhite); padding: 12px 14px; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 2px; }
-    .step-btn:hover { border-color: var(--amethyst-glow); }
-    .step-btn.active { background: #2a1b42; border-color: var(--acid-green); box-shadow: 0 0 10px var(--acid-green-glow); }
-    .step-btn .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--acid-green); text-transform: uppercase; }
-    .step-btn .step-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; }
-    .taper-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
-    .taper-btn { background: var(--indigo); border: 1px solid var(--line); color: var(--silver); padding: 12px 8px; border-radius: 4px; cursor: pointer; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; transition: all 0.2s ease; }
-    .taper-btn.lit { background: rgba(57, 255, 20, 0.15); border-color: var(--acid-green); color: var(--acid-green); box-shadow: 0 0 12px var(--acid-green-glow); }
-    .action-btn { background: #d4af37; color: var(--obsidian); font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
-    .action-btn:hover { background: #fadd70; }
-    .action-btn.active { background: #ff3860; color: white; box-shadow: 0 0 10px rgba(255,56,96,0.4); }
+    :root { 
+      --bg-color: #050505; 
+      --text-main: #f1effa; 
+      --gold: #d4af37; 
+      --shadow-red: #4a0404; 
+    }
     
-    /* Script Teleprompter */
-    .script-container { font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.7; color: var(--moonwhite); overflow-y: auto; max-height: 75vh; padding-right: 10px; }
-    .script-container blockquote { border-left: 3px solid var(--acid-green); margin: 16px 0; padding-left: 18px; font-style: italic; color: #ffffff; }
-    .script-container h3 { font-size: 24px; color: var(--amethyst-light); margin-top: 24px; margin-bottom: 8px; }
-    .script-container .stage-dir { font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--silver); font-style: normal; background: var(--indigo); padding: 6px 12px; border-radius: 3px; display: inline-block; margin: 8px 0; border-left: 3px solid #d4af37; }
+    body, html { 
+      margin: 0; padding: 0; height: 100vh; 
+      background: var(--bg-color); color: var(--text-main); 
+      font-family: 'Cormorant Garamond', serif; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      text-align: center; overflow: hidden; 
+      transition: all 3s ease-in-out; 
+    }
+
+    /* Phase Background Shifts */
+    body.step-1 { background: radial-gradient(circle, #1a1005 0%, #050505 100%); }
+    body.step-2 { background: radial-gradient(circle, #130d24 0%, #050505 100%); }
+    body.step-3 { background: linear-gradient(180deg, #1a1005 0%, #050505 50%, #130d24 100%); }
+    body.step-4 { background: #000; } /* Pure Shadow */
+    body.breaking-active { background: radial-gradient(circle, #3a2b00 0%, #050505 100%); animation: flash 1s ease-out; }
+    body.step-6 { background: #050505; opacity: 0.8; }
+
+    @keyframes flash {
+      0% { filter: brightness(1); }
+      20% { filter: brightness(3); background: var(--gold); }
+      100% { filter: brightness(1); }
+    }
+
+    /* Altar Tapers (Top of screen) */
+    .altar { position: absolute; top: 40px; display: flex; gap: 40px; }
+    .taper { width: 10px; height: 40px; background: #333; border-radius: 5px 5px 0 0; position: relative; transition: all 1s ease; }
+    .taper.lit::after {
+      content: ''; position: absolute; top: -20px; left: -5px; width: 20px; height: 25px;
+      background: radial-gradient(circle, #fff 0%, #ffcc00 40%, transparent 100%);
+      border-radius: 50%; filter: blur(2px); animation: flicker 0.1s infinite alternate;
+    }
+    @keyframes flicker { from { opacity: 0.9; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
+
+    /* Main Content Area */
+    .ritual-content { max-width: 800px; padding: 40px; z-index: 10; transition: opacity 1s ease; }
+    h1 { font-size: 3rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; color: var(--gold); }
+    p { font-family: 'Work Sans', sans-serif; font-size: 1.2rem; line-height: 1.8; color: #ccc; }
     
-    /* Petitions Feed */
-    .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 70vh; }
-    .petition-card { background: var(--indigo); border-left: 3px solid var(--amethyst-light); padding: 12px 14px; border-radius: 0 4px 4px 0; }
-    .petition-card.Shadow { border-left-color: #ff3860; }
-    .petition-card.Harvest { border-left-color: #d4af37; }
-    .petition-card .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--silver); text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
-    .petition-card .text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; margin: 0; color: var(--moonwhite); }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--amethyst); border-radius: 3px; }
+    /* Interactive Shadow Input */
+    .interaction-zone { margin-top: 40px; display: none; }
+    body.step-4 .interaction-zone { display: block; animation: fadeIn 2s forwards; }
+    input[type="text"] {
+      width: 80%; padding: 15px; background: rgba(255,255,255,0.05); 
+      border: 1px solid #444; color: #fff; text-align: center; 
+      font-family: 'Work Sans', sans-serif; font-size: 1rem; margin-bottom: 20px; border-radius: 4px;
+    }
+    input[type="text"]:focus { outline: none; border-color: var(--gold); }
+    button {
+      background: transparent; border: 1px solid var(--gold); color: var(--gold); 
+      padding: 12px 30px; cursor: pointer; transition: 0.4s; 
+      font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;
+    }
+    button:hover { background: var(--gold); color: #000; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
-<body>
+<body class="step-1">
 
-<header>
-  <div class="brand">Lughnasadh Eve <span>High Priest Dashboard</span></div>
-  <div class="status-badge"><div class="dot"></div> ENGINE LIVE · SYNCED TO COVEN</div>
-</header>
+  <!-- The Digital Altar -->
+  <div class="altar">
+    <div class="taper" id="taper-1"></div>
+    <div class="taper" id="taper-2"></div>
+    <div class="taper" id="taper-3"></div>
+  </div>
 
-<div class="layout">
-  <!-- LEFT COLUMN: CONTROLS -->
-  <div class="panel">
-    <h2 class="panel-title">Master Ritual Controls</h2>
-    <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">Altar Tapers</label>
-      <div class="taper-grid">
-        <button class="taper-btn" id="taper1-btn" onclick="toggleTaper(1)">TAPER 1<br><span id="taper1-status">OFF</span></button>
-        <button class="taper-btn" id="taper2-btn" onclick="toggleTaper(2)">TAPER 2<br><span id="taper2-status">OFF</span></button>
-        <button class="taper-btn" id="taper3-btn" onclick="toggleTaper(3)">TAPER 3<br><span id="taper3-status">OFF</span></button>
-      </div>
-    </div>
+  <!-- Liturgy Display -->
+  <div class="ritual-content" id="ritual-display">
+    <h1 id="phase-title">The Temple Gathers</h1>
+    <p id="phase-text">Ensure your personal black candle is unlit. Have your dark bread ready on the altar. Await the High Priest.</p>
     
-    <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">The Dark Loaf Phase</label>
-      <button class="action-btn" id="breaking-btn" onclick="toggleBreaking()" style="width:100%;">Initiate Breaking of the Loaf</button>
+    <!-- Shadow Casting Input (Only visible in Step 4) -->
+    <div class="interaction-zone" id="shadow-zone">
+      <input type="text" id="shadow-input" placeholder="Name the decay you offer to the dark...">
+      <br>
+      <button onclick="submitShadow()">Release to the Earth</button>
+      <p id="shadow-confirmation" style="display:none; color: #555; font-style: italic; margin-top: 20px;">The decay is accepted. The soil is rich.</p>
     </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
     
-    <div style="margin-top:10px;">
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">Liturgy Sequence</label>
-      <div style="display:flex; flex-direction:column; gap:8px;" id="step-buttons">
-        <!-- Injected dynamically -->
-      </div>
-    </div>
-  </div>
+    let localState = {
+      currentStep: 1,
+      taper1: false,
+      taper2: false,
+      taper3: false,
+      breakingActive: false
+    };
 
-  <!-- CENTER COLUMN: OFFICIANT LITURGY TEXT -->
-  <div class="panel">
-    <h2 class="panel-title">Officiant Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 6</span></h2>
-    <div class="script-container" id="script-display"></div>
-  </div>
+    const COVEN_TEXT = {
+      1: { title: "Lughnasadh Eve", text: "Ensure your personal black candle is unlit. Have your dark bread ready on the altar. Await the High Priest." },
+      2: { title: "The Multicultural Compass", text: "The Compass is cast. We are between worlds." },
+      3: { title: "Invocation of Spirits", text: "Sun and Shadow, Bounty and Bone—be present with us tonight." },
+      4: { title: "Meditation on the Shadow", text: "Focus on your black candle. What decay must feed your new growth?" },
+      5: { title: "The Breaking of the Loaf", text: "Hold up your grain to the camera. We eat of our triumphs, and we eat of our shadows." },
+      6: { title: "The Wheel Turns", text: "The harvest is claimed. The shadow is integrated. The ritual is complete." }
+    };
 
-  <!-- RIGHT COLUMN: LIVE SHADOW & HARVEST FEED -->
-  <div class="panel">
-    <h2 class="panel-title">Coven Shadows & Harvest <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
-    <div class="petitions-list" id="petitions-feed">
-      <div style="font-size:13px; color:var(--silver); font-style:italic; text-align:center; padding:20px 0;">
-        Awaiting live shadows and harvest intentions from the coven...
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // YOUR EXISTING API URL 
-  const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
-
-  let currentState = {
-    currentStep: 1,
-    taper1: false,
-    taper2: false,
-    taper3: false,
-    breakingActive: false,
-    petitions: []
-  };
-
-  const LITURGY_STEPS = [
-    { num: 1, title: "I. The Gathering", duration: "7:30 PM" },
-    { num: 2, title: "II. The Multicultural Compass", duration: "~5 mins" },
-    { num: 3, title: "III. Invocation of Spirits & Ancestors", duration: "~5 mins" },
-    { num: 4, title: "IV. Guided Shadow Meditation", duration: "~10 mins" },
-    { num: 5, title: "V. The Breaking of the Dark Loaf", duration: "~5 mins" },
-    { num: 6, title: "VI. Devocation & Closing", duration: "~3 mins" }
-  ];
-
-  const SCRIPT_CONTENT = {
-    1: `
-      <h3>I. The Gathering & Threshold</h3>
-      <div class="stage-dir">Ensure your personal black candle is unlit. Have your dark bread ready on the altar.</div>
-      <p>Welcome to the threshold. Tonight, we stand at the pivot of the Wheel—Lughnasadh Eve.</p>
-      <p>Step into the circle this Friday night as we honor the turning. As multicultural practitioners walking both the left and right-hand paths, our service embraces the dual nature of the harvest.</p>
-      <blockquote>We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.</blockquote>
-    `,
-    2: `
-      <h3>II. Casting the Multicultural Compass</h3>
-      <div class="stage-dir">Light Taper 1, 2, and 3 as you cast the directions.</div>
-      <p>We cast this compass not just in this room, but across the digital astral plane.</p>
-      <p><strong>To the East</strong>, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood.</p>
-      <p><strong>To the South</strong>, the fire of the sovereign will and the fading heat of the high sun. We honor the spark that destroys to create.</p>
-      <p><strong>To the West</strong>, the deep waters of the subconscious and the rivers of our ancestors. We honor the abyss that holds our darkest reflections.</p>
-      <p><strong>To the North</strong>, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed.</p>
-      <blockquote>Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. The Compass is cast. We are between worlds.</blockquote>
-    `,
-    3: `
-      <h3>III. Invocation of the Harvest Spirits & Ancestors</h3>
-      <p>We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires.</p>
-      <p><em>We claim the fruits of our labor upon the Right-Hand Path.</em></p>
-      <div class="stage-dir">Lower pitch. Shift energy to the Left-Hand Path.</div>
-      <p>And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures.</p>
-      <p><em>We claim the power of destruction and transformation upon the Left-Hand Path.</em></p>
-      <p>Sun and Shadow, Bounty and Bone—be present with us tonight.</p>
-    `,
-    4: `
-      <h3>IV. Guided Shadow Meditation</h3>
-      <div class="stage-dir">Instruct the Coven to light their black candles. Watch the right panel for live Shadow petitions.</div>
-      <p>Close your eyes. Feel the physical weight of the dark bread or wheat in your hands. This is the harvest of your year.</p>
-      <p>But look closer in your mind’s eye. This harvest did not grow only from sunlight. It grew from the rot of leaves, from the corpses of insects, from the dark, cold, hidden earth.</p>
-      <p>What have you buried this year? What shadow work have you engaged in? The anger you processed, the toxic ties you severed, the ugly truths you finally admitted to yourself.</p>
-      <blockquote>These were not mistakes—they were fertilizer.</blockquote>
-      <p>Feel the energy of your shadow—your primal, raw, unfiltered self—flowing from your core, down your arms, and into the grain you hold. You are not just reaping the good. You are claiming the power of your darkness. It belongs to you. It makes you whole.</p>
-    `,
-    5: `
-      <h3>V. The Breaking of the Dark Loaf</h3>
-      <div class="stage-dir">Click 'Initiate Breaking of the Loaf' button on the left panel to trigger the Coven UI sync.</div>
-      <p>Look at the faces of your temple. We are legion. We are the architects of our own reality. Hold up your dark bread, your oats, your wheat to the camera.</p>
-      <p>We break this loaf to honor the cycle. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. They are one and the same.</p>
-      <div class="stage-dir">Violently tear your dark bread in half close to the microphone.</div>
-      <blockquote>"Break the loaf! Consume the shadow! Claim your harvest!"</blockquote>
-      <p>Let us eat in silence, grounding the energy.</p>
-    `,
-    6: `
-      <h3>VI. Devocation & Closing</h3>
-      <p>The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward.</p>
-      <p>We thank the Spirits of the Light and the Ancestors of the Dark.</p>
-      <p>Go in power, retaining the sovereignty of your own path, whether you walk in the blinding light of day or the liberating cover of night.</p>
-      <blockquote>The Compass is open, but the connection remains unbroken. So it is done.</blockquote>
-      <div class="stage-dir">Blow out your black candle directly into the camera. Cut the broadcast.</div>
-    `
-  };
-
-  function initButtons() {
-    const container = document.getElementById('step-buttons');
-    container.innerHTML = LITURGY_STEPS.map(s => `
-      <button class="step-btn ${currentState.currentStep === s.num ? 'active' : ''}" onclick="setStep(${s.num})" id="step-btn-${s.num}">
-        <span class="step-num">${s.duration}</span>
-        <span class="step-name">${s.title}</span>
-      </button>
-    `).join('');
-    renderScript();
-  }
-
-  function renderScript() {
-    document.getElementById('script-display').innerHTML = SCRIPT_CONTENT[currentState.currentStep] || '';
-    document.getElementById('current-step-label').textContent = `Step ${currentState.currentStep} / 6`;
-  }
-
-  async function setStep(num) {
-    currentState.currentStep = num;
-    document.querySelectorAll('.step-btn').forEach((btn, i) => {
-      btn.classList.toggle('active', (i + 1) === num);
-    });
-    renderScript();
-
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'setStep', step: num })
-      });
-    } catch(err) { console.error("Error updating step:", err); }
-  }
-
-  async function toggleTaper(num) {
-    const key = `taper${num}`;
-    currentState[key] = !currentState[key];
-    updateTaperUI(num);
-
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'toggleTaper', taperNumber: num, isLit: currentState[key] })
-      });
-    } catch(err) { console.error("Error toggling taper:", err); }
-  }
-
-  function updateTaperUI(num) {
-    const isLit = currentState[`taper${num}`];
-    const btn = document.getElementById(`taper${num}-btn`);
-    const status = document.getElementById(`taper${num}-status`);
-    btn.classList.toggle('lit', isLit);
-    status.textContent = isLit ? 'LIT 🔥' : 'OFF';
-  }
-
-  async function toggleBreaking() {
-    currentState.breakingActive = !currentState.breakingActive;
-    const btn = document.getElementById('breaking-btn');
-    btn.classList.toggle('active', currentState.breakingActive);
-    btn.textContent = currentState.breakingActive ? 'End the Breaking Phase' : 'Initiate Breaking of the Loaf';
-
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'toggleCommunion', active: currentState.breakingActive }) 
-      });
-    } catch(err) { console.error("Error toggling phase:", err); }
-  }
-
-  async function pollState() {
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'getRitualState' })
-      });
-      const data = await res.json();
-      if(data.success) {
-        currentState.taper1 = data.taper1;
-        currentState.taper2 = data.taper2;
-        currentState.taper3 = data.taper3;
-        currentState.breakingActive = data.communionActive; 
+    async function pollState() {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getRitualState' })
+        });
+        const data = await res.json();
         
-        updateTaperUI(1);
-        updateTaperUI(2);
-        updateTaperUI(3);
+        if (data.success) {
+          // Handle Step Changes
+          if (data.currentStep && data.currentStep !== localState.currentStep) {
+            localState.currentStep = data.currentStep;
+            document.body.className = 'step-' + localState.currentStep;
+            
+            // Re-trigger fade animation
+            const display = document.getElementById('ritual-display');
+            display.style.opacity = 0;
+            setTimeout(() => {
+              document.getElementById('phase-title').innerText = COVEN_TEXT[localState.currentStep].title;
+              document.getElementById('phase-text').innerText = COVEN_TEXT[localState.currentStep].text;
+              
+              // Reset shadow box if we left the shadow step
+              if(localState.currentStep !== 4) {
+                document.getElementById('shadow-input').style.display = 'inline-block';
+                document.getElementById('shadow-input').value = '';
+                document.querySelector('#shadow-zone button').style.display = 'inline-block';
+                document.getElementById('shadow-confirmation').style.display = 'none';
+              }
+              
+              display.style.opacity = 1;
+            }, 1000);
+          }
 
-        if(data.petitions && data.petitions.length > 0) {
-          renderPetitions(data.petitions);
+          // Handle Taper Lighting
+          document.getElementById('taper-1').classList.toggle('lit', data.taper1);
+          document.getElementById('taper-2').classList.toggle('lit', data.taper2);
+          document.getElementById('taper-3').classList.toggle('lit', data.taper3);
+
+          // Handle The Breaking Phase
+          if (data.communionActive !== localState.breakingActive) {
+            localState.breakingActive = data.communionActive;
+            if (localState.breakingActive) {
+              document.body.classList.add('breaking-active');
+              document.getElementById('phase-title').innerText = "CLAIM YOUR HARVEST";
+              document.getElementById('phase-title').style.color = "#fff";
+            } else {
+              document.body.classList.remove('breaking-active');
+              document.getElementById('phase-title').style.color = "var(--gold)";
+            }
+          }
         }
-      }
-    } catch(err) { console.error("Poll error:", err); }
-  }
+      } catch(err) { console.error("Astral interference...", err); }
+    }
 
-  function renderPetitions(petitions) {
-    document.getElementById('petition-count').textContent = petitions.length;
-    const list = document.getElementById('petitions-feed');
-    list.innerHTML = petitions.map(p => `
-      <div class="petition-card ${p.type}">
-        <div class="meta">
-          <span>${p.name || 'Anonymous'}</span>
-          <span>${p.type}</span>
-        </div>
-        <p class="text">"${p.text}"</p>
-      </div>
-    `).join('');
-  }
+    // Submit Shadow Petition to the Google Sheet API
+    async function submitShadow() {
+      const input = document.getElementById('shadow-input');
+      const text = input.value.trim();
+      if (!text) return;
 
-  window.addEventListener('DOMContentLoaded', () => {
-    initButtons();
-    setInterval(pollState, 3000); 
-  });
-</script>
+      // Hide input, show confirmation
+      input.style.display = 'none';
+      document.querySelector('#shadow-zone button').style.display = 'none';
+      document.getElementById('shadow-confirmation').style.display = 'block';
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          // Assuming your GAS backend has an 'addPetition' action from your previous architecture
+          body: JSON.stringify({ action: 'addPetition', name: 'Anonymous', type: 'Shadow', text: text })
+        });
+      } catch (err) { console.error("Failed to cast shadow:", err); }
+    }
+
+    // Check state every 3 seconds
+    window.addEventListener('DOMContentLoaded', () => {
+      setInterval(pollState, 3000);
+    });
+  </script>
 </body>
 </html>
