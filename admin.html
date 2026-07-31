@@ -61,7 +61,11 @@
   <!-- LEFT COLUMN: CONTROLS -->
   <div class="panel">
     <h2 class="panel-title">Master Ritual Controls</h2>
-    <div>
+    
+    <!-- THE MASTER RESET BUTTON -->
+    <button class="action-btn" style="background: #ff3860; color: white; width: 100%; box-shadow: 0 0 10px rgba(255,56,96,0.4);" onclick="masterReset()">MASTER ENGINE RESET</button>
+
+    <div style="margin-top: 10px;">
       <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">Altar Tapers</label>
       <div class="taper-grid">
         <button class="taper-btn" id="taper1-btn" onclick="toggleTaper(1)">TAPER 1<br><span id="taper1-status">OFF</span></button>
@@ -197,6 +201,35 @@
         body: JSON.stringify({ action: 'toggleCommunion', active: currentState.breakingActive }) 
       });
     } catch(err) { console.error("Error toggling phase:", err); }
+  }
+
+  // --- THE MASTER RESET FUNCTION ---
+  async function masterReset() {
+    if(!confirm("Reset the temple to Step 1 and extinguish all candles?")) return;
+    
+    // Force UI locally
+    currentState.breakingActive = false;
+    currentState.taper1 = false;
+    currentState.taper2 = false;
+    currentState.taper3 = false;
+    updateTaperUI(1); updateTaperUI(2); updateTaperUI(3);
+    setStep(1);
+    
+    const btn = document.getElementById('breaking-btn');
+    btn.classList.remove('active');
+    btn.textContent = 'Initiate Breaking of the Loaf';
+
+    try {
+      // Blast the server with reset commands
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleCommunion', active: false }) });
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 1, isLit: false }) });
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 2, isLit: false }) });
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 3, isLit: false }) });
+      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'setStep', step: 1 }) });
+      
+      // Give the server a second to digest, then refresh the dashboard
+      setTimeout(() => { location.reload(); }, 1500);
+    } catch(err) { console.error(err); }
   }
 
   async function pollState() {
