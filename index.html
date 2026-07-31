@@ -184,7 +184,6 @@
         await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          // Assuming your GAS backend has an 'addPetition' action from your previous architecture
           body: JSON.stringify({ action: 'addPetition', name: 'Anonymous', type: 'Shadow', text: text })
         });
       } catch (err) { console.error("Failed to cast shadow:", err); }
