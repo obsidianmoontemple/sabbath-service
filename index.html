@@ -49,7 +49,6 @@
 
     .match-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; }
     
-    /* Locked state styling for elements awaiting narration */
     .locked-element { opacity: 0.3; pointer-events: none; filter: grayscale(100%); transition: all 1s ease; }
     .unlocked-element { opacity: 1; pointer-events: auto; filter: none; }
 
@@ -94,11 +93,12 @@
     input.path-input { width: 90%; padding: 20px; background: transparent; border: none; border-bottom: 1px solid var(--path-accent); color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px var(--path-accent); }
     input.path-input:focus { outline: none; border-bottom-color: #fff; }
 
+    /* HIGH-PAYLOAD BREAD GAME STYLING */
     .bread-game-container { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 15px; }
-    .dough-ball { width: 140px; height: 140px; background: radial-gradient(circle, #e6c687 0%, #8b5a2b 80%); border-radius: 50%; box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #3a1d05; font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: transform 0.1s; }
-    .dough-ball:active { transform: scale(0.85); }
-    .progress-bar-container { width: 250px; height: 10px; background: #222; border-radius: 5px; border: 1px solid #444; overflow: hidden; }
-    .progress-bar-fill { width: 0%; height: 100%; background: var(--path-accent); transition: width 0.2s ease; }
+    .dough-ball { width: 140px; height: 140px; background: radial-gradient(circle, #ffd700 0%, #b8860b 60%, #5c3a21 100%); border-radius: 50%; box-shadow: 0 0 40px rgba(255, 215, 0, 0.7); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1a0f00; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; transition: transform 0.1s ease; }
+    .dough-ball:active { transform: scale(0.8) rotate(5deg); }
+    .progress-bar-container { width: 280px; height: 12px; background: #111; border-radius: 6px; border: 1px solid var(--gold); overflow: hidden; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
+    .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ffaa00, #ffff55); transition: width 0.15s ease; box-shadow: 0 0 15px var(--gold); }
 
     .btn-magic { background: transparent; border: 1px solid var(--path-accent); color: var(--path-accent); padding: 12px 30px; cursor: pointer; transition: 0.4s; font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; }
     .btn-magic:hover { background: var(--path-accent); color: #000; box-shadow: 0 0 20px var(--path-accent); }
@@ -163,7 +163,7 @@
       </div>
     </div>
 
-    <!-- STEP 3: PATH CHOICE (Locked until audio completes reading the prompt) -->
+    <!-- STEP 3 -->
     <div class="interactive-layer" id="layer-step-3">
       <p style="color: var(--path-accent); font-style: italic; margin-bottom: 15px;" id="ui-path-prompt">Choose your focus for this harvest:</p>
       <div class="path-container locked-element" id="path-buttons-box">
@@ -183,16 +183,16 @@
       <p id="shadow-confirmation" style="display:none; color: var(--path-accent); font-style: italic; margin-top: 20px; font-size: 1.4rem;">The offering is recorded in the Temple Ledger.</p>
     </div>
 
-    <!-- STEP 5 -->
+    <!-- STEP 5: HIGH-PAYLOAD BREAD PHASE -->
     <div class="interactive-layer" id="layer-step-5">
-      <p style="color: var(--path-accent); margin-bottom: 15px; font-style: italic;" id="ui-bread-inst">Knead the dark dough. Tap rapidly to charge the harvest.</p>
+      <p style="color: var(--path-accent); margin-bottom: 15px; font-style: italic;" id="ui-bread-inst">Knead the sacred dark dough. Tap rapidly to charge the harvest energy.</p>
       <div class="bread-game-container locked-element" id="bread-game-box">
         <div class="dough-ball" id="dough-ball" onclick="kneadDough(event)">KNEAD</div>
         <div class="progress-bar-container">
           <div class="progress-bar-fill" id="bread-progress"></div>
         </div>
       </div>
-      <p id="bread-success" style="display:none; color: #fff; font-style: italic; margin-top: 15px; font-size: 1.3rem;">The loaf is broken! Harvest claimed.</p>
+      <p id="bread-success" style="display:none; color: #fff; font-style: italic; margin-top: 15px; font-size: 1.4rem; text-shadow: 0 0 15px var(--gold);">The dark loaf is shattered! The harvest is claimed.</p>
     </div>
 
     <!-- STEP 6 -->
@@ -270,9 +270,9 @@
         2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
         3: "We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires. We claim the fruits of our labor upon the Right-Hand Path. And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures. We claim the power of transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone—be present with us tonight.",
         4: {
-          right: "Close your eyes. Focus entirely on the Right-Hand Path. See the golden sunlight of your triumphs, the vibrant harvest you have gathered, the life and abundance you nurture. Name your offering of light to the temple ledger.",
-          neutral: "Close your eyes. Focus upon the Weaving Path of Balance. Stand precisely at the threshold between sun and shadow, honoring both the light you harvest and the rest found within the dark. Name your balanced offering to the temple ledger.",
-          left: "Close your eyes. Focus entirely on the Left-Hand Path. Feel the rich dark earth of your shadows, the composting of your failures, the radical transformation and fertilizer of your rebirth. Name your offering of shadow to the temple ledger."
+          right: "Close your eyes. Focus entirely on the Right-Hand Path. See the golden sunlight of your triumphs, the vibrant harvest you have gathered, the life and abundance you nurture.",
+          neutral: "Close your eyes. Focus upon the Weaving Path of Balance. Stand precisely at the threshold between sun and shadow, honoring both the light you harvest and the rest found within the dark.",
+          left: "Close your eyes. Focus entirely on the Left-Hand Path. Feel the rich dark earth of your shadows, the composting of your failures, the radical transformation and fertilizer of your rebirth."
         },
         5: "Look at the faces of your temple. We are legion. We are the architects of our own reality. Hold up your dark bread, your oats, your wheat to the camera. We break this loaf to honor the cycle. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. They are one and the same. Break the loaf! Consume the shadow! Claim your harvest! Let us eat in silence, grounding the energy.",
         6: "The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward. We thank the Spirits of the Light and the Ancestors of the Dark. Go in power, retaining the sovereignty of your own path. The Compass is open, but the connection remains unbroken. So it is done."
@@ -292,7 +292,6 @@
       document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
     }
 
-    // AUDIO NARRATION WITH AUTOMATIC UNLOCKING ON SPEECH END
     function narrateText(text, onCompleteCallback) {
       window.speechSynthesis.cancel();
       let utterance = new SpeechSynthesisUtterance(text);
@@ -317,7 +316,6 @@
       utterance.rate = 0.85; 
       utterance.pitch = 1.1; 
 
-      // When narration fully ends, unlock the interactives for this step!
       utterance.onend = function() {
         if (onCompleteCallback) onCompleteCallback();
       };
@@ -362,7 +360,6 @@
       }
     }
 
-    // COMPASS: Locked until narration ends, then nodes unlock sequentially
     function startCompassUnlocking() {
       activeNodesCount = 0;
       earthNodeClicked = false;
@@ -374,7 +371,6 @@
       document.getElementById('compass-grid-box').style.display = 'grid';
 
       narrateText(OFFICIANT_SCRIPT[currentLang][2], () => {
-        // Once the full compass reading finishes, unlock the nodes!
         setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 200);
         setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 800);
         setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 1400);
@@ -422,7 +418,6 @@
       narrateText("The Pentacle is sealed.");
     }
 
-    // STEP 3: Path buttons unlock ONLY after Step 3 speech completes
     function initStep3() {
       const pathBox = document.getElementById('path-buttons-box');
       pathBox.classList.remove('unlocked-element');
@@ -458,7 +453,6 @@
       }
     }
 
-    // STEP 4: Offering input unlocks ONLY after Step 4 speech completes
     function initStep4() {
       const shadowBox = document.getElementById('shadow-container');
       shadowBox.classList.remove('unlocked-element');
@@ -495,8 +489,6 @@
       } catch (err) {}
     }
 
-    // STEP 5: Kneading game unlocks ONLY after Step 5 speech completes
-    let breadProgress = 0;
     function initStep5() {
       breadProgress = 0;
       document.getElementById('bread-progress').style.width = '0%';
@@ -513,21 +505,28 @@
       });
     }
 
+    // HIGH-PAYLOAD KNEADING WITH MASSIVE EXPLOSIVE BURST
+    let breadProgress = 0;
     function kneadDough(e) {
-      breadProgress += 15;
+      breadProgress += 20;
       if (breadProgress > 100) breadProgress = 100;
       
       document.getElementById('bread-progress').style.width = breadProgress + '%';
-      createSparkBurst(e.pageX, e.pageY, '#d4af37', 8);
+      createSparkBurst(e.pageX, e.pageY, '#ffd700', 16);
 
       if (breadProgress >= 100) {
         document.getElementById('dough-ball').style.display = 'none';
         document.getElementById('bread-success').style.display = 'block';
-        createSparkBurst(e.pageX, e.pageY, '#ffffff', 30);
+        
+        // Massive celebratory energy payload burst across the entire screen
+        for(let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            createSparkBurst(window.innerWidth / 2 + (Math.random() * 200 - 100), window.innerHeight / 2 + (Math.random() * 200 - 100), '#fff', 25);
+          }, i * 100);
+        }
       }
     }
 
-    // STEP 6: Closing candle unlocks ONLY after Step 6 speech completes
     function initStep6() {
       const candleBox = document.getElementById('closing-candle-box');
       candleBox.classList.remove('unlocked-element');
@@ -615,7 +614,7 @@
         
         if (data.success) {
           if (data.currentStep && data.currentStep !== localState.currentStep) {
-            window.speechSynthesis.cancel(); // Stop prior speech when step changes
+            window.speechSynthesis.cancel();
             localState.currentStep = data.currentStep;
             document.body.className = 'step-' + localState.currentStep + ' path-' + chosenPathType;
             
