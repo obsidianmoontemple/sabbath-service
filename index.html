@@ -46,7 +46,7 @@
     .interactive-layer { display: none; margin-top: 30px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* STEP 1: Personal Match (Now Tap-to-Ignite) */
+    /* STEP 1: Personal Match (Tap-to-Ignite) */
     .match-box { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 30px; }
     .personal-candle { width: 30px; height: 80px; background: #222; border-radius: 5px 5px 0 0; position: relative; cursor: pointer; border: 1px solid #444; transition: border-color 0.3s; }
     .personal-candle:hover { border-color: var(--gold); }
@@ -67,6 +67,7 @@
     .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
     .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-50px) scale(1.1); opacity: 0; pointer-events: none; }
     input.name-input { width: 60%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #555; color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
+    input.name-input:focus { outline: none; border-color: #888; }
     input.fiery-input { width: 90%; padding: 20px; background: transparent; border: none; border-bottom: 1px solid #ff3860; color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px #ffaa00, 0 0 20px #ff3300, 0 0 40px #aa0000; animation: firePulse 2s infinite alternate; }
     input.fiery-input:focus { outline: none; border-bottom-color: #ffaa00; }
     @keyframes firePulse { 0% { text-shadow: 0 0 5px #fff, 0 0 10px #ffaa00, 0 0 20px #ff3300, 0 0 40px #aa0000; } 100% { text-shadow: 0 0 2px #fff, 0 0 15px #ffcc00, 0 0 30px #ff2200, 0 0 50px #880000; } }
@@ -172,31 +173,59 @@
       sidebar.classList.toggle('open');
     }
 
-    // --- 2. MULTILINGUAL DICTIONARY & TTS ---
+    // --- 2. MULTILINGUAL DICTIONARY (Short Text for Screen) ---
     const LORE = {
       en: {
-        1: { title: "Lughnasadh Eve", text: "Step into the circle this Friday night as we honor the turning of the Wheel. Ensure your personal candle is unlit. Have your dark bread ready on the altar." },
-        2: { title: "The Compass is Cast", text: "We cast this compass across the digital astral plane. Air. Fire. Water. Earth. We are between worlds." },
-        3: { title: "Spirits & Ancestors", text: "We call upon the Harvest Spirits and the Ancestors of the Shadow. Bounty and Bone, be present with us tonight." },
-        4: { title: "The Shadow Work", text: "Focus on your black candle. What have you buried this year? What decay must feed your new growth?" },
-        5: { title: "The Dark Loaf", text: "We eat of our triumphs, and we eat of our shadows. They are one and the same." },
-        6: { title: "The Wheel Turns", text: "The harvest is claimed. The shadow is integrated. Go in power, retaining the sovereignty of your own path." }
+        1: { title: "Lughnasadh Eve", text: "Ensure your personal black candle is unlit. Have your dark bread ready on the altar." },
+        2: { title: "The Compass is Cast", text: "Air. Fire. Water. Earth. We are between worlds." },
+        3: { title: "Spirits & Ancestors", text: "Sun and Shadow, Bounty and Bone—be present with us tonight." },
+        4: { title: "The Shadow Work", text: "Focus on your black candle. What decay must feed your new growth?" },
+        5: { title: "The Dark Loaf", text: "Hold up your grain to the camera. We eat of our triumphs, and we eat of our shadows." },
+        6: { title: "The Wheel Turns", text: "The harvest is claimed. The shadow is integrated. The ritual is complete." }
       },
       es: {
-        1: { title: "Víspera de Lughnasadh", text: "Entra al círculo mientras honramos el giro de la Rueda. Asegúrate de que tu vela esté apagada. Ten listo tu pan oscuro." },
-        2: { title: "La Brújula es Lanzada", text: "Lanzamos esta brújula a través del plano astral digital. Aire. Fuego. Agua. Tierra. Estamos entre mundos." },
-        3: { title: "Espíritus y Ancestros", text: "Invocamos a los Espíritus de la Cosecha y a los Ancestros de la Sombra. Abundancia y Hueso, estén presentes con nosotros esta noche." },
-        4: { title: "El Trabajo de Sombra", text: "Concéntrate en tu vela negra. ¿Qué has enterrado este año? ¿Qué decadencia debe alimentar tu nuevo crecimiento?" },
-        5: { title: "El Pan Oscuro", text: "Comemos de nuestros triunfos, y comemos de nuestras sombras. Son uno y lo mismo." },
-        6: { title: "La Rueda Gira", text: "La cosecha es reclamada. La sombra es integrada. Ve con poder, conservando la soberanía de tu propio camino." }
+        1: { title: "Víspera de Lughnasadh", text: "Asegúrate de que tu vela negra esté apagada. Ten listo tu pan oscuro." },
+        2: { title: "La Brújula es Lanzada", text: "Aire. Fuego. Agua. Tierra. Estamos entre mundos." },
+        3: { title: "Espíritus y Ancestros", text: "Sol y Sombra, Abundancia y Hueso, estén presentes esta noche." },
+        4: { title: "El Trabajo de Sombra", text: "Concéntrate en tu vela negra. ¿Qué decadencia debe alimentar tu crecimiento?" },
+        5: { title: "El Pan Oscuro", text: "Levanta tu grano hacia la cámara. Comemos de nuestros triunfos y sombras." },
+        6: { title: "La Rueda Gira", text: "La cosecha es reclamada. La sombra es integrada. El ritual está completo." }
       },
       fr: {
-        1: { title: "Veille de Lughnasadh", text: "Entrez dans le cercle alors que nous honorons le tournant de la Roue. Assurez-vous que votre bougie est éteinte. Préparez votre pain noir." },
-        2: { title: "La Boussole est Jetée", text: "Nous jetons cette boussole à travers le plan astral numérique. Air. Feu. Eau. Terre. Nous sommes entre les mondes." },
-        3: { title: "Esprits et Ancêtres", text: "Nous invoquons les Esprits de la Récolte et les Ancêtres de l'Ombre. Abondance et Os, soyez présents avec nous ce soir." },
-        4: { title: "Le Travail de l'Ombre", text: "Concentrez-vous sur votre bougie noire. Qu'avez-vous enterré cette année ? Quelle décadence doit nourrir votre nouvelle croissance ?" },
-        5: { title: "Le Pain Noir", text: "Nous mangeons de nos triomphes, et nous mangeons de nos ombres. Ils sont un seul et même." },
-        6: { title: "La Roue Tourne", text: "La récolte est réclamée. L'ombre est intégrée. Allez en pouvoir, en conservant la souveraineté de votre propre chemin." }
+        1: { title: "Veille de Lughnasadh", text: "Assurez-vous que votre bougie noire est éteinte. Préparez votre pain noir." },
+        2: { title: "La Boussole est Jetée", text: "Air. Feu. Eau. Terre. Nous sommes entre les mondes." },
+        3: { title: "Esprits et Ancêtres", text: "Soleil et Ombre, Abondance et Os, soyez présents ce soir." },
+        4: { title: "Le Travail de l'Ombre", text: "Concentrez-vous sur votre bougie. Quelle décadence doit nourrir votre croissance ?" },
+        5: { title: "Le Pain Noir", text: "Levez votre grain. Nous mangeons de nos triomphes et de nos ombres." },
+        6: { title: "La Roue Tourne", text: "La récolte est réclamée. L'ombre est intégrée. Le rituel est terminé." }
+      }
+    };
+
+    // --- TTS OFFICIANT SCRIPT (Long Text for Voice) ---
+    const OFFICIANT_SCRIPT = {
+      en: {
+        1: "Welcome to the threshold. Tonight, we stand at the pivot of the Wheel. Step into the circle as we honor the turning. We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.",
+        2: "We cast this compass across the digital astral plane. To the East, the winds of change. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth. The Compass is cast. We are between worlds.",
+        3: "We call upon the Spirits of the First Harvest. We claim the fruits of our labor upon the Right-Hand Path. And we call upon the Ancestors of the Shadow. We claim the power of destruction and transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone, be present with us tonight.",
+        4: "Close your eyes. Feel the physical weight of the dark bread in your hands. This harvest did not grow only from sunlight. It grew from the dark, hidden earth. What have you buried this year? What shadow work have you engaged in? These were not mistakes, they were fertilizer. You are claiming the power of your darkness. It makes you whole.",
+        5: "Look at the faces of your temple. We are the architects of our own reality. Hold up your grain. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. Break the loaf! Consume the shadow! Claim your harvest!",
+        6: "The harvest is claimed. The shadow is integrated. The Wheel turns onward. We thank the Spirits of the Light and the Ancestors of the Dark. Go in power. The connection remains unbroken. So it is done."
+      },
+      es: {
+        1: "Bienvenidos al umbral. Esta noche, estamos en el eje de la Rueda. Entren al círculo para honrar el giro. Celebramos la vibrante abundancia del sol, mientras honramos la decadencia necesaria que alimenta el nuevo crecimiento.",
+        2: "Lanzamos esta brújula a través del plano astral digital. Al Este, los vientos de cambio. Al Sur, el fuego de la voluntad soberana. Al Oeste, las aguas profundas del subconsciente. Al Norte, la tierra oscura. La Brújula es lanzada. Estamos entre mundos.",
+        3: "Invocamos a los Espíritus de la Primera Cosecha. Reclamamos los frutos de nuestra labor en el Camino de la Mano Derecha. E invocamos a los Ancestros de la Sombra. Reclamamos el poder de transformación en el Camino de la Mano Izquierda. Sol y Sombra, estén presentes esta noche.",
+        4: "Cierren los ojos. Sientan el peso del pan oscuro en sus manos. Esta cosecha no creció solo de la luz del sol. Creció de la tierra oscura y oculta. ¿Qué han enterrado este año? Estos no fueron errores, fueron fertilizante. Están reclamando el poder de su oscuridad. Los hace completos.",
+        5: "Miren los rostros de su templo. Somos los arquitectos de nuestra propia realidad. Levanten su grano. Para vivir, debemos consumir. Comemos de nuestros triunfos, y comemos de nuestras sombras. ¡Rompan el pan! ¡Reclamen su cosecha!",
+        6: "La cosecha es reclamada. La sombra es integrada. La Rueda sigue girando. Agradecemos a los Espíritus de la Luz y a los Ancestros de la Oscuridad. Vayan con poder. La conexión permanece intacta. Que así sea."
+      },
+      fr: {
+        1: "Bienvenue au seuil. Ce soir, nous nous tenons au pivot de la Roue. Entrez dans le cercle pour honorer le tournant. Nous célébrons l'abondance vibrante du soleil, tout en honorant la décadence nécessaire qui nourrit la nouvelle croissance.",
+        2: "Nous jetons cette boussole à travers le plan astral numérique. À l'Est, les vents du changement. Au Sud, le feu de la volonté souveraine. À l'Ouest, les eaux profondes du subconscient. Au Nord, la terre sombre. La Boussole est jetée. Nous sommes entre les mondes.",
+        3: "Nous invoquons les Esprits de la Première Récolte. Nous réclamons les fruits de notre travail sur la Voie de la Main Droite. Et nous invoquons les Ancêtres de l'Ombre. Nous réclamons le pouvoir de transformation sur la Voie de la Main Gauche. Soleil et Ombre, soyez présents ce soir.",
+        4: "Fermez les yeux. Sentez le poids du pain noir dans vos mains. Cette récolte n'a pas poussé seulement grâce à la lumière du soleil. Elle a poussé de la terre sombre et cachée. Qu'avez-vous enterré cette année ? Ce n'étaient pas des erreurs, c'était de l'engrais. Vous réclamez le pouvoir de votre obscurité. Cela vous rend entier.",
+        5: "Regardez les visages de votre temple. Nous sommes les architectes de notre propre réalité. Levez votre grain. Pour vivre, nous devons consommer. Nous mangeons de nos triomphes, et nous mangeons de nos ombres. Rompez le pain ! Réclamez votre récolte !",
+        6: "La récolte est réclamée. L'ombre est intégrée. La Roue continue de tourner. Nous remercions les Esprits de la Lumière et les Ancêtres de l'Obscurité. Allez en pouvoir. La connexion reste intacte. Qu'il en soit ainsi."
       }
     };
 
@@ -393,11 +422,12 @@
             const display = document.getElementById('ritual-display');
             display.style.opacity = 0;
             setTimeout(() => {
+              // The screen displays the short LORE text
               document.getElementById('phase-title').innerText = LORE[currentLang][localState.currentStep].title;
-              const newText = LORE[currentLang][localState.currentStep].text;
-              document.getElementById('phase-text').innerText = newText;
+              document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
               
-              narrateText(newText);
+              // The TTS Voice reads the full OFFICIANT_SCRIPT aloud
+              narrateText(OFFICIANT_SCRIPT[currentLang][localState.currentStep]);
               
               if(localState.currentStep !== 4) {
                 document.getElementById('shadow-container').classList.remove('burn');
@@ -423,7 +453,8 @@
               document.getElementById('phase-title').innerText = currentLang === 'es' ? "EL PAN ESTÁ ROTO" : (currentLang === 'fr' ? "LE PAIN EST ROMPU" : "THE LOAF IS BROKEN");
               document.getElementById('phase-title').style.color = "#fff";
               
-              narrateText(LORE[currentLang][5].text);
+              // Narrate the full breaking script
+              narrateText(OFFICIANT_SCRIPT[currentLang][5]);
 
               strikes = 0; 
               const orb = document.getElementById('harvest-orb');
