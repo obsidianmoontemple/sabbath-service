@@ -139,15 +139,28 @@
     6: `<h3>VI. Devocation & Closing</h3><p>The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward.</p><p>We thank the Spirits of the Light and the Ancestors of the Dark.</p><p>Go in power, retaining the sovereignty of your own path, whether you walk in the blinding light of day or the liberating cover of night.</p><blockquote>The Compass is open, but the connection remains unbroken. So it is done.</blockquote><div class="stage-dir">Blow out your black candle directly into the camera. Cut the broadcast.</div>`
   };
 
+  // --- THE NEW ANTI-SNAPE NARRATION ENGINE ---
   function narrateAdminText(text) {
     window.speechSynthesis.cancel();
     let utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(voice => voice.name.toLowerCase().includes('female') || voice.name.includes('Zira') || voice.name.includes('Samantha') || voice.name.includes('Karen') || voice.name.includes('Amelie'));
-    if (femaleVoice) utterance.voice = femaleVoice;
+    
+    const femaleKeywords = ['female', 'woman', 'zira', 'samantha', 'victoria', 'karen', 'amelie', 'monica', 'paulina'];
+    const bannedMaleKeywords = ['male', 'man', 'david', 'mark', 'george', 'arthur', 'default'];
+
+    let chosenVoice = voices.find(v => v.lang.includes('en') && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
+    
+    if (!chosenVoice) {
+      chosenVoice = voices.find(v => v.lang.includes('en') && !bannedMaleKeywords.some(k => v.name.toLowerCase().includes(k)));
+    }
+
+    if (chosenVoice) {
+      utterance.voice = chosenVoice;
+    }
+    
     utterance.lang = 'en-US';
     utterance.rate = 0.85; 
-    utterance.pitch = 0.9;
+    utterance.pitch = 1.1; // Slight pitch bump to avoid baritone fallbacks
     window.speechSynthesis.speak(utterance);
   }
 
