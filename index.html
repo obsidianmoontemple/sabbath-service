@@ -47,12 +47,15 @@
     .interactive-layer { display: none; margin-top: 30px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .match-box { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 30px; }
+    .match-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; }
     .personal-candle { width: 30px; height: 80px; background: #222; border-radius: 5px 5px 0 0; position: relative; cursor: pointer; border: 1px solid #444; transition: border-color 0.3s; }
     .personal-candle:hover { border-color: var(--path-accent); }
     .personal-candle.lit::after { content: ''; position: absolute; top: -40px; left: -15px; width: 60px; height: 70px; background: radial-gradient(circle, #fff 0%, #ffaa00 40%, transparent 100%); border-radius: 50%; filter: blur(4px); animation: flicker 0.1s infinite alternate; }
     .personal-candle.snuffed-out { background: #111; border-color: #222; }
     .personal-candle.snuffed-out::after { display: none; }
+
+    input.name-input { width: 60%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #555; color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
+    input.name-input:focus { outline: none; border-color: #888; }
 
     /* COMPASS NODES */
     .compass-container { position: relative; width: 300px; margin: 0 auto; }
@@ -83,8 +86,6 @@
 
     .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
     .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-50px) scale(1.1); opacity: 0; pointer-events: none; }
-    input.name-input { width: 60%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #555; color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
-    input.name-input:focus { outline: none; border-color: #888; }
     input.path-input { width: 90%; padding: 20px; background: transparent; border: none; border-bottom: 1px solid var(--path-accent); color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px var(--path-accent); }
     input.path-input:focus { outline: none; border-bottom-color: #fff; }
 
@@ -128,15 +129,16 @@
     <h1 id="phase-title">The Temple Gathers</h1>
     <p id="phase-text">Step into the circle. We honor the turning of the Wheel.</p>
     
-    <!-- STEP 1 -->
+    <!-- STEP 1: CANDLE IGNITION & INITIAL REGISTRATION -->
     <div class="interactive-layer" id="layer-step-1" style="display:block;">
-      <p style="color: #888; font-style: italic; font-size: 0.9rem;" id="ui-drag-match">Tap the wick to strike the flame and enter the space.</p>
+      <p style="color: #888; font-style: italic; font-size: 0.9rem;" id="ui-drag-match">Enter your name and tap the wick to enter the space.</p>
       <div class="match-box">
+        <input type="text" class="name-input" id="initial-name" placeholder="Your Name or Moniker" autocomplete="off" style="margin-bottom: 10px;">
         <div class="personal-candle" id="my-candle" onclick="lightPersonalCandle(event)"></div>
       </div>
     </div>
 
-    <!-- STEP 2: FULLY UNCOMPRESSED COMPASS PACING -->
+    <!-- STEP 2 -->
     <div class="interactive-layer" id="layer-step-2">
       <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Listen to the casting. Quarters unlock as they are called.</p>
       <div class="compass-container">
@@ -170,7 +172,6 @@
     <!-- STEP 4 -->
     <div class="interactive-layer" id="layer-step-4">
       <div class="shadow-container" id="shadow-container">
-        <input type="text" class="name-input" id="practitioner-name" placeholder="Your Name or Moniker" autocomplete="off">
         <input type="text" class="path-input" id="path-input-field" placeholder="Name your offering..." autocomplete="off">
         <button class="btn-magic" onclick="submitPathWork()" id="ui-release">Offer to the Temple</button>
       </div>
@@ -258,16 +259,15 @@
       }
     };
 
-    // FULL, UNCOMPRESSED OFFICIANT SCRIPT WITH SPACIOUS TIMING DELAYS FOR FIRE AND WATER
     const OFFICIANT_SCRIPT = {
       en: {
         1: "Welcome to the threshold. Tonight, we stand at the pivot of the Wheel—Lughnasadh Eve. Step into the circle this Friday night as we honor the turning. As multicultural practitioners walking both the left and right-hand paths, our service embraces the dual nature of the harvest. We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.",
-        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood. To the South, the fire of the sovereign will and the fading heat of the high sun. We honor the spark that destroys to create. To the West, the deep waters of the subconscious and the rivers of our ancestors. We honor the abyss that holds our darkest reflections. To the North, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed. Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
+        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
         3: "We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires. We claim the fruits of our labor upon the Right-Hand Path. And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures. We claim the power of transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone—be present with us tonight.",
         4: {
-          right: "Close your eyes. Focus entirely on the Right-Hand Path. See the golden sunlight of your triumphs, the vibrant harvest you have gathered, the life and abundance you nurture. Name your offering of light to the temple ledger.",
-          neutral: "Close your eyes. Focus upon the Weaving Path of Balance. Stand precisely at the threshold between sun and shadow, honoring both the light you harvest and the rest found within the dark. Name your balanced offering to the temple ledger.",
-          left: "Close your eyes. Focus entirely on the Left-Hand Path. Feel the rich dark earth of your shadows, the composting of your failures, the radical transformation and fertilizer of your rebirth. Name your offering of shadow to the temple ledger."
+          right: "Close your eyes. Focus entirely on the Right-Hand Path. See the golden sunlight of your triumphs, the vibrant harvest you have gathered, the life and abundance you nurture.",
+          neutral: "Close your eyes. Focus upon the Weaving Path of Balance. Stand precisely at the threshold between sun and shadow, honoring both the light you harvest and the rest found within the dark.",
+          left: "Close your eyes. Focus entirely on the Left-Hand Path. Feel the rich dark earth of your shadows, the composting of your failures, the radical transformation and fertilizer of your rebirth."
         },
         5: "Look at the faces of your temple. We are legion. We are the architects of our own reality. Hold up your dark bread, your oats, your wheat to the camera. We break this loaf to honor the cycle. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. They are one and the same. Break the loaf! Consume the shadow! Claim your harvest! Let us eat in silence, grounding the energy.",
         6: "The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward. We thank the Spirits of the Light and the Ancestors of the Dark. Go in power, retaining the sovereignty of your own path. The Compass is open, but the connection remains unbroken. So it is done."
@@ -321,19 +321,37 @@
     let activeNodesCount = 0;
     let earthNodeClicked = false;
 
-    function lightPersonalCandle(ev) {
+    // IMMEDIATE REGISTRATION ON CANDLE LIGHTING
+    async function lightPersonalCandle(ev) {
       const candle = document.getElementById('my-candle');
+      const nameInput = document.getElementById('initial-name');
+      const practitionerName = nameInput.value.trim() || 'A Seeker';
+
       if (!candle.classList.contains('lit')) {
         candle.classList.add('lit');
-        document.getElementById('ui-drag-match').innerText = "You have entered.";
+        nameInput.style.display = 'none';
+        document.getElementById('ui-drag-match').innerText = "You have entered the threshold.";
         createSparkBurst(ev.pageX, ev.pageY, '#ffaa00', 15);
+
+        // Instantly register them to the temple ledger!
+        try {
+          await fetch(API_URL, { 
+            method: 'POST', 
+            body: JSON.stringify({ 
+              action: 'addPetition', 
+              name: practitionerName, 
+              type: 'Harvest', 
+              text: 'Entered the circle and lit personal candle.' 
+            }) 
+          });
+        } catch (err) {}
+
         if (localState.currentStep === 1) {
           narrateText(OFFICIANT_SCRIPT[currentLang][1]);
         }
       }
     }
 
-    // UNCOMPRESSED PACED TIMING: Giving full breathing room to Air, Fire, Water, and Earth
     function startCompassUnlocking() {
       activeNodesCount = 0;
       earthNodeClicked = false;
@@ -344,11 +362,10 @@
       document.getElementById('pentacle-container').style.display = 'none';
       document.getElementById('compass-grid-box').style.display = 'grid';
 
-      // Unhurried intervals matched directly to your uncompressed script reading times
-      setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 5000);   // East (Air)
-      setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 14000); // South (Fire) - Full breathing room!
-      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 23000); // West (Water) - Full breathing room!
-      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 33000); // North (Earth) - Fully finished at ~38s
+      setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 5000);   
+      setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 14000); 
+      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 23000); 
+      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 33000); 
     }
 
     function activateNode(element, elementStr) {
@@ -365,12 +382,11 @@
           if (elementStr === 'water') sparkColor = '#38bdf8';
           if (elementStr === 'earth') {
             sparkColor = '#4ade80';
-            earthNodeClicked = true; // Earth is now officially clicked
+            earthNodeClicked = true; 
           }
 
           createSparkBurst(rect.left + 35, rect.top + 35, sparkColor, 12);
 
-          // Spirit node ONLY appears after all 4 quarters are clicked AND audio pacing for Earth is done
           if (activeNodesCount === 4 && earthNodeClicked) {
             setTimeout(() => {
               document.getElementById('spirit-node').style.display = 'flex';
@@ -407,24 +423,18 @@
       
       document.getElementById('path-confirmation').style.display = 'block';
       
-      const inputField = document.getElementById('path-input-field');
       if(path === 'right') {
-        inputField.placeholder = "Name the vitality or triumph you harvest...";
         narrateText("Right-Hand Path anchored. We harvest the light.");
       } else if(path === 'neutral') {
-        inputField.placeholder = "Name your offering of balance and equilibrium...";
         narrateText("Weaving Path anchored. We honor the threshold.");
       } else {
-        inputField.placeholder = "Name the decay or shadow you offer to the soil...";
         narrateText("Left-Hand Path anchored. We harvest the dark.");
       }
     }
 
     async function submitPathWork() {
       const inputField = document.getElementById('path-input-field');
-      const nameInput = document.getElementById('practitioner-name');
       const textValue = inputField.value.trim();
-      const practitionerName = nameInput.value.trim() || 'A Practitioner';
       
       if (!textValue) return; 
 
@@ -439,7 +449,7 @@
           method: 'POST', 
           body: JSON.stringify({ 
             action: 'addPetition', 
-            name: `${practitionerName} [${chosenPathType.toUpperCase()} PATH]`, 
+            name: `[${chosenPathType.toUpperCase()} PATH OFFERING]`, 
             type: chosenPathType === 'right' ? 'Harvest' : (chosenPathType === 'neutral' ? 'Balance' : 'Shadow'), 
             text: textValue 
           }) 
@@ -554,7 +564,6 @@
                 document.getElementById('shadow-container').classList.remove('burn');
                 document.getElementById('shadow-container').style.display = 'flex';
                 document.getElementById('path-input-field').value = '';
-                document.getElementById('practitioner-name').value = '';
                 document.getElementById('shadow-confirmation').style.display = 'none';
               }
               
