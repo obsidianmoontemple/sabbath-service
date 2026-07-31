@@ -20,7 +20,7 @@
     body.step-6 { background: #050505; }
     body.breaking-active { background: radial-gradient(circle, #3a2b00 0%, #050505 100%); }
 
-    /* Top Controls: Language & Video Toggle */
+    /* Top Controls */
     .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 15px; z-index: 100; }
     select, .btn-small { background: rgba(0,0,0,0.7); border: 1px solid #444; color: #ccc; padding: 8px 12px; font-family: 'Work Sans'; font-size: 0.9rem; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
     select:focus { outline: none; border-color: var(--gold); }
@@ -31,7 +31,7 @@
     #jitsi-sidebar.open { right: 0; }
     #jitsi-container { width: 100%; height: 100%; }
 
-    /* The Digital Altar (Master Tapers) */
+    /* The Digital Altar */
     .altar { position: absolute; top: 40px; display: flex; gap: 40px; z-index: 5; transition: opacity 2s; }
     body.snuffed .altar { opacity: 0; }
     .taper { width: 10px; height: 40px; background: #333; border-radius: 5px 5px 0 0; position: relative; transition: all 1s ease; }
@@ -46,13 +46,12 @@
     .interactive-layer { display: none; margin-top: 30px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* STEP 1: Personal Match Gamification */
+    /* STEP 1: Personal Match (Now Tap-to-Ignite) */
     .match-box { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 30px; }
-    .personal-candle { width: 20px; height: 60px; background: #222; border-radius: 5px 5px 0 0; position: relative; }
-    .personal-candle.lit::after { content: ''; position: absolute; top: -30px; left: -10px; width: 40px; height: 50px; background: radial-gradient(circle, #fff 0%, #ffaa00 40%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: flicker 0.1s infinite alternate; }
-    .match-stick { width: 60px; height: 8px; background: #8b5a2b; border-radius: 4px; position: relative; cursor: grab; display: flex; align-items: center; }
-    .match-stick::after { content: ''; position: absolute; left: -5px; width: 15px; height: 15px; background: #cc0000; border-radius: 50%; }
-    .match-stick:active { cursor: grabbing; }
+    .personal-candle { width: 30px; height: 80px; background: #222; border-radius: 5px 5px 0 0; position: relative; cursor: pointer; border: 1px solid #444; transition: border-color 0.3s; }
+    .personal-candle:hover { border-color: var(--gold); }
+    .personal-candle.lit::after { content: ''; position: absolute; top: -40px; left: -15px; width: 60px; height: 70px; background: radial-gradient(circle, #fff 0%, #ffaa00 40%, transparent 100%); border-radius: 50%; filter: blur(4px); animation: flicker 0.1s infinite alternate; }
+    .personal-candle.lit { border-color: transparent; cursor: default; }
 
     /* STEP 2: COMPASS NODES */
     .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; max-width: 300px; margin: 0 auto; }
@@ -68,7 +67,6 @@
     .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
     .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-50px) scale(1.1); opacity: 0; pointer-events: none; }
     input.name-input { width: 60%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #555; color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
-    input.name-input:focus { outline: none; border-color: #888; }
     input.fiery-input { width: 90%; padding: 20px; background: transparent; border: none; border-bottom: 1px solid #ff3860; color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px #ffaa00, 0 0 20px #ff3300, 0 0 40px #aa0000; animation: firePulse 2s infinite alternate; }
     input.fiery-input:focus { outline: none; border-bottom-color: #ffaa00; }
     @keyframes firePulse { 0% { text-shadow: 0 0 5px #fff, 0 0 10px #ffaa00, 0 0 20px #ff3300, 0 0 40px #aa0000; } 100% { text-shadow: 0 0 2px #fff, 0 0 15px #ffcc00, 0 0 30px #ff2200, 0 0 50px #880000; } }
@@ -115,12 +113,11 @@
     <h1 id="phase-title">The Temple Gathers</h1>
     <p id="phase-text">Step into the circle. We honor the turning of the Wheel.</p>
     
-    <!-- STEP 1: Personal Match -->
+    <!-- STEP 1: Personal Match (Now Tap-to-Ignite) -->
     <div class="interactive-layer" id="layer-step-1" style="display:block;">
-      <p style="color: #888; font-style: italic; font-size: 0.9rem;" id="ui-drag-match">Drag the match to light your personal flame and enter the space.</p>
+      <p style="color: #888; font-style: italic; font-size: 0.9rem;" id="ui-drag-match">Tap the wick to strike the flame and enter the space.</p>
       <div class="match-box">
-        <div class="match-stick" id="match" draggable="true" ondragstart="drag(event)"></div>
-        <div class="personal-candle" id="my-candle" ondragover="allowDrop(event)" ondrop="dropMatch(event)"></div>
+        <div class="personal-candle" id="my-candle" onclick="lightPersonalCandle(event)"></div>
       </div>
     </div>
 
@@ -209,7 +206,7 @@
       currentLang = document.getElementById('lang-select').value;
       
       if (currentLang === 'es') {
-        document.getElementById('ui-drag-match').innerText = "Arrastra el fósforo para encender tu llama.";
+        document.getElementById('ui-drag-match').innerText = "Toca la mecha para encender la llama y entrar al espacio.";
         document.getElementById('ui-anchor').innerText = "Toca los nodos para anclar la brújula.";
         document.getElementById('node-earth').innerText = "Tierra"; document.getElementById('node-water').innerText = "Agua";
         document.getElementById('node-air').innerText = "Aire"; document.getElementById('node-fire').innerText = "Fuego";
@@ -220,7 +217,7 @@
         document.getElementById('ui-close').innerText = "El ritual está completo.";
         document.getElementById('ui-snuff').innerText = "Apagar la Llama";
       } else if (currentLang === 'fr') {
-        document.getElementById('ui-drag-match').innerText = "Faites glisser l'allumette pour allumer votre flamme.";
+        document.getElementById('ui-drag-match').innerText = "Touchez la mèche pour allumer la flamme et entrer.";
         document.getElementById('ui-anchor').innerText = "Appuyez sur les nœuds pour ancrer la boussole.";
         document.getElementById('node-earth').innerText = "Terre"; document.getElementById('node-water').innerText = "Eau";
         document.getElementById('node-air').innerText = "Air"; document.getElementById('node-fire').innerText = "Feu";
@@ -238,49 +235,50 @@
       document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
     }
 
+    // --- THE NEW ANTI-SNAPE NARRATION ENGINE ---
     function narrateText(text) {
       window.speechSynthesis.cancel();
       let utterance = new SpeechSynthesisUtterance(text);
-      
       const voices = window.speechSynthesis.getVoices();
+      
       let langCode = 'en-US';
       if (currentLang === 'es') langCode = 'es-ES';
       if (currentLang === 'fr') langCode = 'fr-FR';
-      
       utterance.lang = langCode;
       
-      const femaleVoice = voices.find(voice => 
-        voice.lang.includes(langCode.substring(0,2)) && 
-        (voice.name.toLowerCase().includes('female') || voice.name.includes('Zira') || voice.name.includes('Samantha') || voice.name.includes('Karen') || voice.name.includes('Paulina') || voice.name.includes('Amelie'))
-      );
+      const femaleKeywords = ['female', 'woman', 'zira', 'samantha', 'victoria', 'karen', 'amelie', 'monica', 'paulina'];
+      const bannedMaleKeywords = ['male', 'man', 'david', 'mark', 'george', 'arthur', 'default'];
+
+      let chosenVoice = voices.find(v => v.lang.includes(langCode.substring(0,2)) && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
       
-      if (femaleVoice) {
-        utterance.voice = femaleVoice;
+      if (!chosenVoice) {
+        chosenVoice = voices.find(v => v.lang.includes(langCode.substring(0,2)) && !bannedMaleKeywords.some(k => v.name.toLowerCase().includes(k)));
+      }
+      
+      if (chosenVoice) {
+        utterance.voice = chosenVoice;
       }
       
       utterance.rate = 0.85; 
-      utterance.pitch = 0.9;
+      utterance.pitch = 1.1; 
       window.speechSynthesis.speak(utterance);
     }
 
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = function() {
-            window.speechSynthesis.getVoices();
-        };
+        window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
     }
 
     // --- 3. GAMEPLAY MECHANICS ---
     let localState = { currentStep: 1, taper1: false, taper2: false, taper3: false, breakingActive: false };
     let strikes = 0;
 
-    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
-    function allowDrop(ev) { ev.preventDefault(); }
-    function dropMatch(ev) {
-      ev.preventDefault();
-      document.getElementById('my-candle').classList.add('lit');
-      document.getElementById('match').style.display = 'none';
-      document.getElementById('ui-drag-match').innerText = currentLang === 'es' ? "Has entrado." : (currentLang === 'fr' ? "Vous êtes entré." : "You have entered.");
-      createSparkBurst(ev.pageX, ev.pageY, '#ffaa00', 10);
+    function lightPersonalCandle(ev) {
+      const candle = document.getElementById('my-candle');
+      if (!candle.classList.contains('lit')) {
+        candle.classList.add('lit');
+        document.getElementById('ui-drag-match').innerText = currentLang === 'es' ? "Has entrado." : (currentLang === 'fr' ? "Vous êtes entré." : "You have entered.");
+        createSparkBurst(ev.pageX, ev.pageY, '#ffaa00', 15);
+      }
     }
 
     function activateNode(element, elementStr) {
