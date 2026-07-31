@@ -4,17 +4,21 @@
   <meta charset="UTF-8">
   <title>Lughnasadh Eve Command Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://meet.jit.si/external_api.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
     :root { --obsidian: #07060a; --obsidian-card: #0e0a17; --indigo: #130d24; --indigo-2: #1b1233; --amethyst: #6e3ba7; --amethyst-glow: #9d5bd2; --amethyst-light: #c092f0; --silver: #adabcc; --moonwhite: #f1effa; --acid-green: #39ff14; --acid-green-glow: rgba(57, 255, 20, 0.4); --line: rgba(157, 91, 210, 0.22); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--obsidian); color: var(--moonwhite); font-family: 'Work Sans', sans-serif; font-weight: 300; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; }
+    body { margin: 0; background: var(--obsidian); color: var(--moonwhite); font-family: 'Work Sans', sans-serif; font-weight: 300; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+    
     header { background: var(--indigo); border-bottom: 1px solid var(--line); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .brand { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--moonwhite); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 2px;}
     .brand span { color: var(--acid-green); font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--acid-green); padding: 2px 6px; border-radius: 2px; }
+    .header-controls { display: flex; align-items: center; gap: 15px; }
     .status-badge { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--acid-green); display: flex; align-items: center; gap: 8px; }
     .dot { width: 8px; height: 8px; background: var(--acid-green); border-radius: 50%; box-shadow: 0 0 8px var(--acid-green); animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{ opacity: 1; } 50%{ opacity: 0.3; } }
+    
     .layout { display: grid; grid-template-columns: 320px 1fr 340px; gap: 20px; padding: 20px; flex: 1; }
     @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
     .panel { background: var(--obsidian-card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
@@ -48,14 +52,26 @@
     .petition-card .text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; margin: 0; color: var(--moonwhite); }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--amethyst); border-radius: 3px; }
+
+    /* Admin Jitsi Sidebar */
+    #jitsi-sidebar { position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: #0a0a0a; border-left: 2px solid #333; transition: right 0.4s ease; z-index: 1000; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+    #jitsi-sidebar.open { right: 0; }
+    #jitsi-container { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
 
 <header>
   <div class="brand">Lughnasadh Eve <span>High Priest Dashboard</span></div>
-  <div class="status-badge"><div class="dot"></div> ENGINE LIVE · SYNCED TO COVEN</div>
+  <div class="header-controls">
+    <div class="status-badge"><div class="dot"></div> ENGINE LIVE · SYNCED TO COVEN</div>
+    <button class="action-btn" onclick="toggleJitsi()" style="padding: 6px 12px; font-size: 11px; margin-left: 15px;">Toggle Video</button>
+  </div>
 </header>
+
+<div id="jitsi-sidebar">
+  <div id="jitsi-container"></div>
+</div>
 
 <div class="layout">
   <!-- LEFT COLUMN: CONTROLS -->
@@ -106,6 +122,20 @@
 
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
+
+  // Jitsi Initialization for Admin
+  const jitsiOptions = {
+    roomName: 'LughnasadhEveTemple2026',
+    parentNode: document.querySelector('#jitsi-container'),
+    configOverwrite: { startWithAudioMuted: true, startWithVideoMuted: true },
+    interfaceConfigOverwrite: { TOOLBAR_BUTTONS: ['microphone', 'camera', 'chat', 'tileview', 'fullscreen'] }
+  };
+  const jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', jitsiOptions);
+
+  function toggleJitsi() {
+    const sidebar = document.getElementById('jitsi-sidebar');
+    sidebar.classList.toggle('open');
+  }
 
   let currentState = {
     currentStep: 1,
@@ -203,11 +233,8 @@
     } catch(err) { console.error("Error toggling phase:", err); }
   }
 
-  // --- THE MASTER RESET FUNCTION ---
   async function masterReset() {
     if(!confirm("Reset the temple to Step 1 and extinguish all candles?")) return;
-    
-    // Force UI locally
     currentState.breakingActive = false;
     currentState.taper1 = false;
     currentState.taper2 = false;
@@ -220,14 +247,12 @@
     btn.textContent = 'Initiate Breaking of the Loaf';
 
     try {
-      // Blast the server with reset commands
       await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleCommunion', active: false }) });
       await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 1, isLit: false }) });
       await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 2, isLit: false }) });
       await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 3, isLit: false }) });
       await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'setStep', step: 1 }) });
       
-      // Give the server a second to digest, then refresh the dashboard
       setTimeout(() => { location.reload(); }, 1500);
     } catch(err) { console.error(err); }
   }
