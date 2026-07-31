@@ -24,7 +24,6 @@
     .panel { background: var(--obsidian-card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
     .panel-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--amethyst-light); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 0; display: flex; justify-content: space-between; align-items: center; }
     
-    /* Controls Panel */
     .step-btn { background: var(--indigo-2); border: 1px solid var(--line); color: var(--moonwhite); padding: 12px 14px; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 2px; }
     .step-btn:hover { border-color: var(--amethyst-glow); }
     .step-btn.active { background: #2a1b42; border-color: var(--acid-green); box-shadow: 0 0 10px var(--acid-green-glow); }
@@ -37,23 +36,24 @@
     .action-btn:hover { background: #fadd70; }
     .action-btn.active { background: #ff3860; color: white; box-shadow: 0 0 10px rgba(255,56,96,0.4); }
     
-    /* Script Teleprompter */
     .script-container { font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.7; color: var(--moonwhite); overflow-y: auto; max-height: 75vh; padding-right: 10px; }
     .script-container blockquote { border-left: 3px solid var(--acid-green); margin: 16px 0; padding-left: 18px; font-style: italic; color: #ffffff; }
     .script-container h3 { font-size: 24px; color: var(--amethyst-light); margin-top: 24px; margin-bottom: 8px; }
     .script-container .stage-dir { font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--silver); font-style: normal; background: var(--indigo); padding: 6px 12px; border-radius: 3px; display: inline-block; margin: 8px 0; border-left: 3px solid #d4af37; }
     
-    /* Petitions Feed */
-    .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 70vh; }
+    .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 50vh; }
     .petition-card { background: var(--indigo); border-left: 3px solid var(--amethyst-light); padding: 12px 14px; border-radius: 0 4px 4px 0; }
     .petition-card.Shadow { border-left-color: #ff3860; }
     .petition-card.Harvest { border-left-color: #d4af37; }
     .petition-card .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--silver); text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
     .petition-card .text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; margin: 0; color: var(--moonwhite); }
+
+    /* Live Join Ticker Alert */
+    .join-ticker { background: rgba(57, 255, 20, 0.1); border: 1px dashed var(--acid-green); color: var(--acid-green); font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 8px; border-radius: 4px; text-align: center; margin-bottom: 10px; display: none; animation: pulse 1.5s infinite; }
+
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--amethyst); border-radius: 3px; }
 
-    /* Admin Jitsi Sidebar */
     #jitsi-sidebar { position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: #0a0a0a; border-left: 2px solid #333; transition: right 0.4s ease; z-index: 1000; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
     #jitsi-sidebar.open { right: 0; }
     #jitsi-container { width: 100%; height: 100%; }
@@ -77,8 +77,6 @@
   <!-- LEFT COLUMN: CONTROLS -->
   <div class="panel">
     <h2 class="panel-title">Master Ritual Controls</h2>
-    
-    <!-- THE MASTER RESET BUTTON -->
     <button class="action-btn" style="background: #ff3860; color: white; width: 100%; box-shadow: 0 0 10px rgba(255,56,96,0.4);" onclick="masterReset()">MASTER ENGINE RESET</button>
 
     <div style="margin-top: 10px;">
@@ -97,9 +95,7 @@
     
     <div style="margin-top:10px;">
       <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">Liturgy Sequence</label>
-      <div style="display:flex; flex-direction:column; gap:8px;" id="step-buttons">
-        <!-- Injected dynamically -->
-      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;" id="step-buttons"></div>
     </div>
   </div>
 
@@ -109,9 +105,10 @@
     <div class="script-container" id="script-display"></div>
   </div>
 
-  <!-- RIGHT COLUMN: LIVE SHADOW & HARVEST FEED -->
+  <!-- RIGHT COLUMN: LIVE SHADOW, HARVEST & PARTICIPANT FEED -->
   <div class="panel">
-    <h2 class="panel-title">Coven Shadows & Harvest <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
+    <h2 class="panel-title">Coven Feed <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
+    <div class="join-ticker" id="join-ticker">A seeker has entered the temple.</div>
     <div class="petitions-list" id="petitions-feed">
       <div style="font-size:13px; color:var(--silver); font-style:italic; text-align:center; padding:20px 0;">
         Awaiting live shadows and harvest intentions from the coven...
@@ -123,7 +120,7 @@
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
 
-  // Jitsi Initialization for Admin
+  // Jitsi Initialization & Live Participant Join Detection
   const jitsiOptions = {
     roomName: 'LughnasadhEveTemple2026',
     parentNode: document.querySelector('#jitsi-container'),
@@ -131,6 +128,15 @@
     interfaceConfigOverwrite: { TOOLBAR_BUTTONS: ['microphone', 'camera', 'chat', 'tileview', 'fullscreen'] }
   };
   const jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', jitsiOptions);
+
+  jitsiApi.addEventListeners({
+    participantJoined: function(participant) {
+      const ticker = document.getElementById('join-ticker');
+      ticker.innerText = `✨ ${participant.displayName || 'A Seeker'} entered the circle.`;
+      ticker.style.display = 'block';
+      setTimeout(() => { ticker.style.display = 'none'; }, 6000);
+    }
+  });
 
   function toggleJitsi() {
     const sidebar = document.getElementById('jitsi-sidebar');
