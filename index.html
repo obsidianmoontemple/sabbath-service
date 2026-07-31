@@ -64,7 +64,7 @@
     .node.active-earth { border-color: #4ade80; color: #4ade80; box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); }
     .node-north { grid-column: 2; } .node-west { grid-column: 1; } .node-east { grid-column: 3; } .node-south { grid-column: 2; }
 
-    /* Ghostly Spirit Node (Hidden until 4 are active) */
+    /* Ghostly Spirit Node */
     .spirit-node { display: none; width: 80px; height: 80px; border: 2px dashed #9d5bd2; border-radius: 50%; margin: 20px auto 0 auto; align-items: center; justify-content: center; font-family: 'Cinzel Decorative', serif; font-size: 0.85rem; color: #c092f0; cursor: pointer; background: rgba(110, 59, 167, 0.2); box-shadow: 0 0 25px rgba(157, 91, 210, 0.6); animation: ghostPulse 2s infinite alternate; }
     @keyframes ghostPulse { 0% { transform: scale(0.95); opacity: 0.6; } 100% { transform: scale(1.05); opacity: 1; } }
     
@@ -240,46 +240,47 @@
       }
     };
 
+    // --- FULL, UNCUT OFFICIANT SCRIPT ---
     const OFFICIANT_SCRIPT = {
       en: {
         1: "Welcome to the threshold. Tonight, we stand at the pivot of the Wheel—Lughnasadh Eve. Step into the circle this Friday night as we honor the turning. As multicultural practitioners walking both the left and right-hand paths, our service embraces the dual nature of the harvest. We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.",
-        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth. Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
+        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood. To the South, the fire of the sovereign will and the fading heat of the high sun. We honor the spark that destroys to create. To the West, the deep waters of the subconscious and the rivers of our ancestors. We honor the abyss that holds our darkest reflections. To the North, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed. Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
         3: "We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires. We claim the fruits of our labor upon the Right-Hand Path. And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures. We claim the power of destruction and transformation upon the Left-Hand Path. Sun and Shadow, Bounty and Bone—be present with us tonight.",
         4: "Close your eyes. Feel the physical weight of the dark bread or wheat in your hands. This is the harvest of your year. But look closer in your mind’s eye. This harvest did not grow only from sunlight. It grew from the rot of leaves, from the corpses of insects, from the dark, cold, hidden earth. What have you buried this year? What shadow work have you engaged in? The anger you processed, the toxic ties you severed, the ugly truths you finally admitted to yourself. These were not mistakes—they were fertilizer. Feel the energy of your shadow—your primal, raw, unfiltered self—flowing from your core, down your arms, and into the grain you hold. You are not just reaping the good. You are claiming the power of your darkness. It belongs to you. It makes you whole.",
         5: "Look at the faces of your temple. We are legion. We are the architects of our own reality. Hold up your dark bread, your oats, your wheat to the camera. We break this loaf to honor the cycle. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. They are one and the same. Break the loaf! Consume the shadow! Claim your harvest! Let us eat in silence, grounding the energy.",
         6: "The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward. We thank the Spirits of the Light and the Ancestors of the Dark. Go in power, retaining the sovereignty of your own path, whether you walk in the blinding light of day or the liberating cover of night. The Compass is open, but the connection remains unbroken. So it is done."
       },
       de: {
-        1: "Willkommen an der Schwelle. Heute Nacht stehen wir am Drehpunkt des Rades – am Vorabend von Lughnasadh...",
-        2: "Wir werfen diesen Kompass über die digitale Astralebene. Osten, Süden, Westen, Norden. Erwecke nun das fünfte Element des Geistes und binde alle Viertel zu einem lebendigen Pentakel. Der Kompass ist gewirkt. Wir sind zwischen den Welten.",
-        3: "Wir rufen die Geister der ersten Ernte an...",
-        4: "Schließe deine Augen...",
-        5: "Schau in die Gesichter deines Tempels...",
-        6: "Die Ernte ist eingefordert..."
+        1: "Willkommen an der Schwelle. Heute Nacht stehen wir am Drehpunkt des Rades – am Vorabend von Lughnasadh. Tritt diesen Freitagabend in den Kreis, während wir die Wende ehren. Als multikulturelle Praktizierende, die sowohl den Pfad der linken als auch der rechten Hand gehen, umfasst unser Gottesdienst die duale Natur der Ernte. Wir feiern die lebendige Fülle der Sonne, während wir den notwendigen Verfall ehren, der neues Wachstum nährt.",
+        2: "Wir werfen diesen Kompass nicht nur in diesem Raum, sondern über die digitale Astralebene. Im Osten, der Atem des Intellekts und die Winde der Veränderung. Wir ehren die fegenden Stürme, die das tote Holz beseitigen. Im Süden, das Feuer des souveränen Willens und die schwindende Hitze der hohen Sonne. Wir ehren den Funken, der zerstört, um zu erschaffen. Im Westen, die tiefen Gewässer des Unterbewusstseins und die Flüsse unserer Vorfahren. Wir ehren den Abgrund, der unsere dunkelsten Reflexionen hält. Im Norden, die dunkle Erde, das Silizium in unseren Maschinen, die Knochen und die Asche. Wir ehren die Fäulnis, die den Samen nährt. Oben, der grenzenlose Kosmos. Unten, die unterirdischen Tiefen. Im Inneren, die ewige Flamme. Erwecke nun das fünfte Element des Geistes und binde alle Viertel zu einem lebendigen Pentakel. Der Kompass ist gewirkt. Wir sind zwischen den Welten.",
+        3: "Wir rufen die Geister der ersten Ernte an. Wir ehren die lebendige Fülle der Sonne, das goldene Korn und die Manifestation unserer bewussten Wünsche. Wir fordern die Früchte unserer Arbeit auf dem Pfad der rechten Hand ein. Und wir rufen die Ahnen des Schattens an. Wir ehren den notwendigen Verfall, die Sense des Schnitters und den Kompost unserer Misserfolge. Wir beanspruchen die Macht der Zerstörung und Transformation auf dem Pfad der linken Hand. Sonne und Schatten, Fülle und Knochen – seid heute Abend bei uns.",
+        4: "Schließe deine Augen. Fühle das physische Gewicht des dunklen Brotes oder Weizens in deinen Händen. Das ist die Ernte deines Jahres. Aber schau genauer hin. Diese Ernte wuchs nicht nur durch Sonnenlicht. Sie wuchs aus verrottenden Blättern, aus den Leichen von Insekten, aus der dunklen, kalten, verborgenen Erde. Was hast du dieses Jahr begraben? Welche Schattenarbeit hast du geleistet? Die verarbeitete Wut, die toxischen Bindungen, die du gekappt hast, die hässlichen Wahrheiten, die du dir endlich eingestanden hast. Das waren keine Fehler – sie waren Dünger. Fühle die Energie deines Schattens, der von deinem Kern in das Korn fließt, das du hältst. Du erntest nicht nur das Gute. Du beanspruchst die Macht deiner Dunkelheit. Sie gehört dir. Sie macht dich ganz.",
+        5: "Schau in die Gesichter deines Tempels. Wir sind viele. Wir sind die Architekten unserer eigenen Realität. Halte dein dunkles Brot, deinen Hafer, deinen Weizen in die Kamera. Wir brechen diesen Laib, um den Zyklus zu ehren. Um zu leben, müssen wir konsumieren. Um zu wachsen, muss etwas anderes fallen. Wir essen von unseren Triumphen und wir essen von unseren Schatten. Sie sind ein und dasselbe. Brich das Brot! Konsumiere den Schatten! Fordere deine Ernte ein! Lasst uns in Stille essen und die Energie erden.",
+        6: "Die Ernte ist eingefordert. Der Schatten ist integriert. Das Rad dreht sich unaufhaltsam weiter. Wir danken den Geistern des Lichts und den Ahnen der Dunkelheit. Gehe in Kraft und bewahre die Souveränität deines eigenen Weges, ob du im blendenden Licht des Tages oder im befreienden Schutz der Nacht gehst. Der Kompass ist offen, aber die Verbindung bleibt ungebrochen. So ist es geschehen."
       },
       es: {
-        1: "Bienvenidos al umbral...",
-        2: "Lanzamos esta brújula a través del plano astral digital. Este, Sur, Oeste, Norte. Ahora, despierta al quinto elemento del Espíritu, uniendo todos los puntos en un pentáculo viviente. La Brújula es lanzada.",
-        3: "Invocamos a los Espíritus...",
-        4: "Cierren los ojos...",
-        5: "Miren los rostros...",
-        6: "La cosecha es reclamada..."
+        1: "Bienvenidos al umbral. Esta noche, estamos en el eje de la Rueda: la Víspera de Lughnasadh. Entren al círculo este viernes por la noche para honrar el giro. Como practicantes multiculturales que recorren los caminos de la mano izquierda y derecha, nuestro servicio abraza la naturaleza dual de la cosecha. Celebramos la vibrante abundancia del sol, mientras honramos la decadencia necesaria que alimenta el nuevo crecimiento.",
+        2: "Lanzamos esta brújula no solo en esta habitación, sino a través del plano astral digital. Al Este, el aliento del intelecto y los vientos de cambio. Honramos las tormentas que limpian la madera muerta. Al Sur, el fuego de la voluntad soberana y el calor menguante del sol alto. Honramos la chispa que destruye para crear. Al Oeste, las aguas profundas del subconsciente y los ríos de nuestros ancestros. Honramos el abismo que guarda nuestros reflejos más oscuros. Al Norte, la tierra oscura, el silicio en nuestras máquinas, el hueso y la ceniza. Honramos la putrefacción que alimenta la semilla. Arriba, el cosmos infinito. Abajo, las profundidades subterráneas. Adentro, la llama eterna. Ahora, despierta al quinto elemento del Espíritu, uniendo todos los puntos en un pentáculo viviente. La Brújula es lanzada. Estamos entre mundos.",
+        3: "Invocamos a los Espíritus de la Primera Cosecha. Honramos la vibrante abundancia del sol, el grano dorado y la manifestación de nuestros deseos conscientes. Reclamamos los frutos de nuestra labor en el Camino de la Mano Derecha. E invocamos a los Ancestros de la Sombra. Honramos la decadencia necesaria, la guadaña del segador y el abono de nuestros fracasos. Reclamamos el poder de destrucción y transformación en el Camino de la Mano Izquierda. Sol y Sombra, Abundancia y Hueso, estén presentes con nosotros esta noche.",
+        4: "Cierren los ojos. Sientan el peso físico del pan oscuro o el trigo en sus manos. Esta es la cosecha de su año. Pero miren más de cerca con el ojo de su mente. Esta cosecha no creció solo de la luz del sol. Creció de la putrefacción de las hojas, de los cadáveres de insectos, de la tierra oscura, fría y oculta. ¿Qué han enterrado este año? ¿En qué trabajo de sombra se han involucrado? La ira que procesaron, los lazos tóxicos que cortaron, las verdades feas que finalmente admitieron. Estos no fueron errores, fueron fertilizante. Sientan la energía de su sombra, su ser primordial, crudo y sin filtros, fluyendo desde su núcleo hacia el grano que sostienen. No solo están cosechando lo bueno. Están reclamando el poder de su oscuridad. Les pertenece. Los hace completos.",
+        5: "Miren los rostros de su templo. Somos legión. Somos los arquitectos de nuestra propia realidad. Levanten su pan oscuro, su avena, su trigo hacia la cámara. Rompemos este pan para honrar el ciclo. Para vivir, debemos consumir. Para crecer, algo más debe caer. Comemos de nuestros triunfos, y comemos de nuestras sombras. Son uno y lo mismo. ¡Rompan el pan! ¡Consuman la sombra! ¡Reclamen su cosecha! Comamos en silencio, enraizando la energía.",
+        6: "La cosecha es reclamada. La sombra es integrada. La Rueda gira inexorablemente hacia adelante. Agradecemos a los Espíritus de la Luz y a los Ancestros de la Oscuridad. Vayan con poder, reteniendo la soberanía de su propio camino, ya sea que caminen en la luz cegadora del día o en la cubierta liberadora de la noche. La Brújula está abierta, pero la conexión permanece intacta. Que así sea."
       },
       fr: {
-        1: "Bienvenue au seuil...",
-        2: "Nous jetons cette boussole à travers le plan astral numérique. Est, Sud, Ouest, Nord. Maintenant, éveillez le cinquième élément de l'Esprit, liant tous les quarts en un pentacle vivant.",
-        3: "Nous invoquons les Esprits...",
-        4: "Fermez les yeux...",
-        5: "Regardez les visages...",
-        6: "La récolte est réclamée..."
+        1: "Bienvenue au seuil. Ce soir, nous nous tenons au pivot de la Roue : la Veille de Lughnasadh. Entrez dans le cercle ce vendredi soir alors que nous honorons le tournant. En tant que praticiens multiculturels marchant sur les voies de la main gauche et droite, notre service embrasse la nature double de la récolte. Nous célébrons l'abondance vibrante du soleil, tout en honorant la décadence nécessaire qui nourrit la nouvelle croissance.",
+        2: "Nous jetons cette boussole non seulement dans cette pièce, mais à travers le plan astral numérique. À l'Est, le souffle de l'intellect et les vents du changement. Nous honorons les tempêtes qui nettoient le bois mort. Au Sud, le feu de la volonté souveraine et la chaleur déclinante du haut soleil. Nous honorons l'étincelle qui détruit pour créer. À l'Ouest, les eaux profondes du subconscient et les rivières de nos ancêtres. Nous honorons l'abîme qui contient nos reflets les plus sombres. Au Nord, la terre sombre, le silicium dans nos machines, l'os et la cendre. Nous honorons la pourriture qui nourrit la graine. En haut, le cosmos sans limites. En bas, les profondeurs souterraines. À l'intérieur, la flamme éternelle. Maintenant, éveillez le cinquième élément de l'Esprit, liant tous les quarts en un pentacle vivant. La Boussole est jetée. Nous sommes entre les mondes.",
+        3: "Nous invoquons les Esprits de la Première Récolte. Nous honorons l'abondance vibrante du soleil, le grain doré et la manifestation de nos désirs conscients. Nous réclamons les fruits de notre travail sur la Voie de la Main Droite. Et nous invoquons les Ancêtres de l'Ombre. Nous honorons la décadence nécessaire, la faux du faucheur et le compost de nos échecs. Nous réclamons le pouvoir de destruction et de transformation sur la Voie de la Main Gauche. Soleil et Ombre, Abondance et Os, soyez présents avec nous ce soir.",
+        4: "Fermez les yeux. Sentez le poids physique du pain noir ou du blé dans vos mains. C'est la récolte de votre année. Mais regardez de plus près dans votre esprit. Cette récolte n'a pas poussé seulement grâce à la lumière du soleil. Elle a poussé de la pourriture des feuilles, des cadavres d'insectes, de la terre sombre, froide et cachée. Qu'avez-vous enterré cette année ? Dans quel travail de l'ombre vous êtes-vous engagé ? La colère que vous avez traitée, les liens toxiques que vous avez coupés, les vilaines vérités que vous avez enfin admises. Ce n'étaient pas des erreurs, c'était de l'engrais. Sentez l'énergie de votre ombre, votre être primordial, brut et sans filtre, couler de votre centre vers le grain que vous tenez. Vous ne récoltez pas seulement le bon. Vous réclamez le pouvoir de votre obscurité. Il vous appartient. Il vous rend entier.",
+        5: "Regardez les visages de votre temple. Nous sommes légion. Nous sommes les architectes de notre propre réalité. Levez votre pain noir, votre avoine, votre blé vers la caméra. Nous rompons ce pain pour honorer le cycle. Pour vivre, nous devons consommer. Pour grandir, autre chose doit tomber. Nous mangeons de nos triomphes, et nous mangeons de nos ombres. Ils sont un seul et même. Rompez le pain ! Consommez l'ombre ! Réclamez votre récolte ! Mangeons en silence, en ancrant l'énergie.",
+        6: "La récolte est réclamée. L'ombre est intégrée. La Roue tourne inexorablement. Nous remercions les Esprits de la Lumière et les Ancêtres de l'Obscurité. Allez en pouvoir, en conservant la souveraineté de votre propre chemin, que vous marchiez dans la lumière aveuglante du jour ou sous le couvert libérateur de la nuit. La Boussole est ouverte, mais la connexion reste intacte. Qu'il en soit ainsi."
       },
       yo: {
-        1: "Kaabọ si ẹnu-ọna...",
-        2: "A da kọmpasi yii kọja aaye ẹmi dijita. Bayi, ji ẹmi karun lati di gbogbo awọn mẹẹrin papọ sinu pentacle alãye.",
-        3: "A pe awọn Ẹmi...",
-        4: "Pa oju rẹ de...",
-        5: "Wo awọn oju...",
-        6: "A ti gba ikore naa..."
+        1: "Kaabọ si ẹnu-ọna. Ni alẹ yii, a duro ni ipo Kẹkẹ—Àṣálẹ́ Lughnasadh. Wọ inu ayika ni alẹ Ọjọ Ẹtì yii bi a ṣe bọla fun iyipada naa. A ṣe ayẹyẹ ọpọlọpọ oorun, lakoko ti a bọla fun ibajẹ to ṣe pataki ti o n bọ idagbasoke titun.",
+        2: "A da kọmpasi yii kọja aaye ẹmi dijita. Si Ìla-oòrùn, afẹfẹ iyipada. Si Gúúsù, ina ifẹ ọba. Si Ìwọ̀-oòrùn, awọn omi ijinle. Si Àríwá, ilẹ dudu ti aye, egungun ati eeru. Bayi, ji ẹmi karun lati di gbogbo awọn mẹẹrin papọ sinu pentacle alãye. A ti da Kọmpasi naa. A wa laarin awọn aye.",
+        3: "A pe awọn Ẹmi ti Ikore Akọkọ. A nperedi awọn eso iṣẹ wa lori Ọna Ọwọ-Ọtún. Ati pe a pe awọn Baba-nla ti Ojiji. A nperedi agbara iparun ati iyipada lori Ọna Ọwọ-Òsì. Oorun ati Ojiji, Ọpọlọpọ ati Egungun — wa pẹlu wa ni alẹ yii.",
+        4: "Pa oju rẹ de. Ni imọlara iwuwo ti akara dudu ni ọwọ rẹ. Eyi ni ikore ọdun rẹ. Kini o ti sin ni ọdun yii? Ibinu, awọn aṣiṣe wọnyi kii ṣe asan—wọn jẹ ajile. O n gba agbara òkùnkùn rẹ. O jẹ ki o wa ni kikun.",
+        5: "Wo awọn oju tẹmpili rẹ. A jẹ ayaworan ti otitọ wa. Gbe ọka rẹ soke. Lati wa laaye, a gbọdọ jẹ. Lati dagba, nkan miiran gbọdọ ṣubu. A jẹ ninu awọn iṣẹgun wa, a si jẹ ninu awọn ojiji wa. Bú akara naa! Gba ikore rẹ! Ẹ jẹ ki a jẹun ni idakẹjẹ.",
+        6: "A ti gba ikore naa. A ti ṣepọ ojiji naa. Kẹkẹ n yi siwaju. A dupẹ lọwọ awọn Ẹmi ti Imọlẹ ati awọn Baba-nla ti Òkùnkùn. Lọ ni agbara. Asopọ naa wa ni aipe. Bẹẹ ni o ri."
       }
     };
 
@@ -402,7 +403,6 @@
       }
     }
 
-    // COMPASS NODE LOGIC & SPIRIT UNLOCK
     function activateNode(element, elementStr) {
       if (!element.classList.contains('active-' + elementStr)) {
         element.classList.add('active-' + elementStr);
@@ -410,7 +410,6 @@
         const rect = element.getBoundingClientRect();
         createSparkBurst(rect.left + 35, rect.top + 35, getComputedStyle(element).color, 8);
 
-        // If all 4 quarters are clicked, spawn the Ghostly Spirit Node!
         if (activeNodesCount === 4) {
           setTimeout(() => {
             document.getElementById('spirit-node').style.display = 'flex';
@@ -420,7 +419,6 @@
       }
     }
 
-    // SPIRIT CLICK & PENTACLE FORGING
     function awakenSpirit(ev) {
       const spiritNode = document.getElementById('spirit-node');
       spiritNode.style.display = 'none';
@@ -486,7 +484,6 @@
       }, 1500);
     }
 
-    // Particle Factory
     document.addEventListener('mousemove', (e) => { if (Math.random() > 0.8) spawnSpark(e.pageX, e.pageY); });
     document.addEventListener('touchmove', (e) => { if (Math.random() > 0.8) spawnSpark(e.touches[0].pageX, e.touches[0].pageY); });
     
@@ -520,7 +517,6 @@
       if (localState.currentStep === 1) document.getElementById('layer-step-1').style.display = 'block';
       if (localState.currentStep === 2) {
         document.getElementById('layer-step-2').style.display = 'block';
-        // Reset compass state on step entry if needed
         if (activeNodesCount < 4) {
           document.getElementById('compass-grid-box').style.display = 'grid';
           document.getElementById('spirit-node').style.display = 'none';
