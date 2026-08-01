@@ -30,33 +30,30 @@
     select:focus { outline: none; border-color: var(--path-accent); }
     .btn-small:hover { border-color: var(--path-accent); color: var(--path-accent); box-shadow: 0 0 10px rgba(212,175,55,0.4); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
 
-    /* HIGH-PRIEST TO COVEN LIVE BROADCAST BANNER */
     #high-priest-broadcast-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 75%; max-width: 650px; background: linear-gradient(90deg, rgba(110,59,167,0.92), rgba(212,175,55,0.92), rgba(110,59,167,0.92)); border: 2px solid var(--gold); border-radius: 6px; padding: 12px 20px; z-index: 100; box-shadow: 0 0 30px rgba(212,175,55,0.7); display: none; animation: bannerPulse 2s infinite alternate; }
     @keyframes bannerPulse { 0% { box-shadow: 0 0 20px rgba(212,175,55,0.5); } 100% { box-shadow: 0 0 35px rgba(255,215,0,0.9); } }
     .banner-title { font-family: 'Cinzel Decorative', serif; font-size: 0.8rem; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3px; text-shadow: 0 1px 2px #000; }
     .banner-message { font-family: 'Work Sans', sans-serif; font-size: 1.05rem; color: #fff; font-weight: 500; font-style: italic; text-shadow: 0 1px 2px #000; }
 
-    /* RESTORED MAIN ALTAR TAPERS ON COVEN VIEW */
-    .altar { position: absolute; top: 85px; display: flex; gap: 30px; z-index: 5; transition: opacity 2s; }
+    .altar { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 35px; z-index: 20; transition: opacity 2s; }
     body.snuffed .altar { opacity: 0; }
-    .taper { width: 12px; height: 50px; background: #222; border-radius: 6px 6px 0 0; position: relative; border: 1px solid #444; transition: all 1s ease; }
-    .taper.lit::after { content: ''; position: absolute; top: -30px; left: -14px; width: 40px; height: 45px; background: radial-gradient(circle, #fff 0%, #ffcc00 40%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: flicker 0.12s infinite alternate; }
+    .taper { width: 12px; height: 45px; background: #222; border-radius: 6px 6px 0 0; position: relative; border: 1px solid #444; transition: all 1s ease; box-shadow: 0 0 10px rgba(0,0,0,0.8); }
+    .taper.lit::after { content: ''; position: absolute; top: -28px; left: -14px; width: 40px; height: 40px; background: radial-gradient(circle, #fff 0%, #ffcc00 40%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: flicker 0.12s infinite alternate; }
     @keyframes flicker { from { opacity: 0.9; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
 
-    .ritual-content { position: relative; max-width: 900px; padding: 30px; z-index: 10; transition: opacity 1s ease; width: 100%; box-sizing: border-box; margin-top: 40px; }
+    .ritual-content { position: relative; max-width: 900px; padding: 30px; z-index: 10; transition: opacity 1s ease; width: 100%; box-sizing: border-box; margin-top: 60px; }
     h1 { font-size: 2.6rem; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; color: var(--path-accent); text-shadow: 0 0 15px rgba(212,175,55,0.4); }
     p { font-family: 'Work Sans', sans-serif; font-size: 1.1rem; line-height: 1.7; color: #e2def5; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
     
     .interactive-layer { display: none; margin-top: 20px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .match-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; margin-top: 15px; }
+    .match-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; margin-top: 15px; z-index: 50; position: relative; }
     
     .locked-element { opacity: 0.3; pointer-events: none; filter: grayscale(100%); transition: all 1s ease; }
     .unlocked-element { opacity: 1; pointer-events: auto; filter: none; }
 
-    /* ENHANCED MAGICAL PERSONAL ALTAR CANDLES */
-    .altar-candle-container { display: flex; gap: 25px; align-items: flex-end; justify-content: center; margin-bottom: 5px; }
+    .altar-candle-container { display: flex; gap: 25px; align-items: flex-end; justify-content: center; margin-bottom: 5px; z-index: 60; }
     .altar-candle { width: 34px; height: 100px; background: linear-gradient(180deg, #333 0%, #1a1a1a 100%); border-radius: 6px 6px 0 0; position: relative; cursor: pointer; border: 1px solid #555; transition: 0.3s; box-shadow: 0 0 15px rgba(0,0,0,0.8); }
     .altar-candle:hover { border-color: var(--path-accent); box-shadow: 0 0 20px rgba(212,175,55,0.5); }
     .altar-candle::before { content: ''; position: absolute; top: -8px; left: 15px; width: 4px; height: 8px; background: #666; }
@@ -65,10 +62,10 @@
     .altar-candle.snuffed-out::after { display: none; }
     @keyframes enhancedFlicker { 0% { opacity: 0.85; transform: scale(0.92) skewX(1deg); } 100% { opacity: 1; transform: scale(1.08) skewX(-1deg); } }
 
-    input.name-input { width: 60%; padding: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 0.95rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
+    input.name-input { width: 60%; padding: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 0.95rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; z-index: 55; position: relative; }
     input.name-input:focus { outline: none; border-color: var(--path-accent); box-shadow: 0 0 10px var(--path-accent); }
 
-    /* COMPASS NODES WITH SEQUENTIAL UNLOCKING */
+    /* COMPASS NODES */
     .compass-container { position: relative; width: 300px; margin: 0 auto; }
     .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
     .node { width: 70px; height: 70px; border: 1px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #444; background: rgba(0,0,0,0.4); pointer-events: none; transition: all 0.4s; }
@@ -100,7 +97,6 @@
     input.path-input { width: 90%; padding: 18px; background: rgba(0,0,0,0.5); border: none; border-bottom: 2px solid var(--path-accent); color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.5rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px var(--path-accent); }
     input.path-input:focus { outline: none; border-bottom-color: #fff; }
 
-    /* HARVEST / SCYTHE SLICING & BINDING INTERACTION */
     .harvest-game-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
     .scythe-node { width: 140px; height: 140px; background: radial-gradient(circle, #e5c158 0%, #8b6508 70%, #2e1d08 100%); border-radius: 50%; box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1a0f00; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: transform 0.1s ease, box-shadow 0.3s ease; border: 2px solid #fff; }
     .scythe-node:active { transform: scale(0.85) rotate(-10deg); box-shadow: 0 0 60px #ff3860; }
@@ -110,14 +106,12 @@
     .btn-magic { background: rgba(0,0,0,0.8); border: 1px solid var(--path-accent); color: var(--path-accent); padding: 12px 30px; cursor: pointer; transition: 0.4s; font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
     .btn-magic:hover { background: var(--path-accent); color: #000; box-shadow: 0 0 20px var(--path-accent); }
 
-    /* MAGICAL CURSOR TRAIL SPARKLES */
     .spark { position: absolute; pointer-events: none; border-radius: 50%; z-index: 1000; animation: floatSpark 0.8s forwards; }
     @keyframes floatSpark { 0% { transform: scale(1) translateY(0); opacity: 0.9; } 100% { transform: scale(0) translateY(-40px); opacity: 0; } }
   </style>
 </head>
 <body class="step-1">
 
-  <!-- LIVE HIGH-PRIEST TO COVEN BANNER -->
   <div id="high-priest-broadcast-banner">
     <div class="banner-title" id="banner-title-text">Temple Clergy Notice</div>
     <div class="banner-message" id="banner-msg-text">Please await your High Priest and verify you are connected in Discord!</div>
@@ -134,7 +128,6 @@
     <a href="https://discord.gg/XfkU5A5rp" target="_blank" class="btn-small">Discord Coven</a>
   </div>
 
-  <!-- RESTORED MAIN ALTAR TAPERS -->
   <div class="altar">
     <div class="taper" id="taper-1"></div>
     <div class="taper" id="taper-2"></div>
@@ -149,7 +142,7 @@
     <div class="interactive-layer" id="layer-step-1" style="display:block;">
       <p style="color: #d4af37; font-style: italic; font-size: 0.95rem;" id="ui-drag-match">Early Arrivals: Await your High Priest, ensure you are connected in Discord, bring your seasonal brew and grimoire, and ignite your altar candle.</p>
       <div class="match-box">
-        <input type="text" class="name-input" id="initial-name" placeholder="Your Name or Moniker" autocomplete="off" style="margin-bottom: 5px;">
+        <input type="text" class="name-input" id="initial-name" placeholder="Your Name or Moniker" autocomplete="off" style="margin-bottom: 5px;" oninput="logInteraction('Entered Name: ' + this.value)">
         <div class="altar-candle-container">
           <div class="altar-candle" id="my-candle" onclick="lightPersonalCandle(event)" title="Click to ignite your candle"></div>
         </div>
@@ -163,8 +156,8 @@
         <div class="compass-grid" id="compass-grid-box">
           <div class="node node-north" onclick="activateNode(this, 'earth')" id="node-earth">Earth</div>
           <div class="node node-west" onclick="activateNode(this, 'water')" id="node-water">Water</div>
-          <div class="node node-east" onclick="activateNode(this, 'air')" id="node-air">Air</div>
-          <div class="node node-south" onclick="activateNode(this, 'fire')" id="node-fire">Fire</div>
+          <div class="node node-east" onclick="activateNode(this, 'air')" id="node-east">Air</div>
+          <div class="node node-south" onclick="activateNode(this, 'fire')" id="node-south">Fire</div>
         </div>
         <div class="spirit-node" id="spirit-node" onclick="awakenSpirit(event)">
           <span id="ui-spirit-label">SPIRIT</span>
@@ -190,13 +183,13 @@
     <!-- STEP 4 -->
     <div class="interactive-layer" id="layer-step-4">
       <div class="shadow-container locked-element" id="shadow-container">
-        <input type="text" class="path-input" id="path-input-field" placeholder="What must you ruthlessly cut away?" autocomplete="off">
+        <input type="text" class="path-input" id="path-input-field" placeholder="What must you ruthlessly cut away?" autocomplete="off" oninput="logInteraction('Shadow Input Draft: ' + this.value)">
         <button class="btn-magic" onclick="submitPathWork()" id="ui-release">Wield Harvest Magic with Absolute Intent</button>
       </div>
       <p id="shadow-confirmation" style="display:none; color: var(--path-accent); font-style: italic; margin-top: 20px; font-size: 1.4rem;">The offering is recorded in the Temple Ledger.</p>
     </div>
 
-    <!-- STEP 5: ADVANCED SCYTHE-SLICING & HARVEST BINDING PHASE -->
+    <!-- STEP 5 -->
     <div class="interactive-layer" id="layer-step-5">
       <p style="color: var(--path-accent); margin-bottom: 15px; font-style: italic;" id="ui-bread-inst">Swing the astral scythe and bind the first harvest. Tap rapidly to sever ties and charge the energy.</p>
       <div class="harvest-game-container locked-element" id="bread-game-box">
@@ -220,6 +213,7 @@
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
+    let practitionerSessionName = "Anonymous Seeker";
     
     const LORE = {
       en: {
@@ -229,38 +223,6 @@
         4: { title: "The Path Work", text: "Focus entirely on cutting away what no longer serves your power." },
         5: { title: "The First Harvest", text: "Swing the astral scythe and reap the golden grain together." },
         6: { title: "The Wheel Turns", text: "The temple talk is complete. Snuff your personal flame." }
-      },
-      de: {
-        1: { title: "Ernten, was wir säen", text: "Stelle sicher, dass deine Kerze nicht brennt." },
-        2: { title: "Der Kompass ist gewirkt", text: "Knoten werden der Reihe nach freigeschaltet." },
-        3: { title: "Multipraktische Perspektiven", text: "Wähle deinen Pfad." },
-        4: { title: "Die Arbeit", text: "Konzentriere dich auf deinen Pfad." },
-        5: { title: "Die Erste Ernte", text: "Schwinge die Sichel." },
-        6: { title: "Das Rad dreht sich", text: "Das Ritual ist abgeschlossen." }
-      },
-      es: {
-        1: { title: "Cosechando lo que sembramos", text: "Asegúrate de que tu vela esté apagada." },
-        2: { title: "La Brújula es Lanzada", text: "Escucha atentamente." },
-        3: { title: "Perspectivas Multiprácticas", text: "Elige tu camino." },
-        4: { title: "El Trabajo", text: "Concéntrate en tu sendero." },
-        5: { title: "La Primera Cosecha", text: "Reúne la cosecha." },
-        6: { title: "La Rueda Gira", text: "El ritual está completo." }
-      },
-      fr: {
-        1: { title: "Récolter ce que nous semons", text: "Assurez-vous que votre bougie est éteinte." },
-        2: { title: "La Boussole est Jetée", text: "Écoutez attentivement." },
-        3: { title: "Perspectives Multipratiques", text: "Choisissez votre voie." },
-        4: { title: "Le Travail", text: "Concentrez-vous sur votre voie." },
-        5: { title: "La Première Récolte", text: "Fauchez le blé." },
-        6: { title: "La Roue Tourne", text: "Le rituel est terminé." }
-      },
-      yo: {
-        1: { title: "Ikore Ohun Ti A Gbin", text: "Rii daju pe abẹla rẹ ko tan." },
-        2: { title: "A ti da kọmpasi naa", text: "Fetisi silẹ." },
-        3: { title: "Awọn Iwoye Ọpọlọpọ", text: "Yan ọna rẹ." },
-        4: { title: "Iṣẹ Naa", text: "Fojusi lori ọna rẹ." },
-        5: { title: "Ikore Akọkọ", text: "Mura akara rẹ." },
-        6: { title: "Kẹkẹ N Yí", text: "Ilana naa ti pari." }
       }
     };
 
@@ -278,11 +240,7 @@
         },
         5: "Look at the faces and energies gathered across our temple network. We are legion, bound by sovereignty and shared purpose. Hold up your seasonal brew, your grimoire, or your tokens to the digital ether. We swing the astral scythe and break the bread of life to honor the eternal cycle. To live and evolve, we must consume illusion and discard weakness. Swing the scythe! Cut the dead weight! Claim your absolute harvest! Let us ground this high-frequency energy in silent communion.",
         6: "The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We give profound thanks to the Clergy, the elemental forces, and the Ancestors who guide our craft. Go forth in absolute power, retaining the sovereign ownership of your own path. The compass is open, but our connection remains unbroken. So it is done."
-      },
-      de: { 1: "Willkommen...", 2: "Wir werfen...", 3: { intro: "Fokus..." }, 4: { right: "Licht.", neutral: "Balance.", left: "Schatten." }, 5: "Schau in die Gesichter...", 6: "Die Ernte ist eingefordert..." },
-      es: { 1: "Bienvenidos...", 2: "Lanzamos...", 3: { intro: "Foco..." }, 4: { right: "Luz.", neutral: "Equilibrio.", left: "Sombra." }, 5: "Miren los rostros...", 6: "La cosecha es reclamada..." },
-      fr: { 1: "Bienvenue...", 2: "Nous jetons...", 3: { intro: "Voie..." }, 4: { right: "Lumière.", neutral: "Équilibre.", left: "Ombre." }, 5: "Regardez les visages...", 6: "La récolte est réclamée..." },
-      yo: { 1: "Kaabọ...", 2: "A da...", 3: { intro: "Ọna..." }, 4: { right: "Imọlẹ.", neutral: "Iwontunwonsi.", left: "Okunkun." }, 5: "Wo awọn oju...", 6: "A ti gba ikore naa..." }
+      }
     };
 
     let currentLang = 'en';
@@ -298,21 +256,11 @@
       window.speechSynthesis.cancel();
       let utterance = new SpeechSynthesisUtterance(text);
       const voices = window.speechSynthesis.getVoices();
-      
-      let langCode = 'en-US';
-      if (currentLang === 'es') langCode = 'es-ES';
-      if (currentLang === 'fr') langCode = 'fr-FR';
-      if (currentLang === 'de') langCode = 'de-DE';
-      if (currentLang === 'yo') langCode = 'yo-NG'; 
-      utterance.lang = langCode;
+      utterance.lang = 'en-US';
       
       const femaleKeywords = ['female', 'woman', 'zira', 'samantha', 'victoria', 'karen', 'amelie', 'monica', 'paulina'];
-      const bannedMaleKeywords = ['male', 'man', 'david', 'mark', 'george', 'arthur', 'default'];
-
-      let chosenVoice = voices.find(v => v.lang.includes(langCode.substring(0,2)) && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
-      if (!chosenVoice) {
-        chosenVoice = voices.find(v => v.lang.includes(langCode.substring(0,2)) && !bannedMaleKeywords.some(k => v.name.toLowerCase().includes(k)));
-      }
+      let chosenVoice = voices.find(v => v.lang.includes('en') && femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
+      if (!chosenVoice && voices.length > 0) chosenVoice = voices.find(v => v.lang.includes('en')) || voices[0];
       if (chosenVoice) utterance.voice = chosenVoice;
       
       utterance.rate = 0.85; 
@@ -331,30 +279,32 @@
 
     let localState = { currentStep: 1, taper1: false, taper2: false, taper3: false };
     let activeNodesCount = 0;
-    let earthNodeClicked = false;
+
+    async function logInteraction(detailText) {
+      try {
+        await fetch(API_URL, { 
+          method: 'POST', 
+          body: JSON.stringify({ 
+            action: 'addPetition', 
+            name: practitionerSessionName, 
+            type: 'Interaction', 
+            text: `[Step ${localState.currentStep}] ${detailText}` 
+          }) 
+        });
+      } catch (err) {}
+    }
 
     async function lightPersonalCandle(ev) {
       const candle = document.getElementById('my-candle');
       const nameInput = document.getElementById('initial-name');
-      const practitionerName = nameInput.value.trim() || 'A Seeker';
+      practitionerSessionName = nameInput.value.trim() || 'A Seeker';
 
       if (!candle.classList.contains('lit')) {
         candle.classList.add('lit');
         nameInput.style.display = 'none';
         document.getElementById('ui-drag-match').innerText = "You have entered the golden temple fields with your brew and grimoire.";
         createSparkBurst(ev.pageX, ev.pageY, '#ffd700', 25);
-
-        try {
-          await fetch(API_URL, { 
-            method: 'POST', 
-            body: JSON.stringify({ 
-              action: 'addPetition', 
-              name: practitionerName, 
-              type: 'Harvest', 
-              text: 'Entered the golden circle, bringing seasonal brew and grimoire.' 
-            }) 
-          });
-        } catch (err) {}
+        logInteraction("Ignited personal altar candle and entered temple.");
 
         if (localState.currentStep === 1) {
           narrateText(OFFICIANT_SCRIPT[currentLang][1]);
@@ -362,10 +312,8 @@
       }
     }
 
-    /* SEQUENTIAL QUARTER UNLOCKING TIED TO SCRIPT READING */
     function startCompassUnlocking() {
       activeNodesCount = 0;
-      earthNodeClicked = false;
       document.querySelectorAll('.node').forEach(n => {
         n.classList.remove('unlocked', 'active-air', 'active-fire', 'active-water', 'active-earth');
       });
@@ -373,16 +321,12 @@
       document.getElementById('pentacle-container').style.display = 'none';
       document.getElementById('compass-grid-box').style.display = 'grid';
 
-      // Narrate script and unlock nodes sequentially as each quarter is spoken
-      narrateText(OFFICIANT_SCRIPT[currentLang][2], () => {
-        // Callback after full speech or timed progressively
-      });
+      narrateText(OFFICIANT_SCRIPT[currentLang][2], () => {});
 
-      // Progressive sequential unlocking synchronized with the officiant speech pacing
-      setTimeout(() => { document.getElementById('node-east').classList.add('unlocked'); }, 4000);   // East (Air)
-      setTimeout(() => { document.getElementById('node-south').classList.add('unlocked'); }, 8500);  // South (Fire)
-      setTimeout(() => { document.getElementById('node-west').classList.add('unlocked'); }, 13000); // West (Water)
-      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 17500); // North (Earth)
+      setTimeout(() => { document.getElementById('node-east').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: East (Air)"); }, 3000);
+      setTimeout(() => { document.getElementById('node-south').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: South (Fire)"); }, 7000);
+      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: West (Water)"); }, 11000);
+      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: North (Earth)"); }, 15000);
     }
 
     function activateNode(element, elementStr) {
@@ -392,23 +336,24 @@
           element.classList.add(activeClass);
           activeNodesCount++;
           const rect = element.getBoundingClientRect();
+          logInteraction(`Activated Node: ${elementStr.toUpperCase()}`);
           
           let sparkColor = '#d4af37';
           if (elementStr === 'air') sparkColor = '#fadd70';
           if (elementStr === 'fire') sparkColor = '#ff3860';
           if (elementStr === 'water') sparkColor = '#38bdf8';
-          if (elementStr === 'earth') {
-            sparkColor = '#4ade80';
-            earthNodeClicked = true; 
-          }
+          if (elementStr === 'earth') sparkColor = '#4ade80';
 
           createSparkBurst(rect.left + 35, rect.top + 35, sparkColor, 15);
 
-          if (activeNodesCount === 4 && earthNodeClicked) {
+          if (activeNodesCount >= 4) {
             setTimeout(() => {
-              document.getElementById('spirit-node').style.display = 'flex';
+              const sNode = document.getElementById('spirit-node');
+              sNode.style.display = 'flex';
+              sNode.style.pointerEvents = 'auto';
               narrateText("The four harvest quarters are anchored. Awaken Spirit.");
-            }, 800);
+              logInteraction("All 4 Quarters anchored. Spirit node revealed.");
+            }, 500);
           }
         }
       }
@@ -423,6 +368,7 @@
       const rect = ev.target.getBoundingClientRect();
       createSparkBurst(rect.left + 40, rect.top + 40, '#c092f0', 35);
       narrateText("The Pentacle is sealed across the golden fields.");
+      logInteraction("Awakened Spirit and sealed the Pentacle.");
     }
 
     function initStep3() {
@@ -450,6 +396,7 @@
       if(path === 'left') document.getElementById('btn-left').classList.add('selected');
       
       document.getElementById('path-confirmation').style.display = 'block';
+      logInteraction(`Selected Multipractice Focus Path: ${path.toUpperCase()}`);
       
       if(path === 'right') {
         narrateText("Traditional Folk Magic focus anchored. Reaping traditional bounty.");
@@ -483,12 +430,14 @@
         document.getElementById('shadow-confirmation').style.display = 'block';
       }, 1500);
 
+      logInteraction(`Submitted Harvest/Shadow Cutting Intention: "${textValue}"`);
+
       try {
         await fetch(API_URL, { 
           method: 'POST', 
           body: JSON.stringify({ 
             action: 'addPetition', 
-            name: `[${chosenPathType.toUpperCase()} FOCUS OFFERING]`, 
+            name: practitionerSessionName, 
             type: chosenPathType === 'right' ? 'Harvest' : (chosenPathType === 'neutral' ? 'Balance' : 'Shadow'), 
             text: textValue 
           }) 
@@ -519,10 +468,12 @@
       
       document.getElementById('bread-progress').style.width = breadProgress + '%';
       createSparkBurst(e.pageX, e.pageY, '#ffd700', 18);
+      logInteraction(`Scythe Swing Progress: ${breadProgress}%`);
 
       if (breadProgress >= 100) {
         document.getElementById('dough-ball').style.display = 'none';
         document.getElementById('bread-success').style.display = 'block';
+        logInteraction("Completed Full Scythe Reaping Game Interaction.");
         
         for(let i = 0; i < 6; i++) {
           setTimeout(() => {
@@ -550,10 +501,10 @@
         document.getElementById('closing-success').style.display = 'block';
         createSparkBurst(ev.pageX, ev.pageY, '#9d5bd2', 25);
         document.body.classList.add('snuffed');
+        logInteraction("Extinguished personal altar candle. Circle closed.");
       }
     }
 
-    /* CONTINUOUS MAGICAL CURSOR TRAIL SPARKLES */
     let lastSparkTime = 0;
     document.addEventListener('mousemove', (e) => {
       const now = Date.now();
@@ -632,6 +583,7 @@
             window.speechSynthesis.cancel();
             localState.currentStep = data.currentStep;
             document.body.className = 'step-' + localState.currentStep + ' path-' + chosenPathType;
+            logInteraction(`Advanced to Temple Step ${localState.currentStep}`);
             
             const display = document.getElementById('ritual-display');
             display.style.opacity = 0;
@@ -644,12 +596,10 @@
             }, 1000);
           }
 
-          // SYNCHRONIZED MAIN ALTAR TAPERS
           document.getElementById('taper-1').classList.toggle('lit', data.taper1);
           document.getElementById('taper-2').classList.toggle('lit', data.taper2);
           document.getElementById('taper-3').classList.toggle('lit', data.taper3);
 
-          // HIGH-PRIEST BROADCAST BANNER HOOK
           if (data.activeBroadcast && data.activeBroadcast.text) {
             const banner = document.getElementById('high-priest-broadcast-banner');
             document.getElementById('banner-title-text').innerText = data.activeBroadcast.title || "Temple Clergy Notice";
