@@ -11,15 +11,15 @@
     
     body, html { margin: 0; padding: 0; height: 100vh; background: var(--bg-color) url('Witchy Lughnasadh Harvest Background.jpg') no-repeat center center fixed; background-size: cover; color: var(--text-main); font-family: 'Cormorant Garamond', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; transition: filter 2.5s ease-in-out; user-select: none; cursor: default; }
 
-    body::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.75); z-index: 1; transition: background 1.5s ease; }
-    body.step-1::before { background: rgba(20, 12, 4, 0.7); }
-    body.step-2::before { background: rgba(10, 8, 25, 0.8); }
-    body.step-3::before { background: rgba(15, 10, 30, 0.75); }
-    body.step-4.path-right::before { background: rgba(30, 22, 2, 0.7); }
-    body.step-4.path-left::before { background: rgba(35, 5, 8, 0.8); }
-    body.step-4.path-neutral::before { background: rgba(20, 10, 35, 0.75); }
-    body.step-5::before { background: rgba(40, 25, 5, 0.7); }
-    body.step-6::before { background: rgba(2, 2, 5, 0.9); }
+    body::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.78); z-index: 1; transition: background 1.5s ease; }
+    body.step-1::before { background: rgba(20, 12, 4, 0.72); }
+    body.step-2::before { background: rgba(10, 8, 25, 0.82); }
+    body.step-3::before { background: rgba(15, 10, 30, 0.78); }
+    body.step-4.path-right::before { background: rgba(30, 22, 2, 0.72); }
+    body.step-4.path-left::before { background: rgba(35, 5, 8, 0.82); }
+    body.step-4.path-neutral::before { background: rgba(20, 10, 35, 0.78); }
+    body.step-5::before { background: rgba(40, 25, 5, 0.72); }
+    body.step-6::before { background: rgba(2, 2, 5, 0.92); }
 
     body.path-right { --path-accent: #d4af37; }
     body.path-left { --path-accent: #ff3860; }
@@ -30,46 +30,48 @@
     select:focus { outline: none; border-color: var(--path-accent); }
     .btn-small:hover { border-color: var(--path-accent); color: var(--path-accent); box-shadow: 0 0 10px rgba(212,175,55,0.4); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
 
-    /* HIGH-PRIEST / COVEN LIVE BROADCAST BANNER */
-    #high-priest-broadcast-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 70%; max-width: 600px; background: linear-gradient(90deg, rgba(110,59,167,0.85), rgba(212,175,55,0.85), rgba(110,59,167,0.85)); border: 1px solid var(--gold); border-radius: 6px; padding: 10px 20px; z-index: 100; box-shadow: 0 0 25px rgba(212,175,55,0.5); display: none; animation: bannerPulse 2s infinite alternate; }
-    @keyframes bannerPulse { 0% { box-shadow: 0 0 15px rgba(212,175,55,0.4); } 100% { box-shadow: 0 0 30px rgba(255,215,0,0.8); } }
-    .banner-title { font-family: 'Cinzel Decorative', serif; font-size: 0.75rem; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2px; }
-    .banner-message { font-family: 'Work Sans', sans-serif; font-size: 1rem; color: #fff; font-weight: 500; font-style: italic; }
+    /* HIGH-PRIEST TO COVEN LIVE BROADCAST BANNER */
+    #high-priest-broadcast-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 75%; max-width: 650px; background: linear-gradient(90deg, rgba(110,59,167,0.92), rgba(212,175,55,0.92), rgba(110,59,167,0.92)); border: 2px solid var(--gold); border-radius: 6px; padding: 12px 20px; z-index: 100; box-shadow: 0 0 30px rgba(212,175,55,0.7); display: none; animation: bannerPulse 2s infinite alternate; }
+    @keyframes bannerPulse { 0% { box-shadow: 0 0 20px rgba(212,175,55,0.5); } 100% { box-shadow: 0 0 35px rgba(255,215,0,0.9); } }
+    .banner-title { font-family: 'Cinzel Decorative', serif; font-size: 0.8rem; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3px; text-shadow: 0 1px 2px #000; }
+    .banner-message { font-family: 'Work Sans', sans-serif; font-size: 1.05rem; color: #fff; font-weight: 500; font-style: italic; text-shadow: 0 1px 2px #000; }
 
-    .altar { position: absolute; top: 80px; display: flex; gap: 40px; z-index: 5; transition: opacity 2s; }
+    /* RESTORED MAIN ALTAR TAPERS ON COVEN VIEW */
+    .altar { position: absolute; top: 85px; display: flex; gap: 30px; z-index: 5; transition: opacity 2s; }
     body.snuffed .altar { opacity: 0; }
-    .taper { width: 10px; height: 40px; background: #333; border-radius: 5px 5px 0 0; position: relative; transition: all 1s ease; }
-    .taper.lit::after { content: ''; position: absolute; top: -20px; left: -5px; width: 20px; height: 25px; background: radial-gradient(circle, #fff 0%, #ffcc00 40%, transparent 100%); border-radius: 50%; filter: blur(2px); animation: flicker 0.1s infinite alternate; }
+    .taper { width: 12px; height: 50px; background: #222; border-radius: 6px 6px 0 0; position: relative; border: 1px solid #444; transition: all 1s ease; }
+    .taper.lit::after { content: ''; position: absolute; top: -30px; left: -14px; width: 40px; height: 45px; background: radial-gradient(circle, #fff 0%, #ffcc00 40%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: flicker 0.12s infinite alternate; }
+    @keyframes flicker { from { opacity: 0.9; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
 
-    .ritual-content { position: relative; max-width: 850px; padding: 40px; z-index: 10; transition: opacity 1s ease; width: 100%; box-sizing: border-box; }
-    h1 { font-size: 2.8rem; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; color: var(--path-accent); text-shadow: 0 0 15px rgba(212,175,55,0.4); }
-    p { font-family: 'Work Sans', sans-serif; font-size: 1.15rem; line-height: 1.7; color: #e2def5; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+    .ritual-content { position: relative; max-width: 900px; padding: 30px; z-index: 10; transition: opacity 1s ease; width: 100%; box-sizing: border-box; margin-top: 40px; }
+    h1 { font-size: 2.6rem; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; color: var(--path-accent); text-shadow: 0 0 15px rgba(212,175,55,0.4); }
+    p { font-family: 'Work Sans', sans-serif; font-size: 1.1rem; line-height: 1.7; color: #e2def5; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
     
-    .interactive-layer { display: none; margin-top: 25px; animation: fadeIn 2s forwards; }
+    .interactive-layer { display: none; margin-top: 20px; animation: fadeIn 2s forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .match-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; }
+    .match-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; margin-top: 15px; }
     
     .locked-element { opacity: 0.3; pointer-events: none; filter: grayscale(100%); transition: all 1s ease; }
     .unlocked-element { opacity: 1; pointer-events: auto; filter: none; }
 
-    /* ENHANCED MAGICAL ALTAR CANDLES */
-    .altar-candle-container { display: flex; gap: 25px; align-items: flex-end; justify-content: center; margin-bottom: 10px; }
-    .altar-candle { width: 36px; height: 110px; background: linear-gradient(180deg, #333 0%, #1a1a1a 100%); border-radius: 6px 6px 0 0; position: relative; cursor: pointer; border: 1px solid #555; transition: 0.3s; box-shadow: 0 0 15px rgba(0,0,0,0.8); }
+    /* ENHANCED MAGICAL PERSONAL ALTAR CANDLES */
+    .altar-candle-container { display: flex; gap: 25px; align-items: flex-end; justify-content: center; margin-bottom: 5px; }
+    .altar-candle { width: 34px; height: 100px; background: linear-gradient(180deg, #333 0%, #1a1a1a 100%); border-radius: 6px 6px 0 0; position: relative; cursor: pointer; border: 1px solid #555; transition: 0.3s; box-shadow: 0 0 15px rgba(0,0,0,0.8); }
     .altar-candle:hover { border-color: var(--path-accent); box-shadow: 0 0 20px rgba(212,175,55,0.5); }
-    .altar-candle::before { content: ''; position: absolute; top: -8px; left: 16px; width: 4px; height: 8px; background: #666; }
-    .altar-candle.lit::after { content: ''; position: absolute; top: -55px; left: -22px; width: 80px; height: 80px; background: radial-gradient(circle, #ffffff 0%, #ffdf73 35%, rgba(255,140,0,0.6) 65%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: enhancedFlicker 0.12s infinite alternate; }
+    .altar-candle::before { content: ''; position: absolute; top: -8px; left: 15px; width: 4px; height: 8px; background: #666; }
+    .altar-candle.lit::after { content: ''; position: absolute; top: -50px; left: -20px; width: 75px; height: 75px; background: radial-gradient(circle, #ffffff 0%, #ffdf73 35%, rgba(255,140,0,0.6) 65%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: enhancedFlicker 0.12s infinite alternate; }
     .altar-candle.snuffed-out { background: #111; border-color: #222; }
     .altar-candle.snuffed-out::after { display: none; }
     @keyframes enhancedFlicker { 0% { opacity: 0.85; transform: scale(0.92) skewX(1deg); } 100% { opacity: 1; transform: scale(1.08) skewX(-1deg); } }
 
-    input.name-input { width: 65%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
+    input.name-input { width: 60%; padding: 10px; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 0.95rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
     input.name-input:focus { outline: none; border-color: var(--path-accent); box-shadow: 0 0 10px var(--path-accent); }
 
-    /* COMPASS NODES */
+    /* COMPASS NODES WITH SEQUENTIAL UNLOCKING */
     .compass-container { position: relative; width: 300px; margin: 0 auto; }
     .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-    .node { width: 70px; height: 70px; border: 1px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #666; background: rgba(0,0,0,0.4); pointer-events: none; transition: all 0.4s; }
+    .node { width: 70px; height: 70px; border: 1px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #444; background: rgba(0,0,0,0.4); pointer-events: none; transition: all 0.4s; }
     .node.unlocked { border-color: var(--gold); color: #ccc; cursor: pointer; background: rgba(0,0,0,0.7); pointer-events: auto; }
     .node.unlocked:hover { border-color: var(--path-accent); color: var(--path-accent); box-shadow: 0 0 15px rgba(212,175,55,0.4); }
     .node:active { transform: scale(0.9); }
@@ -81,28 +83,28 @@
     
     .node-north { grid-column: 2; } .node-west { grid-column: 1; } .node-east { grid-column: 3; } .node-south { grid-column: 2; }
 
-    .spirit-node { display: none; width: 80px; height: 80px; border: 2px dashed var(--path-accent); border-radius: 50%; margin: 20px auto 0 auto; align-items: center; justify-content: center; font-family: 'Cinzel Decorative', serif; font-size: 0.85rem; color: var(--path-accent); cursor: pointer; background: rgba(110, 59, 167, 0.4); box-shadow: 0 0 25px rgba(157, 91, 210, 0.6); animation: ghostPulse 2s infinite alternate; }
+    .spirit-node { display: none; width: 80px; height: 80px; border: 2px dashed var(--path-accent); border-radius: 50%; margin: 15px auto 0 auto; align-items: center; justify-content: center; font-family: 'Cinzel Decorative', serif; font-size: 0.85rem; color: var(--path-accent); cursor: pointer; background: rgba(110, 59, 167, 0.4); box-shadow: 0 0 25px rgba(157, 91, 210, 0.6); animation: ghostPulse 2s infinite alternate; }
     @keyframes ghostPulse { 0% { transform: scale(0.95); opacity: 0.6; } 100% { transform: scale(1.05); opacity: 1; } }
     
-    .pentacle-container { display: none; flex-direction: column; align-items: center; gap: 15px; animation: fadeIn 1.5s forwards; }
-    .burning-pentacle { font-size: 5rem; color: var(--path-accent); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff3300, 0 0 60px #aa0000; animation: pentacleBurn 2s infinite alternate; }
+    .pentacle-container { display: none; flex-direction: column; align-items: center; gap: 10px; animation: fadeIn 1.5s forwards; }
+    .burning-pentacle { font-size: 4.5rem; color: var(--path-accent); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff3300, 0 0 60px #aa0000; animation: pentacleBurn 2s infinite alternate; }
     @keyframes pentacleBurn { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.3); } }
 
-    .path-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+    .path-container { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
     .path-btn { background: rgba(0,0,0,0.7); border: 1px solid var(--gold); padding: 12px 20px; color: #ddd; font-family: 'Work Sans', sans-serif; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; }
     .path-btn:hover { border-color: var(--path-accent); color: var(--path-accent); box-shadow: 0 0 15px rgba(212,175,55,0.4); }
     .path-btn.selected { background: var(--path-accent); border-color: #fff; color: #000; font-weight: 600; box-shadow: 0 0 25px var(--path-accent); pointer-events: none; }
 
     .shadow-container { transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
-    .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-50px) scale(1.1); opacity: 0; pointer-events: none; }
-    input.path-input { width: 90%; padding: 20px; background: rgba(0,0,0,0.5); border: none; border-bottom: 2px solid var(--path-accent); color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.6rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px var(--path-accent); }
+    .shadow-container.burn { filter: blur(10px) brightness(2); transform: translateY(-40px) scale(1.1); opacity: 0; pointer-events: none; }
+    input.path-input { width: 90%; padding: 18px; background: rgba(0,0,0,0.5); border: none; border-bottom: 2px solid var(--path-accent); color: #fff; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 1.5rem; border-radius: 0; text-shadow: 0 0 5px #fff, 0 0 10px var(--path-accent); }
     input.path-input:focus { outline: none; border-bottom-color: #fff; }
 
     /* HARVEST / SCYTHE SLICING & BINDING INTERACTION */
-    .harvest-game-container { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 15px; }
-    .scythe-node { width: 150px; height: 150px; background: radial-gradient(circle, #e5c158 0%, #8b6508 70%, #2e1d08 100%); border-radius: 50%; box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1a0f00; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; transition: transform 0.1s ease, box-shadow 0.3s ease; border: 2px solid #fff; }
+    .harvest-game-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
+    .scythe-node { width: 140px; height: 140px; background: radial-gradient(circle, #e5c158 0%, #8b6508 70%, #2e1d08 100%); border-radius: 50%; box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1a0f00; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: transform 0.1s ease, box-shadow 0.3s ease; border: 2px solid #fff; }
     .scythe-node:active { transform: scale(0.85) rotate(-10deg); box-shadow: 0 0 60px #ff3860; }
-    .progress-bar-container { width: 300px; height: 14px; background: rgba(0,0,0,0.8); border-radius: 7px; border: 1px solid var(--gold); overflow: hidden; box-shadow: inset 0 0 10px rgba(0,0,0,0.9); }
+    .progress-bar-container { width: 280px; height: 12px; background: rgba(0,0,0,0.8); border-radius: 6px; border: 1px solid var(--gold); overflow: hidden; box-shadow: inset 0 0 10px rgba(0,0,0,0.9); }
     .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ffaa00, #ff3860); transition: width 0.15s ease; box-shadow: 0 0 15px var(--path-accent); }
 
     .btn-magic { background: rgba(0,0,0,0.8); border: 1px solid var(--path-accent); color: var(--path-accent); padding: 12px 30px; cursor: pointer; transition: 0.4s; font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
@@ -117,8 +119,8 @@
 
   <!-- LIVE HIGH-PRIEST TO COVEN BANNER -->
   <div id="high-priest-broadcast-banner">
-    <div class="banner-title" id="banner-title-text">Temple Clergy Broadcast</div>
-    <div class="banner-message" id="banner-msg-text">Gather your seasonal brew and open your grimoire. The circle is open.</div>
+    <div class="banner-title" id="banner-title-text">Temple Clergy Notice</div>
+    <div class="banner-message" id="banner-msg-text">Please await your High Priest and verify you are connected in Discord!</div>
   </div>
 
   <div class="top-controls">
@@ -132,17 +134,20 @@
     <a href="https://discord.gg/XfkU5A5rp" target="_blank" class="btn-small">Discord Coven</a>
   </div>
 
+  <!-- RESTORED MAIN ALTAR TAPERS -->
   <div class="altar">
-    <div class="taper" id="taper-1" style="display:none;"></div>
+    <div class="taper" id="taper-1"></div>
+    <div class="taper" id="taper-2"></div>
+    <div class="taper" id="taper-3"></div>
   </div>
 
   <div class="ritual-content" id="ritual-display">
     <h1 id="phase-title">Reaping What We Sow</h1>
-    <p id="phase-text">Step into the golden fields. We move beyond standard traditions into the deep roots of the First Harvest.</p>
+    <p id="phase-text">Step into the golden fields. We move beyond standard traditions into the deep, eclectic roots of the First Harvest.</p>
     
     <!-- STEP 1 -->
     <div class="interactive-layer" id="layer-step-1" style="display:block;">
-      <p style="color: #d4af37; font-style: italic; font-size: 0.95rem;" id="ui-drag-match">Enter your name, bring your seasonal brew and grimoire, and ignite your altar candle to enter the temple.</p>
+      <p style="color: #d4af37; font-style: italic; font-size: 0.95rem;" id="ui-drag-match">Early Arrivals: Await your High Priest, ensure you are connected in Discord, bring your seasonal brew and grimoire, and ignite your altar candle.</p>
       <div class="match-box">
         <input type="text" class="name-input" id="initial-name" placeholder="Your Name or Moniker" autocomplete="off" style="margin-bottom: 5px;">
         <div class="altar-candle-container">
@@ -153,7 +158,7 @@
 
     <!-- STEP 2 -->
     <div class="interactive-layer" id="layer-step-2">
-      <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Listen to the casting. Quarters unlock across the astral plane as they are called.</p>
+      <p style="color: var(--compass); font-style: italic; font-size: 1rem; margin-bottom: 20px;" id="ui-anchor">Listen to the casting. Quarters unlock sequentially as each direction is called across the astral plane.</p>
       <div class="compass-container">
         <div class="compass-grid" id="compass-grid-box">
           <div class="node node-north" onclick="activateNode(this, 'earth')" id="node-earth">Earth</div>
@@ -218,8 +223,8 @@
     
     const LORE = {
       en: {
-        1: { title: "Reaping What We Sow", text: "Ensure your altar candle is unlit. Have your seasonal brew and grimoire ready." },
-        2: { title: "The Compass is Cast", text: "Listen closely. Quarters unlock as they are called." },
+        1: { title: "Reaping What We Sow", text: "Ensure your altar candle is unlit. Verify your Discord connection and have your seasonal brew ready." },
+        2: { title: "The Compass is Cast", text: "Listen closely as each direction is read. Quarters unlock sequentially as they are called." },
         3: { title: "Multipractice Perspectives", text: "Choose your focus: Traditional Folk Magic, Eclectic Balance, or Left-Hand Path." },
         4: { title: "The Path Work", text: "Focus entirely on cutting away what no longer serves your power." },
         5: { title: "The First Harvest", text: "Swing the astral scythe and reap the golden grain together." },
@@ -261,21 +266,23 @@
 
     const OFFICIANT_SCRIPT = {
       en: {
-        1: "Welcome to this Weekly Temple Talk: Reaping What We Sow from a multipractice perspective. This Lughnasadh, we are moving beyond the standard traditions and digging into the deep, eclectic roots of the First Harvest. Join the Clergy as we discuss the ancient concepts of sacrifice and survival tied to this sabbat across different cultures. Bring your favorite seasonal brew and your grimoire.",
-        2: "We cast this compass not just in this room, but across the digital astral plane. To the East, the breath of intellect and the winds of change. To the South, the fire of the sovereign will. To the West, the deep waters of the subconscious. To the North, the dark soil of the earth, the bone and the ash. We honor the rot that feeds the seed. Now, awaken the fifth element of Spirit, binding all quarters into one living pentacle. The Compass is cast. We are between worlds.",
-        3: "We explore how to wield harvest magic with absolute intent. From traditional folk magic to LHP perspectives on ruthlessly cutting away what no longer serves our power, we navigate the spectrum of the First Harvest. Whether you lean into traditional folk bounty or the sharp blade of left-hand path severing, choose your focus for tonight's working.",
-        4: {
-          right: "Close your eyes. Focus upon traditional folk magic, celebrating the vibrant bounty, the gathered grain, and the life and abundance you nurture.",
-          neutral: "Close your eyes. Focus upon eclectic balance, standing precisely at the threshold between survival and celebration, honoring both light and shadow.",
-          left: "Close your eyes. Focus upon the Left-Hand Path perspective. Ruthlessly cut away what no longer serves your power. Harness the absolute intent of the reaper's blade."
+        1: "Welcome to this Weekly Temple Talk: Reaping What We Sow from a multipractice perspective. This Lughnasadh, we move far beyond standard holiday tropes and dig deep into the ancient, eclectic roots of the First Harvest. Across global cultures, the first cutting of grain has always symbolized a profound pact: what we cultivate through our dedication, our shadow work, and our will is precisely what we manifest in our lives. Bring your favorite seasonal brew, ensure you are engaged within our Discord sanctuary, and open your grimoire as we explore sacrifice, survival, and sovereignty.",
+        2: "We cast this compass not merely within four physical walls, but across the vast digital astral plane, uniting our energies. Listen closely as each quarter is invoked. To the East, we call upon the breath of intellect, the winds of change, and the clarity that cuts through mental fog. To the South, we ignite the fire of the sovereign will, the inner forge that refines our passions and incinerates hesitation. To the West, we plunge into the deep waters of the subconscious, honoring emotional resilience and ancestral memory. To the North, we anchor into the dark soil of the earth, the bone, the stone, and the silicon beneath our fingers—knowing intimately that decay is the ultimate fertilizer of growth. Now, we awaken the fifth element of Spirit, binding all quarters into one living, cyber-magical pentacle. The compass is cast. We stand between worlds.",
+        3: {
+          intro: "Now we examine the duality of our working: reaping from both the light and the dark perspective. Traditional folk magic celebrates the tangible bounty of the sun, gratitude for the golden grain, and the preservation of communal survival. Conversely, Left-Hand Path and esoteric shadow frameworks teach us the necessity of ruthless pruning—cutting away parasitic attachments, dead habits, and toxic obligations that drain our personal power. Wielding harvest magic requires absolute intent. Whether you cultivate the light of abundance or sever the rot with a razor-sharp blade, choose your focus for tonight's working."
         },
-        5: "Look at the faces of your temple. We are legion. Hold up your dark bread, your seasonal brew, your grimoire to the camera. We break this loaf and swing the scythe to honor the cycle of sacrifice and survival. To live, we must consume. To grow, something else must fall. Swing the scythe! Cut the dead weight! Claim your harvest! Let us eat in silence, grounding the energy.",
-        6: "The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We thank the Clergy, the Spirits, and the Ancestors. Go in power, retaining the absolute sovereignty of your own path. The Compass is open, but the connection remains unbroken. So it is done."
+        4: {
+          right: "Close your eyes and breathe in deeply. Focus entirely upon traditional folk magic and the solar bounty. Envision the golden fields of your triumphs, the tangible fruits of your labor, and the vibrant life force you actively nurture and celebrate.",
+          neutral: "Close your eyes and breathe in deeply. Focus upon eclectic balance, standing precisely at the threshold between celebration and survival. Weigh the grain you have gathered against the rest you have earned within the dark.",
+          left: "Close your eyes and breathe in deeply. Focus entirely upon the Left-Hand Path perspective. Confront the dead weight in your life. With absolute psychological and magical intent, visualize the reaper's scythe slicing away what no longer serves your evolution, transforming past failures into raw fuel."
+        },
+        5: "Look at the faces and energies gathered across our temple network. We are legion, bound by sovereignty and shared purpose. Hold up your seasonal brew, your grimoire, or your tokens to the digital ether. We swing the astral scythe and break the bread of life to honor the eternal cycle. To live and evolve, we must consume illusion and discard weakness. Swing the scythe! Cut the dead weight! Claim your absolute harvest! Let us ground this high-frequency energy in silent communion.",
+        6: "The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We give profound thanks to the Clergy, the elemental forces, and the Ancestors who guide our craft. Go forth in absolute power, retaining the sovereign ownership of your own path. The compass is open, but our connection remains unbroken. So it is done."
       },
-      de: { 1: "Willkommen...", 2: "Wir werfen...", 3: "Wir rufen...", 4: { right: "Fokussiere Licht.", neutral: "Fokussiere Balance.", left: "Fokussiere Schatten." }, 5: "Schau in die Gesichter...", 6: "Die Ernte ist eingefordert..." },
-      es: { 1: "Bienvenidos...", 2: "Lanzamos...", 3: "Invocamos...", 4: { right: "Enfoque luz.", neutral: "Enfoque equilibrio.", left: "Enfoque sombra." }, 5: "Miren los rostros...", 6: "La cosecha es reclamada..." },
-      fr: { 1: "Bienvenue...", 2: "Nous jetons...", 3: "Nous invoquons...", 4: { right: "Lumière.", neutral: "Équilibre.", left: "Ombre." }, 5: "Regardez les visages...", 6: "La récolte est réclamée..." },
-      yo: { 1: "Kaabọ...", 2: "A da...", 3: "A pe...", 4: { right: "Imọlẹ.", neutral: "Iwontunwonsi.", left: "Okunkun." }, 5: "Wo awọn oju...", 6: "A ti gba ikore naa..." }
+      de: { 1: "Willkommen...", 2: "Wir werfen...", 3: { intro: "Fokus..." }, 4: { right: "Licht.", neutral: "Balance.", left: "Schatten." }, 5: "Schau in die Gesichter...", 6: "Die Ernte ist eingefordert..." },
+      es: { 1: "Bienvenidos...", 2: "Lanzamos...", 3: { intro: "Foco..." }, 4: { right: "Luz.", neutral: "Equilibrio.", left: "Sombra." }, 5: "Miren los rostros...", 6: "La cosecha es reclamada..." },
+      fr: { 1: "Bienvenue...", 2: "Nous jetons...", 3: { intro: "Voie..." }, 4: { right: "Lumière.", neutral: "Équilibre.", left: "Ombre." }, 5: "Regardez les visages...", 6: "La récolte est réclamée..." },
+      yo: { 1: "Kaabọ...", 2: "A da...", 3: { intro: "Ọna..." }, 4: { right: "Imọlẹ.", neutral: "Iwontunwonsi.", left: "Okunkun." }, 5: "Wo awọn oju...", 6: "A ti gba ikore naa..." }
     };
 
     let currentLang = 'en';
@@ -355,6 +362,7 @@
       }
     }
 
+    /* SEQUENTIAL QUARTER UNLOCKING TIED TO SCRIPT READING */
     function startCompassUnlocking() {
       activeNodesCount = 0;
       earthNodeClicked = false;
@@ -365,12 +373,16 @@
       document.getElementById('pentacle-container').style.display = 'none';
       document.getElementById('compass-grid-box').style.display = 'grid';
 
+      // Narrate script and unlock nodes sequentially as each quarter is spoken
       narrateText(OFFICIANT_SCRIPT[currentLang][2], () => {
-        setTimeout(() => { document.getElementById('node-air').classList.add('unlocked'); }, 200);
-        setTimeout(() => { document.getElementById('node-fire').classList.add('unlocked'); }, 800);
-        setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); }, 1400);
-        setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 2000);
+        // Callback after full speech or timed progressively
       });
+
+      // Progressive sequential unlocking synchronized with the officiant speech pacing
+      setTimeout(() => { document.getElementById('node-east').classList.add('unlocked'); }, 4000);   // East (Air)
+      setTimeout(() => { document.getElementById('node-south').classList.add('unlocked'); }, 8500);  // South (Fire)
+      setTimeout(() => { document.getElementById('node-west').classList.add('unlocked'); }, 13000); // West (Water)
+      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); }, 17500); // North (Earth)
     }
 
     function activateNode(element, elementStr) {
@@ -418,7 +430,7 @@
       pathBox.classList.remove('unlocked-element');
       pathBox.classList.add('locked-element');
 
-      narrateText(OFFICIANT_SCRIPT[currentLang][3], () => {
+      narrateText(OFFICIANT_SCRIPT[currentLang][3].intro, () => {
         pathBox.classList.remove('locked-element');
         pathBox.classList.add('unlocked-element');
       });
@@ -541,11 +553,11 @@
       }
     }
 
-    /* MAGICAL CURSOR TRAIL SPARKLES */
+    /* CONTINUOUS MAGICAL CURSOR TRAIL SPARKLES */
     let lastSparkTime = 0;
     document.addEventListener('mousemove', (e) => {
       const now = Date.now();
-      if (now - lastSparkTime > 50) {
+      if (now - lastSparkTime > 40) {
         spawnSpark(e.pageX, e.pageY);
         lastSparkTime = now;
       }
@@ -567,7 +579,7 @@
       
       let color = overrideColor || '#d4af37'; 
       if (!overrideColor && Math.random() > 0.5) color = '#c092f0';
-      if (!overrideColor && Math.random() > 0.8) color = '#ff3860';
+      if (!overrideColor && Math.random() > 0.85) color = '#ff3860';
       
       const size = Math.random() * 7 + 3;
       spark.style.width = size + 'px'; spark.style.height = size + 'px';
@@ -632,10 +644,15 @@
             }, 1000);
           }
 
+          // SYNCHRONIZED MAIN ALTAR TAPERS
+          document.getElementById('taper-1').classList.toggle('lit', data.taper1);
+          document.getElementById('taper-2').classList.toggle('lit', data.taper2);
+          document.getElementById('taper-3').classList.toggle('lit', data.taper3);
+
           // HIGH-PRIEST BROADCAST BANNER HOOK
           if (data.activeBroadcast && data.activeBroadcast.text) {
             const banner = document.getElementById('high-priest-broadcast-banner');
-            document.getElementById('banner-title-text').innerText = data.activeBroadcast.title || "Temple Clergy Broadcast";
+            document.getElementById('banner-title-text').innerText = data.activeBroadcast.title || "Temple Clergy Notice";
             document.getElementById('banner-msg-text').innerText = data.activeBroadcast.text;
             banner.style.display = 'block';
           } else {
