@@ -42,7 +42,10 @@
     .taper.lit::after { content: ''; position: absolute; top: -28px; left: -14px; width: 40px; height: 40px; background: radial-gradient(circle, #fff 0%, #ffcc00 40%, transparent 100%); border-radius: 50%; filter: blur(3px); animation: flicker 0.12s infinite alternate; }
     @keyframes flicker { from { opacity: 0.9; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
 
-    .ritual-content { position: relative; max-width: 900px; padding: 40px; z-index: 10; transition: opacity 1s ease; width: 100%; box-sizing: border-box; margin-top: 50px; background: rgba(12, 10, 18, 0.88); border: 1px solid rgba(255, 215, 0, 0.4); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,215,0,0.1); }
+    .ritual-content { position: relative; max-width: 900px; padding: 40px; z-index: 10; transition: opacity 1s ease; width: 100%; box-sizing: border-box; margin-top: 50px; background: rgba(12, 10, 18, 0.88); border: 1px solid rgba(255, 215, 0, 0.4); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,215,0,0.1); max-height: 82vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+    .ritual-content::-webkit-scrollbar { width: 8px; }
+    .ritual-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 4px; }
+    .ritual-content::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; opacity: 0.6; }
     h1 { font-size: 2.5rem; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; color: var(--path-accent); text-shadow: 0 0 15px rgba(255,215,0,0.6); }
     p { font-family: 'Work Sans', sans-serif; font-size: 1.15rem; line-height: 1.8; color: #ffffff; font-weight: 400; text-shadow: 0 1px 2px rgba(0,0,0,0.9); }
     
@@ -66,12 +69,12 @@
     input.name-input { width: 65%; padding: 12px; background: rgba(5,5,5,0.9); border: 1px solid var(--gold); color: #fff; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 1rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; z-index: 55; position: relative; }
     input.name-input:focus { outline: none; border-color: var(--path-accent); box-shadow: 0 0 10px var(--path-accent); }
 
-    /* COMPASS NODES */
-    .compass-container { position: relative; width: 300px; margin: 0 auto; }
-    .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-    .node { width: 70px; height: 70px; border: 1px solid #555; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #888; background: rgba(0,0,0,0.6); pointer-events: none; transition: all 0.4s; }
-    .node.unlocked { border-color: var(--gold); color: #fff; cursor: pointer; background: rgba(20,20,20,0.9); pointer-events: auto; }
-    .node.unlocked:hover { border-color: var(--path-accent); color: var(--path-accent); box-shadow: 0 0 15px rgba(255,215,0,0.5); }
+    /* COMPASS NODES (FORCED CLICKABILITY & SAFE NULL-CHECK) */
+    .compass-container { position: relative; width: 300px; margin: 0 auto; z-index: 30; }
+    .compass-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; position: relative; z-index: 40; }
+    .node { width: 70px; height: 70px; border: 1px solid #555; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-family: 'Work Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #888; background: rgba(0,0,0,0.6); pointer-events: none; transition: all 0.4s; position: relative; z-index: 50; }
+    .node.unlocked { border-color: var(--gold); color: #fff !important; cursor: pointer !important; background: rgba(20,20,20,0.9) !important; pointer-events: auto !important; opacity: 1 !important; filter: none !important; }
+    .node.unlocked:hover { border-color: var(--path-accent); color: var(--path-accent) !important; box-shadow: 0 0 15px rgba(255,215,0,0.5); }
     .node:active { transform: scale(0.9); }
     
     .node.active-air { border-color: #fadd70 !important; color: #fadd70 !important; background: rgba(250, 221, 112, 0.3) !important; box-shadow: 0 0 20px rgba(250, 221, 112, 0.6); pointer-events: none; }
@@ -115,9 +118,9 @@
     .progress-bar-container { width: 320px; height: 14px; background: rgba(5,5,5,0.95); border-radius: 7px; border: 2px solid var(--gold); overflow: hidden; box-shadow: inset 0 0 15px rgba(0,0,0,0.9); }
     .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ffaa00, #ffd700, #39ff14); transition: width 0.15s ease; box-shadow: 0 0 20px var(--gold); }
 
-    /* STEP VI: MULTICHROME BONFIRE OFFERING TO LUGH (ENHANCED BURNING FLAME CORE) */
-    .bonfire-arena { position: relative; width: 230px; height: 230px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255,70,30,0.45) 0%, rgba(10,5,15,0.96) 75%); border-radius: 50%; border: 2px solid #ff3860; box-shadow: 0 0 65px rgba(255, 60, 40, 0.7); }
-    .bonfire-node { width: 140px; height: 140px; background: radial-gradient(circle, #ffffff 10%, #ffdf73 30%, #ff3860 55%, #9d5bd2 80%, #38bdf8 100%); border-radius: 50% 50% 40% 40%; box-shadow: 0 0 50px rgba(255,56,96,0.9), inset 0 0 25px rgba(255,255,255,0.8); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; border: 3px solid #fff; animation: ragingBonfire 0.8s infinite alternate ease-in-out; }
+    /* STEP VI: MULTICHROME BONFIRE OFFERING TO LUGH */
+    .bonfire-arena { position: relative; width: 230px; height: 230px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255,70,30,0.45) 0%, rgba(10,5,15,0.96) 75%); border-radius: 50%; border: 2px solid #ff3860; box-shadow: 0 0 65px rgba(255, 60, 40, 0.7); z-index: 20; }
+    .bonfire-node { width: 140px; height: 140px; background: radial-gradient(circle, #ffffff 10%, #ffdf73 30%, #ff3860 55%, #9d5bd2 80%, #38bdf8 100%); border-radius: 50% 50% 40% 40%; box-shadow: 0 0 50px rgba(255,56,96,0.9), inset 0 0 25px rgba(255,255,255,0.8); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; border: 3px solid #fff; animation: ragingBonfire 0.8s infinite alternate ease-in-out; pointer-events: auto !important; z-index: 30; position: relative; }
     @keyframes ragingBonfire { 
       0% { transform: scale(0.95) skewX(1deg) translateY(2px); filter: hue-rotate(0deg) brightness(1); box-shadow: 0 0 40px rgba(255,56,96,0.8), inset 0 0 15px #fff; } 
       50% { transform: scale(1.05) skewX(-2deg) translateY(-3px); filter: hue-rotate(20deg) brightness(1.25); box-shadow: 0 0 75px rgba(255,140,0,1), inset 0 0 30px #ffff88; }
@@ -125,20 +128,26 @@
     }
     .bonfire-node:active { transform: scale(0.85) scaleY(1.1); box-shadow: 0 0 95px #39ff14, inset 0 0 40px #ffffff; background: radial-gradient(circle, #fff 0%, #39ff14 60%, #ff3860 100%); }
 
-    /* STEP VII: CORN DOLLIES & SUN WHEELS CRAFTING CIRCLE (WITH INTERACTIVE MODAL GUIDES) */
+    .bonfire-arena.drop-hover { border-color: #39ff14; box-shadow: 0 0 90px rgba(57,255,20,0.85); }
+    .offerings-tray { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 5px; touch-action: none; }
+    .offering-item { width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle, #3a2205 0%, #1a0f00 100%); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: grab; touch-action: none; user-select: none; box-shadow: 0 0 15px rgba(255,215,0,0.4); transition: box-shadow 0.2s ease, opacity 0.3s ease; }
+    .offering-item:hover { box-shadow: 0 0 22px rgba(255,215,0,0.8); }
+    .offering-item.dragging { cursor: grabbing; box-shadow: 0 0 30px rgba(255,140,0,0.9); opacity: 0.9; transition: none; }
+    .offering-item.spent { opacity: 0.15; pointer-events: none; }
+
+    /* STEP VII: CORN DOLLIES & SUN WHEELS CRAFTING CIRCLE WITH GUIDES */
     .craft-container { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
     .craft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 500px; }
-    .craft-card { background: rgba(20,15,30,0.85); border: 1px solid var(--gold); border-radius: 8px; padding: 18px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; gap: 8px; }
+    .craft-card { background: rgba(20,15,30,0.85); border: 1px solid var(--gold); border-radius: 8px; padding: 18px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; gap: 8px; pointer-events: auto !important; }
     .craft-card:hover { border-color: #fff; box-shadow: 0 0 18px rgba(255,215,0,0.6); background: rgba(40,30,60,0.95); transform: translateY(-2px); }
     .craft-card.crafted { border-color: #39ff14; box-shadow: 0 0 22px rgba(57,255,20,0.7); background: rgba(15,35,20,0.85); }
     
-    /* Crafting Instructions Modal / Expansion Panel */
-    .craft-guide-panel { display: none; background: rgba(10, 8, 20, 0.95); border: 1px solid var(--gold); border-radius: 8px; padding: 20px; margin-top: 15px; width: 100%; max-width: 600px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.9); animation: fadeIn 0.5s forwards; }
+    .craft-guide-panel { display: none; background: rgba(10, 8, 20, 0.95); border: 1px solid var(--gold); border-radius: 8px; padding: 20px; margin-top: 15px; width: 100%; max-width: 600px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.9); animation: fadeIn 0.5s forwards; z-index: 50; position: relative; }
     .craft-guide-panel h4 { font-family: 'Cinzel Decorative', serif; color: var(--gold); margin-top: 0; margin-bottom: 10px; font-size: 1.1rem; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 5px; }
     .craft-guide-panel ul { margin: 0; padding-left: 20px; font-family: 'Work Sans', sans-serif; font-size: 0.95rem; color: #ddd; line-height: 1.6; }
     .craft-guide-panel li { margin-bottom: 6px; }
 
-    .btn-magic { background: rgba(10,10,10,0.9); border: 1px solid var(--gold); color: var(--gold); padding: 12px 30px; cursor: pointer; transition: 0.4s; font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
+    .btn-magic { background: rgba(10,10,10,0.9); border: 1px solid var(--gold); color: var(--gold); padding: 12px 30px; cursor: pointer; transition: 0.4s; font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; pointer-events: auto !important; z-index: 40; position: relative; }
     .btn-magic:hover { background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold); }
 
     .spark { position: absolute; pointer-events: none; border-radius: 50%; z-index: 1000; animation: floatSpark 0.8s forwards; }
@@ -242,12 +251,19 @@
       <p id="bread-success" style="display:none; color: #fff; font-style: italic; margin-top: 15px; font-size: 1.4rem; text-shadow: 0 0 15px var(--gold);">The golden harvest is complete! Sovereign power fully realized.</p>
     </div>
 
-    <!-- STEP 6: ENHANCED MULTICHROME BONFIRE OFFERING TO LUGH -->
+    <!-- STEP 6: MULTICHROME BONFIRE OFFERING TO LUGH -->
     <div class="interactive-layer" id="layer-step-6">
-      <p style="color: #ff3860; font-style: italic; font-size: 1.1rem; margin-bottom: 15px;">Feed the raging multichrome bonfire of Lugh as we commune on Discord. Tap the blazing core to amplify its roaring flames, radiant heat, and prismatic light.</p>
+      <p style="color: #ff3860; font-style: italic; font-size: 1.1rem; margin-bottom: 15px;">Feed the raging multichrome bonfire of Lugh as we commune on Discord. Drag each offering into the blazing core to amplify its roaring flames, radiant heat, and prismatic light.</p>
       <div class="harvest-game-container locked-element" id="bonfire-game-box">
-        <div class="bonfire-arena">
-          <div class="bonfire-node" onclick="feedBonfire(event)">FEED FLAME</div>
+        <div class="bonfire-arena" id="bonfire-drop-zone">
+          <div class="bonfire-node" id="bonfire-node-element">FEED FLAME</div>
+        </div>
+        <div class="offerings-tray" id="offerings-tray">
+          <div class="offering-item" id="offering-1">🌾</div>
+          <div class="offering-item" id="offering-2">🌾</div>
+          <div class="offering-item" id="offering-3">🌾</div>
+          <div class="offering-item" id="offering-4">🌾</div>
+          <div class="offering-item" id="offering-5">🌾</div>
         </div>
         <div class="progress-bar-container">
           <div class="progress-bar-fill" id="bonfire-progress" style="background: linear-gradient(90deg, #ff3860, #9d5bd2, #38bdf8, #39ff14);"></div>
@@ -351,13 +367,19 @@
 
     function changeLanguage() {
       currentLang = document.getElementById('lang-select').value;
-      document.getElementById('phase-title').innerText = LORE[currentLang][localState.currentStep].title;
-      document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
+      const titleEl = document.getElementById('phase-title');
+      const textEl = document.getElementById('phase-text');
+      if (titleEl && LORE[currentLang]?.[localState.currentStep]) {
+        titleEl.innerText = LORE[currentLang][localState.currentStep].title;
+      }
+      if (textEl && LORE[currentLang]?.[localState.currentStep]) {
+        textEl.innerText = LORE[currentLang][localState.currentStep].text;
+      }
     }
 
-    function narrateText(text, onCompleteCallback) {
+    function narrateText(text, onCompleteCallback, interrupt = true) {
       if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
+      if (interrupt) window.speechSynthesis.cancel();
       let utterance = new SpeechSynthesisUtterance(text);
       const voices = window.speechSynthesis.getVoices();
       utterance.lang = 'en-US';
@@ -397,7 +419,8 @@
       if (!candle.classList.contains('lit')) {
         candle.classList.add('lit');
         nameInput.style.display = 'none';
-        document.getElementById('ui-drag-match').innerText = "You have entered the golden temple fields with your brew and grimoire.";
+        const dragMatch = document.getElementById('ui-drag-match');
+        if (dragMatch) dragMatch.innerText = "You have entered the golden temple fields with your brew and grimoire.";
         createSparkBurst(ev.pageX, ev.pageY, '#ffd700', 25);
         logInteraction(`Entered temple with moniker: ${practitionerSessionName}`);
         if (localState.currentStep === 1) narrateText(OFFICIANT_SCRIPT[currentLang][1]);
@@ -407,21 +430,28 @@
     function startCompassUnlocking() {
       activeNodesCount = 0;
       document.querySelectorAll('.node').forEach(n => { n.classList.remove('unlocked', 'active-air', 'active-fire', 'active-water', 'active-earth'); });
-      document.getElementById('spirit-node').style.display = 'none';
-      document.getElementById('pentacle-container').style.display = 'none';
-      document.getElementById('compass-grid-box').style.display = 'grid';
+      const spiritNode = document.getElementById('spirit-node');
+      if (spiritNode) spiritNode.style.display = 'none';
+      const pentacleContainer = document.getElementById('pentacle-container');
+      if (pentacleContainer) pentacleContainer.style.display = 'none';
+      const compassGridBox = document.getElementById('compass-grid-box');
+      if (compassGridBox) compassGridBox.style.display = 'grid';
+      
       narrateText(OFFICIANT_SCRIPT[currentLang][2], () => {});
-      setTimeout(() => { document.getElementById('node-east').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: East (Air)"); }, 3000);
-      setTimeout(() => { document.getElementById('node-south').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: South (Fire)"); }, 7000);
-      setTimeout(() => { document.getElementById('node-water').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: West (Water)"); }, 11000);
-      setTimeout(() => { document.getElementById('node-earth').classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: North (Earth)"); }, 15000);
+      
+      // FORCED UNLOCK OVERRIDE: Unlocking all nodes immediately with fallback timeouts so nothing gets stuck
+      // FIX: element ids are node-earth, node-water, node-east, node-fire (not "node-south" -- that's the CSS class, not the id)
+      setTimeout(() => { const el = document.getElementById('node-east'); if(el) { el.classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: East (Air)"); } }, 1000);
+      setTimeout(() => { const el = document.getElementById('node-fire'); if(el) { el.classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: South (Fire)"); } }, 2000);
+      setTimeout(() => { const el = document.getElementById('node-water'); if(el) { el.classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: West (Water)"); } }, 3000);
+      setTimeout(() => { const el = document.getElementById('node-earth'); if(el) { el.classList.add('unlocked'); logInteraction("Compass Quarter Unlocked: North (Earth)"); } }, 4000);
     }
 
     function activateNode(element, elementStr) {
-      if (element.classList.contains('unlocked')) {
+      if (localState.currentStep === 2) {
         const activeClass = 'active-' + elementStr;
         if (!element.classList.contains(activeClass)) {
-          element.classList.add(activeClass);
+          element.classList.add('unlocked', activeClass);
           activeNodesCount++;
           const rect = element.getBoundingClientRect();
           logInteraction(`Activated Node: ${elementStr.toUpperCase()}`);
@@ -434,9 +464,11 @@
           if (activeNodesCount >= 4) {
             setTimeout(() => {
               const sNode = document.getElementById('spirit-node');
-              sNode.style.display = 'flex';
-              sNode.style.pointerEvents = 'auto';
-              narrateText("The four harvest quarters are anchored. Awaken Spirit.");
+              if (sNode) {
+                sNode.style.display = 'flex';
+                sNode.style.pointerEvents = 'auto';
+              }
+              narrateText("The four harvest quarters are anchored. Awaken Spirit.", null, false);
               logInteraction("All 4 Quarters anchored. Spirit node revealed.");
             }, 500);
           }
@@ -446,9 +478,11 @@
 
     function awakenSpirit(ev) {
       const spiritNode = document.getElementById('spirit-node');
-      spiritNode.style.display = 'none';
-      document.getElementById('compass-grid-box').style.display = 'none';
-      document.getElementById('pentacle-container').style.display = 'flex';
+      if (spiritNode) spiritNode.style.display = 'none';
+      const compassGridBox = document.getElementById('compass-grid-box');
+      if (compassGridBox) compassGridBox.style.display = 'none';
+      const pentacleContainer = document.getElementById('pentacle-container');
+      if (pentacleContainer) pentacleContainer.style.display = 'flex';
       const rect = ev.target.getBoundingClientRect();
       createSparkBurst(rect.left + 40, rect.top + 40, '#c092f0', 35);
       narrateText("The Pentacle is sealed across the golden fields.");
@@ -457,23 +491,33 @@
 
     function initStep3() {
       const pathBox = document.getElementById('path-buttons-box');
-      pathBox.classList.remove('unlocked-element'); pathBox.classList.add('locked-element');
+      if (pathBox) {
+        pathBox.classList.remove('unlocked-element'); 
+        pathBox.classList.add('locked-element');
+      }
       narrateText(OFFICIANT_SCRIPT[currentLang][3].intro, () => {
-        pathBox.classList.remove('locked-element'); pathBox.classList.add('unlocked-element');
+        if (pathBox) {
+          pathBox.classList.remove('locked-element'); 
+          pathBox.classList.add('unlocked-element');
+        }
       });
     }
 
     function selectPath(path) {
       chosenPathType = path;
-      document.getElementById('btn-right').classList.remove('selected');
-      document.getElementById('btn-neutral').classList.remove('selected');
-      document.getElementById('btn-left').classList.remove('selected');
+      ['btn-right', 'btn-neutral', 'btn-left'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.remove('selected');
+      });
       document.body.classList.remove('path-right', 'path-neutral', 'path-left');
       document.body.classList.add('path-' + path);
-      if(path === 'right') document.getElementById('btn-right').classList.add('selected');
-      if(path === 'neutral') document.getElementById('btn-neutral').classList.add('selected');
-      if(path === 'left') document.getElementById('btn-left').classList.add('selected');
-      document.getElementById('path-confirmation').style.display = 'block';
+      
+      const targetBtn = document.getElementById('btn-' + path);
+      if (targetBtn) targetBtn.classList.add('selected');
+      
+      const pathConf = document.getElementById('path-confirmation');
+      if (pathConf) pathConf.style.display = 'block';
+      
       logInteraction(`Selected Multipractice Focus Path: ${path.toUpperCase()}`);
       if(path === 'right') narrateText("Traditional Folk Magic focus anchored.");
       else if(path === 'neutral') narrateText("Eclectic Balance focus anchored.");
@@ -482,23 +526,32 @@
 
     function initStep4() {
       const shadowBox = document.getElementById('shadow-container');
-      shadowBox.classList.remove('unlocked-element'); shadowBox.classList.add('locked-element');
+      if (shadowBox) {
+        shadowBox.classList.remove('unlocked-element'); 
+        shadowBox.classList.add('locked-element');
+      }
       narrateText(OFFICIANT_SCRIPT[currentLang][4][chosenPathType], () => {
-        shadowBox.classList.remove('locked-element'); shadowBox.classList.add('unlocked-element');
+        if (shadowBox) {
+          shadowBox.classList.remove('locked-element'); 
+          shadowBox.classList.add('unlocked-element');
+        }
       });
     }
 
     async function submitPathWork() {
       const inputField = document.getElementById('path-input-field');
+      if (!inputField) return;
       const textValue = inputField.value.trim();
       if (!textValue) return; 
       const blade = document.getElementById('blade-effect');
-      blade.classList.add('swiping');
+      if (blade) blade.classList.add('swiping');
       setTimeout(async () => {
-        document.getElementById('shadow-container').classList.add('burn');
+        const shadowContainer = document.getElementById('shadow-container');
+        if (shadowContainer) shadowContainer.classList.add('burn');
         setTimeout(() => {
-          document.getElementById('shadow-container').style.display = 'none';
-          document.getElementById('shadow-confirmation').style.display = 'block';
+          if (shadowContainer) shadowContainer.style.display = 'none';
+          const shadowConf = document.getElementById('shadow-confirmation');
+          if (shadowConf) shadowConf.style.display = 'block';
         }, 1000);
         logInteraction(`Completed Pruning Intention: "${textValue}"`);
         try {
@@ -509,13 +562,22 @@
 
     function initStep5() {
       breadProgress = 0;
-      document.getElementById('bread-progress').style.width = '0%';
-      document.getElementById('dough-ball').style.display = 'flex';
-      document.getElementById('bread-success').style.display = 'none';
+      const breadProgressEl = document.getElementById('bread-progress');
+      if (breadProgressEl) breadProgressEl.style.width = '0%';
+      const doughBall = document.getElementById('dough-ball');
+      if (doughBall) doughBall.style.display = 'flex';
+      const breadSuccess = document.getElementById('bread-success');
+      if (breadSuccess) breadSuccess.style.display = 'none';
       const breadBox = document.getElementById('bread-game-box');
-      breadBox.classList.remove('unlocked-element'); breadBox.classList.add('locked-element');
+      if (breadBox) {
+        breadBox.classList.remove('unlocked-element'); 
+        breadBox.classList.add('locked-element');
+      }
       narrateText(OFFICIANT_SCRIPT[currentLang][5], () => {
-        breadBox.classList.remove('locked-element'); breadBox.classList.add('unlocked-element');
+        if (breadBox) {
+          breadBox.classList.remove('locked-element'); 
+          breadBox.classList.add('unlocked-element');
+        }
       });
     }
 
@@ -523,11 +585,14 @@
     function kneadDough(e) {
       breadProgress += 15;
       if (breadProgress > 100) breadProgress = 100;
-      document.getElementById('bread-progress').style.width = breadProgress + '%';
+      const breadProgressEl = document.getElementById('bread-progress');
+      if (breadProgressEl) breadProgressEl.style.width = breadProgress + '%';
       createSparkBurst(e.pageX, e.pageY, '#ffd700', 20);
       if (breadProgress >= 100) {
-        document.getElementById('dough-ball').style.display = 'none';
-        document.getElementById('bread-success').style.display = 'block';
+        const doughBall = document.getElementById('dough-ball');
+        if (doughBall) doughBall.style.display = 'none';
+        const breadSuccess = document.getElementById('bread-success');
+        if (breadSuccess) breadSuccess.style.display = 'block';
         logInteraction("Completed Golden Sunshine & Wheat Harvest Working.");
         for(let i = 0; i < 6; i++) {
           setTimeout(() => { createSparkBurst(window.innerWidth / 2 + (Math.random() * 250 - 125), window.innerHeight / 2 + (Math.random() * 250 - 125), '#ffd700', 30); }, i * 90);
@@ -535,29 +600,132 @@
       }
     }
 
-    /* STEP 6: ENHANCED MULTICHROME BONFIRE */
+    /* STEP 6: MULTICHROME BONFIRE (DRAG & DROP) */
     function initStep6() {
       bonfireProgress = 0;
-      document.getElementById('bonfire-progress').style.width = '0%';
-      document.getElementById('bonfire-game-box').querySelector('.bonfire-node').style.display = 'flex';
-      document.getElementById('bonfire-success').style.display = 'none';
+      const bonfireProgressEl = document.getElementById('bonfire-progress');
+      if (bonfireProgressEl) bonfireProgressEl.style.width = '0%';
+      const bonfireNode = document.getElementById('bonfire-node-element');
+      if (bonfireNode) bonfireNode.style.display = 'flex';
+      const bonfireSuccess = document.getElementById('bonfire-success');
+      if (bonfireSuccess) bonfireSuccess.style.display = 'none';
       const box = document.getElementById('bonfire-game-box');
-      box.classList.remove('unlocked-element'); box.classList.add('locked-element');
+      if (box) {
+        box.classList.remove('unlocked-element'); 
+        box.classList.add('unlocked-element');
+      }
+      // Reset all offering tokens to their tray positions in case the step is revisited
+      document.querySelectorAll('.offering-item').forEach(item => {
+        item.classList.remove('spent', 'dragging');
+        item.style.position = '';
+        item.style.left = '';
+        item.style.top = '';
+        item.style.opacity = '';
+        item.style.transition = '';
+        item.style.zIndex = '';
+      });
+      initBonfireDragDrop();
       narrateText(OFFICIANT_SCRIPT[currentLang][6], () => {
-        box.classList.remove('locked-element'); box.classList.add('unlocked-element');
+        if (box) {
+          box.classList.remove('unlocked-element'); 
+          box.classList.add('unlocked-element');
+        }
       });
     }
 
     let bonfireProgress = 0;
-    function feedBonfire(e) {
+    let bonfireDragState = null;
+
+    function initBonfireDragDrop() {
+      document.querySelectorAll('.offering-item').forEach(item => {
+        item.onpointerdown = startOfferingDrag;
+      });
+    }
+
+    function startOfferingDrag(e) {
+      const item = e.currentTarget;
+      if (item.classList.contains('spent')) return;
+      item.setPointerCapture(e.pointerId);
+      const rect = item.getBoundingClientRect();
+      bonfireDragState = {
+        item,
+        pointerId: e.pointerId,
+        offsetX: e.clientX - rect.left,
+        offsetY: e.clientY - rect.top,
+        originLeft: rect.left,
+        originTop: rect.top
+      };
+      item.classList.add('dragging');
+      item.style.position = 'fixed';
+      item.style.left = rect.left + 'px';
+      item.style.top = rect.top + 'px';
+      item.style.zIndex = 2000;
+      item.onpointermove = onOfferingDragMove;
+      item.onpointerup = onOfferingDragEnd;
+      item.onpointercancel = onOfferingDragEnd;
+    }
+
+    function onOfferingDragMove(e) {
+      if (!bonfireDragState || e.pointerId !== bonfireDragState.pointerId) return;
+      const { item, offsetX, offsetY } = bonfireDragState;
+      item.style.left = (e.clientX - offsetX) + 'px';
+      item.style.top = (e.clientY - offsetY) + 'px';
+      const arena = document.getElementById('bonfire-drop-zone');
+      if (arena) {
+        const r = arena.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        arena.classList.toggle('drop-hover', inside);
+      }
+    }
+
+    function onOfferingDragEnd(e) {
+      if (!bonfireDragState || e.pointerId !== bonfireDragState.pointerId) return;
+      const { item, originLeft, originTop } = bonfireDragState;
+      const arena = document.getElementById('bonfire-drop-zone');
+      let dropped = false;
+      if (arena) {
+        const r = arena.getBoundingClientRect();
+        dropped = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        arena.classList.remove('drop-hover');
+      }
+      item.onpointermove = null;
+      item.onpointerup = null;
+      item.onpointercancel = null;
+      item.classList.remove('dragging');
+
+      if (dropped) {
+        createSparkBurst(e.clientX, e.clientY, '#ff3860', 25);
+        item.classList.add('spent');
+        item.style.transition = 'opacity 0.3s ease';
+        item.style.opacity = '0';
+        feedBonfireProgress();
+      } else {
+        item.style.transition = 'left 0.3s ease, top 0.3s ease';
+        item.style.left = originLeft + 'px';
+        item.style.top = originTop + 'px';
+        setTimeout(() => {
+          item.style.position = '';
+          item.style.left = '';
+          item.style.top = '';
+          item.style.transition = '';
+          item.style.zIndex = '';
+        }, 300);
+      }
+      bonfireDragState = null;
+    }
+
+    function feedBonfireProgress() {
       bonfireProgress += 20;
       if (bonfireProgress > 100) bonfireProgress = 100;
-      document.getElementById('bonfire-progress').style.width = bonfireProgress + '%';
-      createSparkBurst(e.pageX, e.pageY, '#ff3860', 25);
+      const bonfireProgressEl = document.getElementById('bonfire-progress');
+      if (bonfireProgressEl) bonfireProgressEl.style.width = bonfireProgress + '%';
+      logInteraction("Fed Multichrome Bonfire to Lugh (offering dropped).");
       if (bonfireProgress >= 100) {
-        event.target.style.display = 'none';
-        document.getElementById('bonfire-success').style.display = 'block';
-        logInteraction("Fed Multichrome Bonfire to Lugh.");
+        const bonfireNode = document.getElementById('bonfire-node-element');
+        if (bonfireNode) bonfireNode.style.display = 'none';
+        const bonfireSuccess = document.getElementById('bonfire-success');
+        if (bonfireSuccess) bonfireSuccess.style.display = 'block';
+        logInteraction("Completed Multichrome Bonfire Offering to Lugh.");
         for(let i = 0; i < 8; i++) {
           setTimeout(() => { createSparkBurst(window.innerWidth / 2 + (Math.random() * 200 - 100), window.innerHeight / 2 + (Math.random() * 200 - 100), '#39ff14', 25); }, i * 100);
         }
@@ -567,15 +735,26 @@
     /* STEP 7: CRAFTING CIRCLE WITH GUIDES */
     function initStep7() {
       craftedItems = { dolly: false, wheel: false };
-      document.getElementById('card-dolly').classList.remove('crafted');
-      document.getElementById('card-wheel').classList.remove('crafted');
-      document.getElementById('guide-dolly').style.display = 'none';
-      document.getElementById('guide-wheel').style.display = 'none';
-      document.getElementById('craft-success').style.display = 'none';
+      const cardDolly = document.getElementById('card-dolly');
+      const cardWheel = document.getElementById('card-wheel');
+      if (cardDolly) cardDolly.classList.remove('crafted');
+      if (cardWheel) cardWheel.classList.remove('crafted');
+      const guideDolly = document.getElementById('guide-dolly');
+      const guideWheel = document.getElementById('guide-wheel');
+      if (guideDolly) guideDolly.style.display = 'none';
+      if (guideWheel) guideWheel.style.display = 'none';
+      const craftSuccess = document.getElementById('craft-success');
+      if (craftSuccess) craftSuccess.style.display = 'none';
       const box = document.getElementById('craft-box');
-      box.classList.remove('unlocked-element'); box.classList.add('locked-element');
+      if (box) {
+        box.classList.remove('unlocked-element'); 
+        box.classList.add('locked-element');
+      }
       narrateText(OFFICIANT_SCRIPT[currentLang][7], () => {
-        box.classList.remove('locked-element'); box.classList.add('unlocked-element');
+        if (box) {
+          box.classList.remove('locked-element'); 
+          box.classList.add('unlocked-element');
+        }
       });
     }
 
@@ -583,11 +762,15 @@
       const guideDolly = document.getElementById('guide-dolly');
       const guideWheel = document.getElementById('guide-wheel');
       if (type === 'dolly') {
-        guideDolly.style.display = guideDolly.style.display === 'block' ? 'none' : 'block';
-        guideWheel.style.display = 'none';
+        if (guideDolly && guideWheel) {
+          guideDolly.style.display = guideDolly.style.display === 'block' ? 'none' : 'block';
+          guideWheel.style.display = 'none';
+        }
       } else {
-        guideWheel.style.display = guideWheel.style.display === 'block' ? 'none' : 'block';
-        guideDolly.style.display = 'none';
+        if (guideWheel && guideDolly) {
+          guideWheel.style.display = guideWheel.style.display === 'block' ? 'none' : 'block';
+          guideDolly.style.display = 'none';
+        }
       }
       createSparkBurst(e.pageX, e.pageY, '#ffd700', 10);
     }
@@ -595,29 +778,39 @@
     function craftItem(type, e) {
       e.stopPropagation();
       craftedItems[type] = true;
-      document.getElementById('card-' + type).classList.add('crafted');
-      document.getElementById('guide-' + type).style.display = 'none';
+      const card = document.getElementById('card-' + type);
+      if (card) card.classList.add('crafted');
+      const guide = document.getElementById('guide-' + type);
+      if (guide) guide.style.display = 'none';
       createSparkBurst(e.pageX, e.pageY, '#39ff14', 30);
       logInteraction(`Consecrated Craft in Astral & Physical: ${type.toUpperCase()}`);
       if (craftedItems.dolly && craftedItems.wheel) {
-        document.getElementById('craft-success').style.display = 'block';
+        const craftSuccess = document.getElementById('craft-success');
+        if (craftSuccess) craftSuccess.style.display = 'block';
         logInteraction("Completed Full Crafting Circle: Corn Dollies & Sun Wheels.");
       }
     }
 
     function initStep8() {
       const candleBox = document.getElementById('closing-candle-box');
-      candleBox.classList.remove('unlocked-element'); candleBox.classList.add('locked-element');
+      if (candleBox) {
+        candleBox.classList.remove('unlocked-element'); 
+        candleBox.classList.add('locked-element');
+      }
       narrateText(OFFICIANT_SCRIPT[currentLang][8], () => {
-        candleBox.classList.remove('locked-element'); candleBox.classList.add('unlocked-element');
+        if (candleBox) {
+          candleBox.classList.remove('locked-element'); 
+          candleBox.classList.add('unlocked-element');
+        }
       });
     }
 
     function snuffPersonalCandle(ev) {
       const candle = document.getElementById('closing-candle');
-      if (!candle.classList.contains('snuffed-out')) {
+      if (candle && !candle.classList.contains('snuffed-out')) {
         candle.classList.add('snuffed-out');
-        document.getElementById('closing-success').style.display = 'block';
+        const closingSuccess = document.getElementById('closing-success');
+        if (closingSuccess) closingSuccess.style.display = 'block';
         createSparkBurst(ev.pageX, ev.pageY, '#9d5bd2', 25);
         document.body.classList.add('snuffed');
         logInteraction("Extinguished personal altar candle. Circle closed.");
@@ -654,14 +847,48 @@
 
     function updateLayers() {
       document.querySelectorAll('.interactive-layer').forEach(el => el.style.display = 'none');
-      if (localState.currentStep === 1) document.getElementById('layer-step-1').style.display = 'block';
-      if (localState.currentStep === 2) { document.getElementById('layer-step-2').style.display = 'block'; startCompassUnlocking(); }
-      if (localState.currentStep === 3) { document.getElementById('layer-step-3').style.display = 'block'; initStep3(); }
-      if (localState.currentStep === 4) { const l4 = document.getElementById('layer-step-4'); l4.style.display = 'block'; l4.className = "interactive-layer path-" + chosenPathType; initStep4(); }
-      if (localState.currentStep === 5) { document.getElementById('layer-step-5').style.display = 'block'; initStep5(); }
-      if (localState.currentStep === 6) { document.getElementById('layer-step-6').style.display = 'block'; initStep6(); }
-      if (localState.currentStep === 7) { document.getElementById('layer-step-7').style.display = 'block'; initStep7(); }
-      if (localState.currentStep === 8) { document.getElementById('layer-step-8').style.display = 'block'; initStep8(); }
+      if (localState.currentStep === 1) {
+        const l1 = document.getElementById('layer-step-1');
+        if (l1) l1.style.display = 'block';
+      }
+      if (localState.currentStep === 2) { 
+        const l2 = document.getElementById('layer-step-2');
+        if (l2) l2.style.display = 'block'; 
+        startCompassUnlocking(); 
+      }
+      if (localState.currentStep === 3) { 
+        const l3 = document.getElementById('layer-step-3');
+        if (l3) l3.style.display = 'block'; 
+        initStep3(); 
+      }
+      if (localState.currentStep === 4) { 
+        const l4 = document.getElementById('layer-step-4'); 
+        if (l4) {
+          l4.style.display = 'block'; 
+          l4.className = "interactive-layer path-" + chosenPathType; 
+          initStep4();
+        }
+      }
+      if (localState.currentStep === 5) { 
+        const l5 = document.getElementById('layer-step-5');
+        if (l5) l5.style.display = 'block'; 
+        initStep5(); 
+      }
+      if (localState.currentStep === 6) { 
+        const l6 = document.getElementById('layer-step-6');
+        if (l6) l6.style.display = 'block'; 
+        initStep6(); 
+      }
+      if (localState.currentStep === 7) { 
+        const l7 = document.getElementById('layer-step-7');
+        if (l7) l7.style.display = 'block'; 
+        initStep7(); 
+      }
+      if (localState.currentStep === 8) { 
+        const l8 = document.getElementById('layer-step-8');
+        if (l8) l8.style.display = 'block'; 
+        initStep8(); 
+      }
     }
 
     async function pollState() {
@@ -676,24 +903,37 @@
             document.body.className = 'step-' + localState.currentStep + ' path-' + chosenPathType;
             logInteraction(`Advanced to Temple Step ${localState.currentStep}`);
             const display = document.getElementById('ritual-display');
-            display.style.opacity = 0;
+            if (display) display.style.opacity = 0;
             setTimeout(() => {
-              document.getElementById('phase-title').innerText = LORE[currentLang][localState.currentStep].title;
-              document.getElementById('phase-text').innerText = LORE[currentLang][localState.currentStep].text;
+              const phaseTitle = document.getElementById('phase-title');
+              const phaseText = document.getElementById('phase-text');
+              if (phaseTitle && LORE[currentLang]?.[localState.currentStep]) {
+                phaseTitle.innerText = LORE[currentLang][localState.currentStep].title;
+              }
+              if (phaseText && LORE[currentLang]?.[localState.currentStep]) {
+                phaseText.innerText = LORE[currentLang][localState.currentStep].text;
+              }
               updateLayers();
-              display.style.opacity = 1;
+              if (display) display.style.opacity = 1;
             }, 1000);
           }
-          document.getElementById('taper-1').classList.toggle('lit', data.taper1);
-          document.getElementById('taper-2').classList.toggle('lit', data.taper2);
-          document.getElementById('taper-3').classList.toggle('lit', data.taper3);
+          const t1 = document.getElementById('taper-1');
+          const t2 = document.getElementById('taper-2');
+          const t3 = document.getElementById('taper-3');
+          if (t1) t1.classList.toggle('lit', data.taper1);
+          if (t2) t2.classList.toggle('lit', data.taper2);
+          if (t3) t3.classList.toggle('lit', data.taper3);
+
           if (data.activeBroadcast && data.activeBroadcast.text) {
             const banner = document.getElementById('high-priest-broadcast-banner');
-            document.getElementById('banner-title-text').innerText = data.activeBroadcast.title || "Temple Clergy Notice";
-            document.getElementById('banner-msg-text').innerText = data.activeBroadcast.text;
-            banner.style.display = 'block';
+            const bannerTitle = document.getElementById('banner-title-text');
+            const bannerMsg = document.getElementById('banner-msg-text');
+            if (bannerTitle) bannerTitle.innerText = data.activeBroadcast.title || "Temple Clergy Notice";
+            if (bannerMsg) bannerMsg.innerText = data.activeBroadcast.text;
+            if (banner) banner.style.display = 'block';
           } else {
-            document.getElementById('high-priest-broadcast-banner').style.display = 'none';
+            const banner = document.getElementById('high-priest-broadcast-banner');
+            if (banner) banner.style.display = 'none';
           }
         }
       } catch(err) {}
