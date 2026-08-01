@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lughnasadh Eve Command Dashboard</title>
+  <title>Lughnasadh Command Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://meet.jit.si/external_api.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
     :root { --obsidian: #07060a; --obsidian-card: #0e0a17; --indigo: #130d24; --indigo-2: #1b1233; --amethyst: #6e3ba7; --amethyst-glow: #9d5bd2; --amethyst-light: #c092f0; --silver: #adabcc; --moonwhite: #f1effa; --acid-green: #39ff14; --acid-green-glow: rgba(57, 255, 20, 0.4); --line: rgba(157, 91, 210, 0.22); }
@@ -29,13 +28,18 @@
     .step-btn.active { background: #2a1b42; border-color: var(--acid-green); box-shadow: 0 0 10px var(--acid-green-glow); }
     .step-btn .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--acid-green); text-transform: uppercase; }
     .step-btn .step-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; }
-    .taper-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
-    .taper-btn { background: var(--indigo); border: 1px solid var(--line); color: var(--silver); padding: 12px 8px; border-radius: 4px; cursor: pointer; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; transition: all 0.2s ease; }
+    
+    .taper-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
+    .taper-btn { background: var(--indigo); border: 1px solid var(--line); color: var(--silver); padding: 10px 6px; border-radius: 4px; cursor: pointer; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; transition: all 0.2s ease; }
     .taper-btn.lit { background: rgba(57, 255, 20, 0.15); border-color: var(--acid-green); color: var(--acid-green); box-shadow: 0 0 12px var(--acid-green-glow); }
+    
     .action-btn { background: #d4af37; color: var(--obsidian); font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
     .action-btn:hover { background: #fadd70; }
     .action-btn.active { background: #ff3860; color: white; box-shadow: 0 0 10px rgba(255,56,96,0.4); }
     
+    .broadcast-input { background: var(--indigo); border: 1px solid var(--line); color: #fff; padding: 10px; font-family: 'Work Sans', sans-serif; font-size: 13px; border-radius: 4px; width: 100%; margin-bottom: 8px; }
+    .broadcast-input:focus { outline: none; border-color: var(--amethyst-light); }
+
     .script-container { font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.7; color: var(--moonwhite); overflow-y: auto; max-height: 75vh; padding-right: 10px; }
     .script-container blockquote { border-left: 3px solid var(--acid-green); margin: 16px 0; padding-left: 18px; font-style: italic; color: #ffffff; }
     .script-container h3 { font-size: 24px; color: var(--amethyst-light); margin-top: 24px; margin-bottom: 8px; }
@@ -48,70 +52,67 @@
     .petition-card .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--silver); text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
     .petition-card .text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; margin: 0; color: var(--moonwhite); }
 
-    /* Live Join Ticker Alert */
-    .join-ticker { background: rgba(57, 255, 20, 0.1); border: 1px dashed var(--acid-green); color: var(--acid-green); font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 8px; border-radius: 4px; text-align: center; margin-bottom: 10px; display: none; animation: pulse 1.5s infinite; }
-
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--amethyst); border-radius: 3px; }
-
-    #jitsi-sidebar { position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: #0a0a0a; border-left: 2px solid #333; transition: right 0.4s ease; z-index: 1000; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
-    #jitsi-sidebar.open { right: 0; }
-    #jitsi-container { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">Lughnasadh Eve <span>High Priest Dashboard</span></div>
+  <div class="brand">Lughnasadh Dashboard <span>High Priest Mode</span></div>
   <div class="header-controls">
-    <div class="status-badge"><div class="dot"></div> ENGINE LIVE · SYNCED TO COVEN</div>
-    <button class="action-btn" onclick="toggleJitsi()" style="padding: 6px 12px; font-size: 11px; margin-left: 15px;">Toggle Video</button>
+    <div class="status-badge"><div class="dot"></div> ENGINE LIVE · COVEN SYNCED</div>
   </div>
 </header>
-
-<div id="jitsi-sidebar">
-  <div id="jitsi-container"></div>
-</div>
 
 <div class="layout">
   <!-- LEFT COLUMN: CONTROLS -->
   <div class="panel">
-    <h2 class="panel-title">Master Ritual Controls</h2>
+    <h2 class="panel-title">Master Temple Controls</h2>
     <button class="action-btn" style="background: #ff3860; color: white; width: 100%; box-shadow: 0 0 10px rgba(255,56,96,0.4);" onclick="masterReset()">MASTER ENGINE RESET</button>
 
-    <div style="margin-top: 10px;">
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">Altar Tapers</label>
+    <!-- LIVE BROADCAST BANNER CONTROL -->
+    <div style="margin-top: 10px; background: var(--indigo); padding: 12px; border-radius: 4px; border: 1px solid var(--line);">
+      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--acid-green); text-transform:uppercase; display:block; margin-bottom:6px;">Push Banner to Coven</label>
+      <input type="text" id="broadcast-text" class="broadcast-input" placeholder="Type message for early arrivals...">
+      <div style="display: flex; gap: 8px;">
+        <button class="action-btn" style="flex:1; padding:8px; font-size:11px; background:var(--amethyst); color:#fff;" onclick="sendBroadcast(true)">Broadcast</button>
+        <button class="action-btn" style="flex:1; padding:8px; font-size:11px; background:#333; color:#aaa;" onclick="sendBroadcast(false)">Clear Banner</button>
+      </div>
+    </div>
+
+    <div>
+      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">Altar Tapers (3 Main)</label>
       <div class="taper-grid">
         <button class="taper-btn" id="taper1-btn" onclick="toggleTaper(1)">TAPER 1<br><span id="taper1-status">OFF</span></button>
         <button class="taper-btn" id="taper2-btn" onclick="toggleTaper(2)">TAPER 2<br><span id="taper2-status">OFF</span></button>
-        <button class="taper-btn" id="taper3-btn" onclick="toggleTaper(3)">TAPER 3<br><span id="taper3-status">OFF</span></button>
+        <button class="taper-btn" id="taper-btn" onclick="toggleTaper(3)">TAPER 3<br><span id="taper3-status">OFF</span></button>
       </div>
     </div>
     
     <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">The Dark Loaf Phase</label>
-      <button class="action-btn" id="breaking-btn" onclick="toggleBreaking()" style="width:100%;">Initiate Breaking of the Loaf</button>
+      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">The Harvest Phase</label>
+      <button class="action-btn" id="breaking-btn" onclick="toggleBreaking()" style="width:100%;">Initiate Scythe Reaping</button>
     </div>
     
-    <div style="margin-top:10px;">
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:8px;">Liturgy Sequence</label>
-      <div style="display:flex; flex-direction:column; gap:8px;" id="step-buttons"></div>
+    <div>
+      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">Liturgy Sequence</label>
+      <div style="display:flex; flex-direction:column; gap:6px;" id="step-buttons"></div>
     </div>
   </div>
 
-  <!-- CENTER COLUMN: OFFICIANT LITURGY TEXT -->
+  <!-- CENTER COLUMN: OFFICIANT SCRIPT -->
   <div class="panel">
     <h2 class="panel-title">Officiant Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 6</span></h2>
     <div class="script-container" id="script-display"></div>
   </div>
 
-  <!-- RIGHT COLUMN: LIVE SHADOW, HARVEST & PARTICIPANT FEED -->
+  <!-- RIGHT COLUMN: COVEN PETITIONS -->
   <div class="panel">
     <h2 class="panel-title">Coven Feed <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
-    <div class="join-ticker" id="join-ticker">A seeker has entered the temple.</div>
     <div class="petitions-list" id="petitions-feed">
       <div style="font-size:13px; color:var(--silver); font-style:italic; text-align:center; padding:20px 0;">
-        Awaiting live shadows and harvest intentions from the coven...
+        Awaiting early arrivals and focus intentions from the coven...
       </div>
     </div>
   </div>
@@ -119,29 +120,6 @@
 
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
-
-  // Jitsi Initialization & Live Participant Join Detection
-  const jitsiOptions = {
-    roomName: 'LughnasadhEveTemple2026',
-    parentNode: document.querySelector('#jitsi-container'),
-    configOverwrite: { startWithAudioMuted: true, startWithVideoMuted: true },
-    interfaceConfigOverwrite: { TOOLBAR_BUTTONS: ['microphone', 'camera', 'chat', 'tileview', 'fullscreen'] }
-  };
-  const jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', jitsiOptions);
-
-  jitsiApi.addEventListeners({
-    participantJoined: function(participant) {
-      const ticker = document.getElementById('join-ticker');
-      ticker.innerText = `✨ ${participant.displayName || 'A Seeker'} entered the circle.`;
-      ticker.style.display = 'block';
-      setTimeout(() => { ticker.style.display = 'none'; }, 6000);
-    }
-  });
-
-  function toggleJitsi() {
-    const sidebar = document.getElementById('jitsi-sidebar');
-    sidebar.classList.toggle('open');
-  }
 
   let currentState = {
     currentStep: 1,
@@ -153,21 +131,21 @@
   };
 
   const LITURGY_STEPS = [
-    { num: 1, title: "I. The Gathering", duration: "7:30 PM" },
-    { num: 2, title: "II. The Multicultural Compass", duration: "~5 mins" },
-    { num: 3, title: "III. Invocation of Spirits & Ancestors", duration: "~5 mins" },
-    { num: 4, title: "IV. Guided Shadow Meditation", duration: "~10 mins" },
-    { num: 5, title: "V. The Breaking of the Dark Loaf", duration: "~5 mins" },
+    { num: 1, title: "I. The Early Threshold & Greeting", duration: "Pre-Gathering" },
+    { num: 2, title: "II. Casting the Compass", duration: "~5 mins" },
+    { num: 3, title: "III. Multipractice Focus", duration: "~5 mins" },
+    { num: 4, title: "IV. Reaping & Cutting Intent", duration: "~10 mins" },
+    { num: 5, title: "V. The First Harvest Working", duration: "~5 mins" },
     { num: 6, title: "VI. Devocation & Closing", duration: "~3 mins" }
   ];
 
   const SCRIPT_CONTENT = {
-    1: `<h3>I. The Gathering & Threshold</h3><div class="stage-dir">Ensure your personal black candle is unlit. Have your dark bread ready on the altar.</div><p>Welcome to the threshold. Tonight, we stand at the pivot of the Wheel—Lughnasadh Eve.</p><p>Step into the circle this Friday night as we honor the turning. As multicultural practitioners walking both the left and right-hand paths, our service embraces the dual nature of the harvest.</p><blockquote>We celebrate the vibrant bounty of the sun, while honoring the necessary decay that feeds new growth.</blockquote>`,
-    2: `<h3>II. Casting the Multicultural Compass</h3><div class="stage-dir">Light Taper 1, 2, and 3 as you cast the directions.</div><p>We cast this compass not just in this room, but across the digital astral plane.</p><p><strong>To the East</strong>, the breath of intellect and the winds of change. We honor the sweeping storms that clear the dead wood.</p><p><strong>To the South</strong>, the fire of the sovereign will and the fading heat of the high sun. We honor the spark that destroys to create.</p><p><strong>To the West</strong>, the deep waters of the subconscious and the rivers of our ancestors. We honor the abyss that holds our darkest reflections.</p><p><strong>To the North</strong>, the dark soil of the earth, the silicon in our machines, the bone and the ash. We honor the rot that feeds the seed.</p><blockquote>Above, the boundless cosmos. Below, the subterranean depths. Within, the eternal flame. The Compass is cast. We are between worlds.</blockquote>`,
-    3: `<h3>III. Invocation of the Harvest Spirits & Ancestors</h3><p>We call upon the Spirits of the First Harvest. We honor the vibrant bounty of the sun, the golden grain, and the manifestation of our conscious desires.</p><p><em>We claim the fruits of our labor upon the Right-Hand Path.</em></p><div class="stage-dir">Lower pitch. Shift energy to the Left-Hand Path.</div><p>And we call upon the Ancestors of the Shadow. We honor the necessary decay, the reaper's scythe, and the compost of our failures.</p><p><em>We claim the power of destruction and transformation upon the Left-Hand Path.</em></p><p>Sun and Shadow, Bounty and Bone—be present with us tonight.</p>`,
-    4: `<h3>IV. Guided Shadow Meditation</h3><div class="stage-dir">Instruct the Coven to light their black candles. Watch the right panel for live Shadow petitions.</div><p>Close your eyes. Feel the physical weight of the dark bread or wheat in your hands. This is the harvest of your year.</p><p>But look closer in your mind’s eye. This harvest did not grow only from sunlight. It grew from the rot of leaves, from the corpses of insects, from the dark, cold, hidden earth.</p><p>What have you buried this year? What shadow work have you engaged in? The anger you processed, the toxic ties you severed, the ugly truths you finally admitted to yourself.</p><blockquote>These were not mistakes—they were fertilizer.</blockquote><p>Feel the energy of your shadow—your primal, raw, unfiltered self—flowing from your core, down your arms, and into the grain you hold. You are not just reaping the good. You are claiming the power of your darkness. It belongs to you. It makes you whole.</p>`,
-    5: `<h3>V. The Breaking of the Dark Loaf</h3><div class="stage-dir">Click 'Initiate Breaking of the Loaf' button on the left panel to trigger the Coven UI sync.</div><p>Look at the faces of your temple. We are legion. We are the architects of our own reality. Hold up your dark bread, your oats, your wheat to the camera.</p><p>We break this loaf to honor the cycle. To live, we must consume. To grow, something else must fall. We eat of our triumphs, and we eat of our shadows. They are one and the same.</p><div class="stage-dir">Violently tear your dark bread in half close to the microphone.</div><blockquote>"Break the loaf! Consume the shadow! Claim your harvest!"</blockquote><p>Let us eat in silence, grounding the energy.</p>`,
-    6: `<h3>VI. Devocation & Closing</h3><p>The harvest is claimed. The shadow is integrated. The Wheel turns inexorably onward.</p><p>We thank the Spirits of the Light and the Ancestors of the Dark.</p><p>Go in power, retaining the sovereignty of your own path, whether you walk in the blinding light of day or the liberating cover of night.</p><blockquote>The Compass is open, but the connection remains unbroken. So it is done.</blockquote><div class="stage-dir">Blow out your black candle directly into the camera. Cut the broadcast.</div>`
+    1: `<h3>I. Early Threshold & Greeting</h3><div class="stage-dir">Early arrivals see a notice to await their High Priest and confirm they are in Discord. Ensure your altar candle remains unlit until the official opening.</div><p>Welcome to this Weekly Temple Talk: Reaping What We Sow from a multipractice perspective. This Lughnasadh, we are moving beyond standard traditions into the deep roots of the First Harvest.</p><blockquote>Bring your favorite seasonal brew, ensure you are connected in Discord, and have your grimoire ready as we prepare to cast.</blockquote>`,
+    2: `<h3>II. Casting the Multicultural Compass</h3><div class="stage-dir">Light Taper 1, 2, and 3 as you cast the four quarters and Spirit across the digital astral plane.</div><p>We cast this compass not just in this room, but across the digital astral plane.</p><p><strong>To the East</strong>, the breath of intellect. <strong>To the South</strong>, the fire of the sovereign will. <strong>To the West</strong>, the deep waters of the subconscious. <strong>To the North</strong>, the dark soil, bone, and ash. We honor the rot that feeds the seed.</p><blockquote>Above, the boundless cosmos. Below, the subterranean depths. The Compass is cast. We are between worlds.</blockquote>`,
+    3: `<h3>III. Multipractice Focus & Perspectives</h3><p>We explore how to wield harvest magic with absolute intent. From traditional folk magic to LHP perspectives on ruthlessly cutting away what no longer serves our power, we navigate the spectrum of the First Harvest.</p><p><em>Instruct seekers to lock in their path focus on their screens.</em></p>`,
+    4: `<h3>IV. Guided Reaping & Cutting Intent</h3><div class="stage-dir">Instruct the Coven to light their altar candles. Monitor live offerings on the right panel.</div><p>Close your eyes. Feel the physical weight of your seasonal brew or grimoire. This is the first harvest.</p><p>What must you ruthlessly cut away? What dead weight no longer serves your power? Harness the absolute intent of the reaper's blade.</p><blockquote>"Cut the dead weight. Claim your sovereignty."</blockquote>`,
+    5: `<h3>V. The First Harvest Working</h3><div class="stage-dir">Trigger the Scythe Reaping phase so the Coven can charge their energy.</div><p>Hold up your seasonal brew, your grimoire, your tokens to the camera. We swing the astral scythe to honor the cycle of sacrifice and survival. To grow, something else must fall.</p><blockquote>Swing the scythe! Cut the ties! Claim your harvest!</blockquote>`,
+    6: `<h3>VI. Devocation & Closing</h3><p>The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We thank the Clergy, the Spirits, and the Ancestors.</p><p>Go in power, retaining the absolute sovereignty of your own path.</p><blockquote>The Compass is open, but the connection remains unbroken. So it is done.</blockquote><div class="stage-dir">Extinguish your altar candle. End broadcast.</div>`
   };
 
   function initButtons() {
@@ -199,7 +177,7 @@
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'setStep', step: num })
       });
-    } catch(err) { console.error("Error updating step:", err); }
+    } catch(err) {}
   }
 
   async function toggleTaper(num) {
@@ -213,22 +191,45 @@
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'toggleTaper', taperNumber: num, isLit: currentState[key] })
       });
-    } catch(err) { console.error("Error toggling taper:", err); }
+    } catch(err) {}
   }
 
   function updateTaperUI(num) {
     const isLit = currentState[`taper${num}`];
     const btn = document.getElementById(`taper${num}-btn`);
     const status = document.getElementById(`taper${num}-status`);
-    btn.classList.toggle('lit', isLit);
-    status.textContent = isLit ? 'LIT 🔥' : 'OFF';
+    if(btn) {
+      btn.classList.toggle('lit', isLit);
+      status.textContent = isLit ? 'LIT 🔥' : 'OFF';
+    }
+  }
+
+  async function sendBroadcast(active) {
+    const textVal = document.getElementById('broadcast-text').value.trim();
+    const payload = {
+      action: 'setBroadcast',
+      active: active,
+      title: "Temple Clergy Notice",
+      text: active ? (textVal || "Please await your High Priest and ensure you are connected in Discord!") : ""
+    };
+
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      alert(active ? "Broadcast banner pushed to coven screens." : "Broadcast banner cleared.");
+    } catch(err) {
+      alert("Error sending broadcast.");
+    }
   }
 
   async function toggleBreaking() {
     currentState.breakingActive = !currentState.breakingActive;
     const btn = document.getElementById('breaking-btn');
     btn.classList.toggle('active', currentState.breakingActive);
-    btn.textContent = currentState.breakingActive ? 'End the Breaking Phase' : 'Initiate Breaking of the Loaf';
+    btn.textContent = currentState.breakingActive ? 'End Reaping Phase' : 'Initiate Scythe Reaping';
 
     try {
       await fetch(API_URL, {
@@ -236,31 +237,22 @@
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'toggleCommunion', active: currentState.breakingActive }) 
       });
-    } catch(err) { console.error("Error toggling phase:", err); }
+    } catch(err) {}
   }
 
   async function masterReset() {
-    if(!confirm("Reset the temple to Step 1 and extinguish all candles?")) return;
+    if(!confirm("Reset the temple to Step 1 and extinguish all tapers?")) return;
     currentState.breakingActive = false;
     currentState.taper1 = false;
     currentState.taper2 = false;
     currentState.taper3 = false;
     updateTaperUI(1); updateTaperUI(2); updateTaperUI(3);
     setStep(1);
-    
-    const btn = document.getElementById('breaking-btn');
-    btn.classList.remove('active');
-    btn.textContent = 'Initiate Breaking of the Loaf';
 
     try {
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleCommunion', active: false }) });
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 1, isLit: false }) });
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 2, isLit: false }) });
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleTaper', taperNumber: 3, isLit: false }) });
       await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'setStep', step: 1 }) });
-      
-      setTimeout(() => { location.reload(); }, 1500);
-    } catch(err) { console.error(err); }
+      setTimeout(() => { location.reload(); }, 1000);
+    } catch(err) {}
   }
 
   async function pollState() {
@@ -277,15 +269,13 @@
         currentState.taper3 = data.taper3;
         currentState.breakingActive = data.communionActive; 
         
-        updateTaperUI(1);
-        updateTaperUI(2);
-        updateTaperUI(3);
+        updateTaperUI(1); updateTaperUI(2); updateTaperUI(3);
 
         if(data.petitions && data.petitions.length > 0) {
           renderPetitions(data.petitions);
         }
       }
-    } catch(err) { console.error("Poll error:", err); }
+    } catch(err) {}
   }
 
   function renderPetitions(petitions) {
