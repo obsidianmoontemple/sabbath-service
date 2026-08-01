@@ -23,11 +23,11 @@
     .panel { background: var(--obsidian-card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
     .panel-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--amethyst-light); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 0; display: flex; justify-content: space-between; align-items: center; }
     
-    .step-btn { background: var(--indigo-2); border: 1px solid var(--line); color: var(--moonwhite); padding: 12px 14px; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 2px; }
+    .step-btn { background: var(--indigo-2); border: 1px solid var(--line); color: var(--moonwhite); padding: 10px 14px; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 2px; }
     .step-btn:hover { border-color: var(--amethyst-glow); }
     .step-btn.active { background: #2a1b42; border-color: var(--acid-green); box-shadow: 0 0 10px var(--acid-green-glow); }
     .step-btn .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--acid-green); text-transform: uppercase; }
-    .step-btn .step-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; }
+    .step-btn .step-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; }
     
     .taper-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
     .taper-btn { background: var(--indigo); border: 1px solid var(--line); color: var(--silver); padding: 10px 6px; border-radius: 4px; cursor: pointer; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; transition: all 0.2s ease; }
@@ -40,9 +40,9 @@
     .broadcast-input { background: var(--indigo); border: 1px solid var(--line); color: #fff; padding: 10px; font-family: 'Work Sans', sans-serif; font-size: 13px; border-radius: 4px; width: 100%; margin-bottom: 8px; }
     .broadcast-input:focus { outline: none; border-color: var(--amethyst-light); }
 
-    .script-container { font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.7; color: var(--moonwhite); overflow-y: auto; max-height: 75vh; padding-right: 10px; text-align: left; }
+    .script-container { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6; color: var(--moonwhite); overflow-y: auto; max-height: 72vh; padding-right: 10px; text-align: left; }
     .script-container blockquote { border-left: 3px solid var(--acid-green); margin: 16px 0; padding-left: 18px; font-style: italic; color: #ffffff; }
-    .script-container h3 { font-size: 22px; color: var(--amethyst-light); margin-top: 24px; margin-bottom: 8px; }
+    .script-container h3 { font-size: 21px; color: var(--amethyst-light); margin-top: 20px; margin-bottom: 6px; }
     .script-container .stage-dir { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--silver); font-style: normal; background: var(--indigo); padding: 6px 12px; border-radius: 3px; display: inline-block; margin: 8px 0; border-left: 3px solid #d4af37; }
     
     .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 65vh; text-align: left; }
@@ -67,12 +67,10 @@
 </header>
 
 <div class="layout">
-  <!-- LEFT COLUMN: CONTROLS -->
   <div class="panel">
     <h2 class="panel-title">Master Temple Controls</h2>
     <button class="action-btn" style="background: #ff3860; color: white; width: 100%; box-shadow: 0 0 10px rgba(255,56,96,0.4);" onclick="masterReset()">MASTER ENGINE RESET</button>
 
-    <!-- LIVE BROADCAST BANNER CONTROL -->
     <div style="margin-top: 5px; background: var(--indigo); padding: 12px; border-radius: 4px; border: 1px solid var(--line);">
       <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--acid-green); text-transform:uppercase; display:block; margin-bottom:6px;">Push Banner to Coven</label>
       <input type="text" id="broadcast-text" class="broadcast-input" placeholder="Type message for early arrivals...">
@@ -97,23 +95,21 @@
     </div>
     
     <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">Liturgy Sequence</label>
-      <div style="display:flex; flex-direction:column; gap:6px;" id="step-buttons"></div>
+      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">Liturgy Sequence (8 Steps)</label>
+      <div style="display:flex; flex-direction:column; gap:4px;" id="step-buttons"></div>
     </div>
   </div>
 
-  <!-- CENTER COLUMN: OFFICIANT FULL SCRIPT TELEPROMPTER -->
   <div class="panel">
-    <h2 class="panel-title">Officiant Full Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 6</span></h2>
+    <h2 class="panel-title">Officiant Full Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 8</span></h2>
     <div class="script-container" id="script-display"></div>
   </div>
 
-  <!-- RIGHT COLUMN: COVEN AUDIT FEED -->
   <div class="panel">
     <h2 class="panel-title">Coven Audit Feed <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
     <div class="petitions-list" id="petitions-feed">
       <div style="font-size:13px; color:var(--silver); font-style:italic; text-align:center; padding:20px 0;">
-        Tracking all seeker entries, node clicks, and path choices in real time...
+        Tracking seeker entries, node clicks, path choices, and crafting in real time...
       </div>
     </div>
   </div>
@@ -132,12 +128,14 @@
   };
 
   const LITURGY_STEPS = [
-    { num: 1, title: "I. The Early Threshold & Greeting", duration: "Pre-Gathering" },
+    { num: 1, title: "I. Early Threshold & Greeting", duration: "Pre-Gathering" },
     { num: 2, title: "II. Casting the Compass", duration: "~5 mins" },
     { num: 3, title: "III. Multipractice Focus", duration: "~5 mins" },
-    { num: 4, title: "IV. Deep Pruning Meditation", duration: "~10 mins" },
+    { num: 4, title: "IV. Deep Pruning & Blade", duration: "~10 mins" },
     { num: 5, title: "V. The Golden Harvest Working", duration: "~5 mins" },
-    { num: 6, title: "VI. Devocation & Closing", duration: "~3 mins" }
+    { num: 6, title: "VI. Multichrome Bonfire to Lugh", duration: "~10 mins" },
+    { num: 7, title: "VII. Corn Dollies & Sun Wheels", duration: "~10 mins" },
+    { num: 8, title: "VIII. Devocation & Closing", duration: "~3 mins" }
   ];
 
   const SCRIPT_CONTENT = {
@@ -146,7 +144,9 @@
     3: `<h3>III. Multipractice Perspectives & Focus</h3><div class="stage-dir">Direct seekers to choose their path focus on their interactive screens.</div><p>Now we examine the duality of our working: reaping from both the light and the dark perspective. Traditional folk magic celebrates the tangible bounty of the sun, gratitude for the golden grain, and the preservation of communal survival.</p><p>Conversely, Left-Hand Path and esoteric shadow frameworks teach us the necessity of ruthless pruning—cutting away parasitic attachments, dead habits, and toxic obligations that drain our personal power.</p><blockquote>Wielding harvest magic requires absolute intent. Whether you cultivate the light of abundance or sever the rot with a razor-sharp blade, choose your focus for tonight's working.</blockquote>`,
     4: `<h3>IV. Deep Pruning Meditation & Reaper's Blade</h3><div class="stage-dir">Monitor live shadow and harvest submissions streaming into the audit feed on the right as seekers complete their deep meditation and blade severing.</div><p>Close your eyes and breathe in deeply. Draw the golden warmth of the sun or face the cold, bracing wind of truth depending on your chosen path.</p><p>Confront the dead weight in your life—the draining obligations, the parasitic attachments, the outdated fears. In the quiet stillness of the golden fields, grasp your intention with absolute mental clarity, visualize the razor-sharp edge of the reaper's scythe slicing cleanly through every cord, and release it into the Temple Ledger.</p><blockquote>"Breathe out the chaff. Hold fast to your absolute intent. Cut the dead weight and claim your sovereignty."</blockquote>`,
     5: `<h3>V. The Golden Harvest Working</h3><div class="stage-dir">Trigger Scythe Reaping phase so coven screens activate the active sun and wheat harvesting game.</div><p>Look at the golden fields and energies gathered across our temple network. We are legion, bound by sovereignty and shared purpose.</p><p>Hold up your seasonal brew, your grimoire, or your tokens to the digital ether. We swing the astral scythe through the rich wheat and break the bread of life to honor the eternal cycle.</p><blockquote>To live and evolve, we must consume illusion and discard weakness. Swing the scythe! Cut the dead weight! Claim your absolute golden harvest!</blockquote>`,
-    6: `<h3>VI. Devocation & Closing</h3><div class="stage-dir">Extinguish altar tapers and conclude transmission.</div><p>The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We give profound thanks to the Clergy, the elemental forces, and the Ancestors who guide our craft.</p><p>Go forth in absolute power, retaining the sovereign ownership of your own path.</p><blockquote>The compass is open, but our connection remains unbroken. So it is done.</blockquote>`
+    6: `<h3>VI. Multichrome Bonfire Offering to Lugh</h3><div class="stage-dir">Guide the coven as you chat and converse on Discord. Seekers feed the digital multichrome flame on screen.</div><p>As we gather on Discord to commune and converse, we now ignite and feed the great multichrome bonfire to Lugh, the shining master of skills, crafts, and light.</p><p>Notice the vibrant hues dancing upon the screen—fiery orange, electric purple, emerald green, and shimmering gold. Toss your personal offerings into the blazing fire, letting Lugh's radiant warmth fill our temple space.</p><blockquote>"Hail Lugh! Master of arts, illumination, and harvest! May our fires burn bright and true across the astral plane."</blockquote>`,
+    7: `<h3>VII. Corn Dollies & Sun Wheels Crafting Circle</h3><div class="stage-dir">Guide the coven through crafting physical corn dollies and sun wheels while they lock them in digitally.</div><p>Now we enter the Crafting Circle. As we craft our physical corn dollies to house the spirit of the grain and fashion our sun wheels to honor the solar peak, click your program nodes to consecrate your creations in the astral plane.</p><p>Bridging physical handicraft with digital magic anchors the spirit of Lughnasadh directly into our hearths and homes.</p><blockquote>"Weave the straw, bind the wheel, seal the craft in honor of the turning year."</blockquote>`,
+    8: `<h3>VIII. Devocation & Closing</h3><div class="stage-dir">Extinguish altar tapers and conclude transmission.</div><p>The harvest is claimed, the multichrome flames burn bright, the crafts are bound, and the Wheel turns inexorably onward. We give profound thanks to Lugh, the Clergy, the elemental forces, and the Ancestors who guide our craft.</p><p>Go forth in absolute power, retaining the sovereign ownership of your own path.</p><blockquote>The compass is open, but our connection remains unbroken. So it is done.</blockquote>`
   };
 
   function initButtons() {
@@ -162,7 +162,7 @@
 
   function renderScript() {
     document.getElementById('script-display').innerHTML = SCRIPT_CONTENT[currentState.currentStep] || '';
-    document.getElementById('current-step-label').textContent = `Step ${currentState.currentStep} / 6`;
+    document.getElementById('current-step-label').textContent = `Step ${currentState.currentStep} / 8`;
   }
 
   async function setStep(num) {
