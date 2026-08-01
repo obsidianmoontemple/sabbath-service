@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lughnasadh Command Dashboard</title>
+  <title>Lughnasadh Command Dashboard: Reaping What We Sow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -18,7 +18,7 @@
     .dot { width: 8px; height: 8px; background: var(--acid-green); border-radius: 50%; box-shadow: 0 0 8px var(--acid-green); animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{ opacity: 1; } 50%{ opacity: 0.3; } }
     
-    .layout { display: grid; grid-template-columns: 320px 1fr 340px; gap: 20px; padding: 20px; flex: 1; }
+    .layout { display: grid; grid-template-columns: 340px 1fr 360px; gap: 20px; padding: 20px; flex: 1; }
     @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
     .panel { background: var(--obsidian-card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
     .panel-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--amethyst-light); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 0; display: flex; justify-content: space-between; align-items: center; }
@@ -40,17 +40,18 @@
     .broadcast-input { background: var(--indigo); border: 1px solid var(--line); color: #fff; padding: 10px; font-family: 'Work Sans', sans-serif; font-size: 13px; border-radius: 4px; width: 100%; margin-bottom: 8px; }
     .broadcast-input:focus { outline: none; border-color: var(--amethyst-light); }
 
-    .script-container { font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.7; color: var(--moonwhite); overflow-y: auto; max-height: 75vh; padding-right: 10px; }
+    .script-container { font-family: 'Cormorant Garamond', serif; font-size: 19px; line-height: 1.7; color: var(--moonwhite); overflow-y: auto; max-height: 75vh; padding-right: 10px; text-align: left; }
     .script-container blockquote { border-left: 3px solid var(--acid-green); margin: 16px 0; padding-left: 18px; font-style: italic; color: #ffffff; }
-    .script-container h3 { font-size: 24px; color: var(--amethyst-light); margin-top: 24px; margin-bottom: 8px; }
-    .script-container .stage-dir { font-family: 'Work Sans', sans-serif; font-size: 13px; color: var(--silver); font-style: normal; background: var(--indigo); padding: 6px 12px; border-radius: 3px; display: inline-block; margin: 8px 0; border-left: 3px solid #d4af37; }
+    .script-container h3 { font-size: 22px; color: var(--amethyst-light); margin-top: 24px; margin-bottom: 8px; }
+    .script-container .stage-dir { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--silver); font-style: normal; background: var(--indigo); padding: 6px 12px; border-radius: 3px; display: inline-block; margin: 8px 0; border-left: 3px solid #d4af37; }
     
-    .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 50vh; }
+    .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 65vh; text-align: left; }
     .petition-card { background: var(--indigo); border-left: 3px solid var(--amethyst-light); padding: 12px 14px; border-radius: 0 4px 4px 0; }
     .petition-card.Shadow { border-left-color: #ff3860; }
     .petition-card.Harvest { border-left-color: #d4af37; }
+    .petition-card.Interaction { border-left-color: #39ff14; }
     .petition-card .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--silver); text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
-    .petition-card .text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; margin: 0; color: var(--moonwhite); }
+    .petition-card .text { font-family: 'Work Sans', sans-serif; font-size: 14px; margin: 0; color: var(--moonwhite); }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--amethyst); border-radius: 3px; }
@@ -59,9 +60,9 @@
 <body>
 
 <header>
-  <div class="brand">Lughnasadh Dashboard <span>High Priest Mode</span></div>
+  <div class="brand">Lughnasadh Command Dashboard <span>High Priest Mode</span></div>
   <div class="header-controls">
-    <div class="status-badge"><div class="dot"></div> ENGINE LIVE · COVEN SYNCED</div>
+    <div class="status-badge"><div class="dot"></div> ENGINE LIVE · FULL COVEN SYNC</div>
   </div>
 </header>
 
@@ -72,7 +73,7 @@
     <button class="action-btn" style="background: #ff3860; color: white; width: 100%; box-shadow: 0 0 10px rgba(255,56,96,0.4);" onclick="masterReset()">MASTER ENGINE RESET</button>
 
     <!-- LIVE BROADCAST BANNER CONTROL -->
-    <div style="margin-top: 10px; background: var(--indigo); padding: 12px; border-radius: 4px; border: 1px solid var(--line);">
+    <div style="margin-top: 5px; background: var(--indigo); padding: 12px; border-radius: 4px; border: 1px solid var(--line);">
       <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--acid-green); text-transform:uppercase; display:block; margin-bottom:6px;">Push Banner to Coven</label>
       <input type="text" id="broadcast-text" class="broadcast-input" placeholder="Type message for early arrivals...">
       <div style="display: flex; gap: 8px;">
@@ -86,7 +87,7 @@
       <div class="taper-grid">
         <button class="taper-btn" id="taper1-btn" onclick="toggleTaper(1)">TAPER 1<br><span id="taper1-status">OFF</span></button>
         <button class="taper-btn" id="taper2-btn" onclick="toggleTaper(2)">TAPER 2<br><span id="taper2-status">OFF</span></button>
-        <button class="taper-btn" id="taper-btn" onclick="toggleTaper(3)">TAPER 3<br><span id="taper3-status">OFF</span></button>
+        <button class="taper-btn" id="taper3-btn" onclick="toggleTaper(3)">TAPER 3<br><span id="taper3-status">OFF</span></button>
       </div>
     </div>
     
@@ -103,16 +104,16 @@
 
   <!-- CENTER COLUMN: OFFICIANT SCRIPT -->
   <div class="panel">
-    <h2 class="panel-title">Officiant Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 6</span></h2>
+    <h2 class="panel-title">Officiant Full Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 6</span></h2>
     <div class="script-container" id="script-display"></div>
   </div>
 
-  <!-- RIGHT COLUMN: COVEN PETITIONS -->
+  <!-- RIGHT COLUMN: LIVE COVEN INTERACTION AUDIT FEED -->
   <div class="panel">
-    <h2 class="panel-title">Coven Feed <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
+    <h2 class="panel-title">Coven Audit Feed <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
     <div class="petitions-list" id="petitions-feed">
       <div style="font-size:13px; color:var(--silver); font-style:italic; text-align:center; padding:20px 0;">
-        Awaiting early arrivals and focus intentions from the coven...
+        Tracking all seeker entries, node clicks, and path choices in real time...
       </div>
     </div>
   </div>
@@ -140,12 +141,12 @@
   ];
 
   const SCRIPT_CONTENT = {
-    1: `<h3>I. Early Threshold & Greeting</h3><div class="stage-dir">Early arrivals see a notice to await their High Priest and confirm they are in Discord. Ensure your altar candle remains unlit until the official opening.</div><p>Welcome to this Weekly Temple Talk: Reaping What We Sow from a multipractice perspective. This Lughnasadh, we are moving beyond standard traditions into the deep roots of the First Harvest.</p><blockquote>Bring your favorite seasonal brew, ensure you are connected in Discord, and have your grimoire ready as we prepare to cast.</blockquote>`,
-    2: `<h3>II. Casting the Multicultural Compass</h3><div class="stage-dir">Light Taper 1, 2, and 3 as you cast the four quarters and Spirit across the digital astral plane.</div><p>We cast this compass not just in this room, but across the digital astral plane.</p><p><strong>To the East</strong>, the breath of intellect. <strong>To the South</strong>, the fire of the sovereign will. <strong>To the West</strong>, the deep waters of the subconscious. <strong>To the North</strong>, the dark soil, bone, and ash. We honor the rot that feeds the seed.</p><blockquote>Above, the boundless cosmos. Below, the subterranean depths. The Compass is cast. We are between worlds.</blockquote>`,
-    3: `<h3>III. Multipractice Focus & Perspectives</h3><p>We explore how to wield harvest magic with absolute intent. From traditional folk magic to LHP perspectives on ruthlessly cutting away what no longer serves our power, we navigate the spectrum of the First Harvest.</p><p><em>Instruct seekers to lock in their path focus on their screens.</em></p>`,
-    4: `<h3>IV. Guided Reaping & Cutting Intent</h3><div class="stage-dir">Instruct the Coven to light their altar candles. Monitor live offerings on the right panel.</div><p>Close your eyes. Feel the physical weight of your seasonal brew or grimoire. This is the first harvest.</p><p>What must you ruthlessly cut away? What dead weight no longer serves your power? Harness the absolute intent of the reaper's blade.</p><blockquote>"Cut the dead weight. Claim your sovereignty."</blockquote>`,
-    5: `<h3>V. The First Harvest Working</h3><div class="stage-dir">Trigger the Scythe Reaping phase so the Coven can charge their energy.</div><p>Hold up your seasonal brew, your grimoire, your tokens to the camera. We swing the astral scythe to honor the cycle of sacrifice and survival. To grow, something else must fall.</p><blockquote>Swing the scythe! Cut the ties! Claim your harvest!</blockquote>`,
-    6: `<h3>VI. Devocation & Closing</h3><p>The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We thank the Clergy, the Spirits, and the Ancestors.</p><p>Go in power, retaining the absolute sovereignty of your own path.</p><blockquote>The Compass is open, but the connection remains unbroken. So it is done.</blockquote><div class="stage-dir">Extinguish your altar candle. End broadcast.</div>`
+    1: `<h3>I. Early Threshold & Greeting</h3><div class="stage-dir">Early arrivals are greeted with notice to await the High Priest and verify Discord connection. Keep altar tapers unlit until ready to open.</div><p>Welcome to this Weekly Temple Talk: Reaping What We Sow from a multipractice perspective. This Lughnasadh, we move far beyond standard holiday tropes and dig deep into the ancient, eclectic roots of the First Harvest.</p><blockquote>Across global cultures, the first cutting of grain has always symbolized a profound pact: what we cultivate through our dedication, our shadow work, and our will is precisely what we manifest in our lives. Bring your favorite seasonal brew, ensure you are engaged within our Discord sanctuary, and open your grimoire as we explore sacrifice, survival, and sovereignty.</blockquote>`,
+    2: `<h3>II. Casting the Multicultural Compass</h3><div class="stage-dir">Light Taper 1, 2, and 3 as you invoke each direction. Coven nodes unlock sequentially on participant screens.</div><p>We cast this compass not merely within four physical walls, but across the vast digital astral plane, uniting our energies. Listen closely as each quarter is invoked.</p><p><strong>To the East</strong>, we call upon the breath of intellect, the winds of change, and the clarity that cuts through mental fog.</p><p><strong>To the South</strong>, we ignite the fire of the sovereign will, the inner forge that refines our passions and incinerates hesitation.</p><p><strong>To the West</strong>, we plunge into the deep waters of the subconscious, honoring emotional resilience and ancestral memory.</p><p><strong>To the North</strong>, we anchor into the dark soil of the earth, the bone, the stone, and the silicon beneath our fingers—knowing intimately that decay is the ultimate fertilizer of growth.</p><blockquote>Now, we awaken the fifth element of Spirit, binding all quarters into one living, cyber-magical pentacle. The compass is cast. We stand between worlds.</blockquote>`,
+    3: `<h3>III. Multipractice Perspectives & Focus</h3><div class="stage-dir">Direct seekers to choose their path focus on their interactive screens.</div><p>Now we examine the duality of our working: reaping from both the light and the dark perspective. Traditional folk magic celebrates the tangible bounty of the sun, gratitude for the golden grain, and the preservation of communal survival.</p><p>Conversely, Left-Hand Path and esoteric shadow frameworks teach us the necessity of ruthless pruning—cutting away parasitic attachments, dead habits, and toxic obligations that drain our personal power.</p><blockquote>Wielding harvest magic requires absolute intent. Whether you cultivate the light of abundance or sever the rot with a razor-sharp blade, choose your focus for tonight's working.</blockquote>`,
+    4: `<h3>IV. Guided Reaping & Cutting Intent</h3><div class="stage-dir">Monitor live shadow and harvest submissions streaming into the audit feed on the right.</div><p>Close your eyes and breathe in deeply. Focus entirely upon your chosen path.</p><p>Confront the dead weight in your life. With absolute psychological and magical intent, visualize the reaper's scythe slicing away what no longer serves your evolution, transforming past failures into raw fuel.</p><blockquote>"Cut the dead weight. Claim your sovereignty and absolute intent."</blockquote>`,
+    5: `<h3>V. The First Harvest Working</h3><div class="stage-dir">Trigger Scythe Reaping phase so coven screens activate the active charging game.</div><p>Look at the faces and energies gathered across our temple network. We are legion, bound by sovereignty and shared purpose.</p><p>Hold up your seasonal brew, your grimoire, or your tokens to the digital ether. We swing the astral scythe and break the bread of life to honor the eternal cycle.</p><blockquote>To live and evolve, we must consume illusion and discard weakness. Swing the scythe! Cut the dead weight! Claim your absolute harvest!</blockquote>`,
+    6: `<h3>VI. Devocation & Closing</h3><div class="stage-dir">Extinguish altar tapers and conclude transmission.</div><p>The harvest is claimed, the unnecessary ties are severed, and the Wheel turns inexorably onward. We give profound thanks to the Clergy, the elemental forces, and the Ancestors who guide our craft.</p><p>Go forth in absolute power, retaining the sovereign ownership of your own path.</p><blockquote>The compass is open, but our connection remains unbroken. So it is done.</blockquote>`
   };
 
   function initButtons() {
