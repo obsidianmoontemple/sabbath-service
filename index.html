@@ -9,7 +9,7 @@
     
     :root { --bg-color: #050505; --text-main: #f1effa; --gold: #ffd700; --compass: #6e3ba7; --path-accent: var(--gold); }
     
-    body, html { margin: 0; padding: 0; height: 100vh; background: var(--bg-color) url('Witchy Lughnasadh Harvest Background.jpg') no-repeat center center fixed; background-size: cover; color: var(--text-main); font-family: 'Cormorant Garamond', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; user-select: none; cursor: default; }
+    body, html { margin: 0; padding: 0; height: 100vh; background: var(--bg-color) url('https://static.wixstatic.com/media/d6c75e_1d23d5e5b4d34eecaaeeb6c52691e8c0~mv2.jpg') no-repeat center center fixed; background-size: cover; color: var(--text-main); font-family: 'Cormorant Garamond', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; user-select: none; cursor: default; }
 
     body::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 10, 0.88); z-index: 1; transition: background 1.5s ease; }
     body.step-1::before { background: rgba(15, 10, 4, 0.85); }
@@ -115,18 +115,28 @@
     .progress-bar-container { width: 320px; height: 14px; background: rgba(5,5,5,0.95); border-radius: 7px; border: 2px solid var(--gold); overflow: hidden; box-shadow: inset 0 0 15px rgba(0,0,0,0.9); }
     .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ffaa00, #ffd700, #39ff14); transition: width 0.15s ease; box-shadow: 0 0 20px var(--gold); }
 
-    /* STEP VI: MULTICHROME BONFIRE OFFERING TO LUGH */
-    .bonfire-arena { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255,100,50,0.4) 0%, rgba(5,5,5,0.95) 75%); border-radius: 50%; border: 2px dashed #ff3860; box-shadow: 0 0 50px rgba(255,100,50,0.6); }
-    .bonfire-node { width: 130px; height: 130px; background: radial-gradient(circle, #ff3860 0%, #9d5bd2 35%, #38bdf8 70%, #39ff14 100%); border-radius: 50%; box-shadow: 0 0 40px rgba(157,91,210,0.9); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; border: 3px solid #fff; animation: multiFlame 1s infinite alternate; }
-    @keyframes multiFlame { 0% { transform: scale(0.95) rotate(-2deg); filter: hue-rotate(0deg); } 100% { transform: scale(1.05) rotate(2deg); filter: hue-rotate(360deg); } }
-    .bonfire-node:active { transform: scale(0.85); box-shadow: 0 0 80px #39ff14; }
+    /* STEP VI: MULTICHROME BONFIRE OFFERING TO LUGH (ENHANCED BURNING FLAME CORE) */
+    .bonfire-arena { position: relative; width: 230px; height: 230px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255,70,30,0.45) 0%, rgba(10,5,15,0.96) 75%); border-radius: 50%; border: 2px solid #ff3860; box-shadow: 0 0 65px rgba(255, 60, 40, 0.7); }
+    .bonfire-node { width: 140px; height: 140px; background: radial-gradient(circle, #ffffff 10%, #ffdf73 30%, #ff3860 55%, #9d5bd2 80%, #38bdf8 100%); border-radius: 50% 50% 40% 40%; box-shadow: 0 0 50px rgba(255,56,96,0.9), inset 0 0 25px rgba(255,255,255,0.8); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; border: 3px solid #fff; animation: ragingBonfire 0.8s infinite alternate ease-in-out; }
+    @keyframes ragingBonfire { 
+      0% { transform: scale(0.95) skewX(1deg) translateY(2px); filter: hue-rotate(0deg) brightness(1); box-shadow: 0 0 40px rgba(255,56,96,0.8), inset 0 0 15px #fff; } 
+      50% { transform: scale(1.05) skewX(-2deg) translateY(-3px); filter: hue-rotate(20deg) brightness(1.25); box-shadow: 0 0 75px rgba(255,140,0,1), inset 0 0 30px #ffff88; }
+      100% { transform: scale(1.02) skewX(1.5deg) translateY(0px); filter: hue-rotate(-15deg) brightness(1.15); box-shadow: 0 0 60px rgba(157,91,210,0.9), inset 0 0 20px #ff3860; } 
+    }
+    .bonfire-node:active { transform: scale(0.85) scaleY(1.1); box-shadow: 0 0 95px #39ff14, inset 0 0 40px #ffffff; background: radial-gradient(circle, #fff 0%, #39ff14 60%, #ff3860 100%); }
 
-    /* STEP VII: CORN DOLLIES & SUN WHEELS WEAVING */
-    .craft-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-    .craft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 400px; }
-    .craft-card { background: rgba(20,15,30,0.8); border: 1px solid var(--gold); border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
-    .craft-card:hover { border-color: #fff; box-shadow: 0 0 15px rgba(255,215,0,0.5); background: rgba(40,30,60,0.9); }
-    .craft-card.crafted { border-color: #39ff14; box-shadow: 0 0 20px rgba(57,255,20,0.6); pointer-events: none; }
+    /* STEP VII: CORN DOLLIES & SUN WHEELS CRAFTING CIRCLE (WITH INTERACTIVE MODAL GUIDES) */
+    .craft-container { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+    .craft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 500px; }
+    .craft-card { background: rgba(20,15,30,0.85); border: 1px solid var(--gold); border-radius: 8px; padding: 18px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; gap: 8px; }
+    .craft-card:hover { border-color: #fff; box-shadow: 0 0 18px rgba(255,215,0,0.6); background: rgba(40,30,60,0.95); transform: translateY(-2px); }
+    .craft-card.crafted { border-color: #39ff14; box-shadow: 0 0 22px rgba(57,255,20,0.7); background: rgba(15,35,20,0.85); }
+    
+    /* Crafting Instructions Modal / Expansion Panel */
+    .craft-guide-panel { display: none; background: rgba(10, 8, 20, 0.95); border: 1px solid var(--gold); border-radius: 8px; padding: 20px; margin-top: 15px; width: 100%; max-width: 600px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.9); animation: fadeIn 0.5s forwards; }
+    .craft-guide-panel h4 { font-family: 'Cinzel Decorative', serif; color: var(--gold); margin-top: 0; margin-bottom: 10px; font-size: 1.1rem; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 5px; }
+    .craft-guide-panel ul { margin: 0; padding-left: 20px; font-family: 'Work Sans', sans-serif; font-size: 0.95rem; color: #ddd; line-height: 1.6; }
+    .craft-guide-panel li { margin-bottom: 6px; }
 
     .btn-magic { background: rgba(10,10,10,0.9); border: 1px solid var(--gold); color: var(--gold); padding: 12px 30px; cursor: pointer; transition: 0.4s; font-family: 'Work Sans', sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
     .btn-magic:hover { background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold); }
@@ -232,9 +242,9 @@
       <p id="bread-success" style="display:none; color: #fff; font-style: italic; margin-top: 15px; font-size: 1.4rem; text-shadow: 0 0 15px var(--gold);">The golden harvest is complete! Sovereign power fully realized.</p>
     </div>
 
-    <!-- STEP 6: MULTICHROME BONFIRE OFFERING TO LUGH -->
+    <!-- STEP 6: ENHANCED MULTICHROME BONFIRE OFFERING TO LUGH -->
     <div class="interactive-layer" id="layer-step-6">
-      <p style="color: #ff3860; font-style: italic; font-size: 1.1rem; margin-bottom: 15px;">Feed the multichrome bonfire of Lugh as we commune on Discord. Tap the roaring flame to amplify its blazing hues and warmth.</p>
+      <p style="color: #ff3860; font-style: italic; font-size: 1.1rem; margin-bottom: 15px;">Feed the raging multichrome bonfire of Lugh as we commune on Discord. Tap the blazing core to amplify its roaring flames, radiant heat, and prismatic light.</p>
       <div class="harvest-game-container locked-element" id="bonfire-game-box">
         <div class="bonfire-arena">
           <div class="bonfire-node" onclick="feedBonfire(event)">FEED FLAME</div>
@@ -243,23 +253,50 @@
           <div class="progress-bar-fill" id="bonfire-progress" style="background: linear-gradient(90deg, #ff3860, #9d5bd2, #38bdf8, #39ff14);"></div>
         </div>
       </div>
-      <p id="bonfire-success" style="display:none; color: #ffd700; font-style: italic; margin-top: 15px; font-size: 1.3rem;">The great bonfire blazes in brilliant multichrome glory. Lugh is honored!</p>
+      <p id="bonfire-success" style="display:none; color: #ffd700; font-style: italic; margin-top: 15px; font-size: 1.3rem;">The great bonfire surges in brilliant multichrome glory. Lugh is honored!</p>
     </div>
 
-    <!-- STEP 7: CORN DOLLIES & SUN WHEELS CRAFTING CIRCLE -->
+    <!-- STEP 7: CORN DOLLIES & SUN WHEELS CRAFTING CIRCLE WITH GUIDES -->
     <div class="interactive-layer" id="layer-step-7">
-      <p style="color: #ffd700; font-style: italic; font-size: 1.1rem; margin-bottom: 15px;">Enter the Crafting Circle. Weave your digital corn dollies and lock your sun wheels to honor the spirit of the grain and the sun.</p>
+      <p style="color: #ffd700; font-style: italic; font-size: 1.1rem; margin-bottom: 15px;">Enter the Crafting Circle. Click each craft card to reveal its step-by-step physical creation guide, then consecrate it in the astral plane.</p>
       <div class="craft-container locked-element" id="craft-box">
         <div class="craft-grid">
-          <div class="craft-card" id="card-dolly" onclick="craftItem('dolly', event)">
-            <h3 style="margin:0 0 5px 0; color:#ffd700; font-family:'Cinzel Decorative'; font-size:0.9rem;">Corn Dolly</h3>
-            <p style="font-size:0.85rem; margin:0; color:#ccc;">Weave the grain spirit</p>
+          <div class="craft-card" id="card-dolly" onclick="toggleCraftGuide('dolly', event)">
+            <h3 style="margin:0 0 5px 0; color:#ffd700; font-family:'Cinzel Decorative'; font-size:0.95rem;">Corn Dolly 🌾</h3>
+            <p style="font-size:0.85rem; margin:0; color:#ccc;">Click for physical weaving guide & astral lock</p>
           </div>
-          <div class="craft-card" id="card-wheel" onclick="craftItem('wheel', event)">
-            <h3 style="margin:0 0 5px 0; color:#ffd700; font-family:'Cinzel Decorative'; font-size:0.9rem;">Sun Wheel</h3>
-            <p style="font-size:0.85rem; margin:0; color:#ccc;">Lock the solar spokes</p>
+          <div class="craft-card" id="card-wheel" onclick="toggleCraftGuide('wheel', event)">
+            <h3 style="margin:0 0 5px 0; color:#ffd700; font-family:'Cinzel Decorative'; font-size:0.95rem;">Sun Wheel ☀️</h3>
+            <p style="font-size:0.85rem; margin:0; color:#ccc;">Click for twig weaving guide & astral lock</p>
           </div>
         </div>
+
+        <!-- Dolly Guide Panel -->
+        <div class="craft-guide-panel" id="guide-dolly">
+          <h4>Corn Dolly Creation Guide</h4>
+          <ul>
+            <li><strong>Materials:</strong> Dried corn husks (soaked in warm water for 15 minutes to make pliable), natural twine or red thread.</li>
+            <li><strong>Step 1:</strong> Bundle 6 to 8 husks together, tying them firmly at the top head section with thread.</li>
+            <li><strong>Step 2:</strong> Fold the husks down over the head binding to form the smooth face and neck; tie a neck cord.</li>
+            <li><strong>Step 3:</strong> Roll a separate thin husk cylinder for arms, insert it through the body bundle, and tie off the waist and wrists.</li>
+            <li><strong>Step 4:</strong> Braiding the skirt represents the final gathering of grain. Consecrate it below once complete!</li>
+          </ul>
+          <button class="btn-magic" style="width:100%; margin-top:12px; padding:8px;" onclick="craftItem('dolly', event)">Consecrate Corn Dolly in Astral Plane</button>
+        </div>
+
+        <!-- Wheel Guide Panel -->
+        <div class="craft-guide-panel" id="guide-wheel">
+          <h4>Sun Wheel Creation Guide</h4>
+          <ul>
+            <li><strong>Materials:</strong> Four equal-length sturdy twigs or wooden dowels, yellow/gold yarn, and dried summer straw or wheat stalks.</li>
+            <li><strong>Step 1:</strong> Cross two twigs at right angles and lash them tightly at the center with gold yarn to form an 8-spoke or 4-spoke cross.</li>
+            <li><strong>Step 2:</strong> Tie the yarn to one spoke and weave it over and under consecutive spokes in a continuous square or wheel pattern.</li>
+            <li><strong>Step 3:</strong> Push the weaving outward toward the edges to form a vibrant sun disc, tucking straw tips securely into the arms.</li>
+            <li><strong>Step 4:</strong> Hang the finished wheel in your kitchen or hearth to anchor solar energy. Consecrate it below once locked!</li>
+          </ul>
+          <button class="btn-magic" style="width:100%; margin-top:12px; padding:8px;" onclick="craftItem('wheel', event)">Consecrate Sun Wheel in Astral Plane</button>
+        </div>
+
       </div>
       <p id="craft-success" style="display:none; color: #39ff14; font-style: italic; margin-top: 15px; font-size: 1.3rem;">Both physical and astral crafts are consecrated. Blessed be!</p>
     </div>
@@ -287,7 +324,7 @@
         4: { title: "Deep Pruning Meditation", text: "Immerse in the shadow and light of the First Harvest. Name what you are cutting away." },
         5: { title: "The Golden Harvest Working", text: "Reap the rich golden wheat and sunshine together." },
         6: { title: "Multichrome Bonfire to Lugh", text: "Feed the roaring multichrome flames as we commune on Discord." },
-        7: { title: "Crafting Circle", text: "Weave corn dollies and craft sun wheels in physical and astral reality." },
+        7: { title: "Crafting Circle", text: "Review physical creation guides, weave corn dollies, and craft sun wheels." },
         8: { title: "The Wheel Turns", text: "The temple talk is complete. Snuff your personal flame." }
       }
     };
@@ -304,7 +341,7 @@
         },
         5: "Look at the golden fields and energies gathered across our temple network. We are legion, bound by sovereignty and shared purpose. Hold up your seasonal brew, your grimoire, or your tokens to the digital ether. We swing the astral scythe through the rich wheat and break the bread of life to honor the eternal cycle. Swing the scythe! Cut the dead weight! Claim your absolute golden harvest!",
         6: "As we gather on Discord to commune and converse, we now ignite and feed the great multichrome bonfire to Lugh, the shining master of skills and craft. Notice the vibrant hues—fiery orange, electric purple, emerald green, and shimmering gold. Toss your offerings into the blaze, letting Lugh's radiant warmth fill our temple space.",
-        7: "Now we enter the Crafting Circle. As we craft our physical corn dollies to house the spirit of the grain and fashion our sun wheels to honor the solar peak, click your program nodes to anchor your creations in the astral plane, bridging physical handicraft with digital magic.",
+        7: "Now we enter the Crafting Circle. Open the instruction guides for your corn dollies and sun wheels, learning the traditional methods of husks and twigs, then lock your creations in the astral plane to bridge physical handicraft with digital magic.",
         8: "The harvest is claimed, the multichrome flames burn bright, and the Wheel turns inexorably onward. We give profound thanks to Lugh, the Clergy, and the Ancestors. Go forth in absolute power, retaining the sovereign ownership of your own path. So it is done."
       }
     };
@@ -498,7 +535,7 @@
       }
     }
 
-    /* STEP 6: MULTICHROME BONFIRE */
+    /* STEP 6: ENHANCED MULTICHROME BONFIRE */
     function initStep6() {
       bonfireProgress = 0;
       document.getElementById('bonfire-progress').style.width = '0%';
@@ -516,19 +553,24 @@
       bonfireProgress += 20;
       if (bonfireProgress > 100) bonfireProgress = 100;
       document.getElementById('bonfire-progress').style.width = bonfireProgress + '%';
-      createSparkBurst(e.pageX, e.pageY, '#ff3860', 22);
+      createSparkBurst(e.pageX, e.pageY, '#ff3860', 25);
       if (bonfireProgress >= 100) {
         event.target.style.display = 'none';
         document.getElementById('bonfire-success').style.display = 'block';
         logInteraction("Fed Multichrome Bonfire to Lugh.");
+        for(let i = 0; i < 8; i++) {
+          setTimeout(() => { createSparkBurst(window.innerWidth / 2 + (Math.random() * 200 - 100), window.innerHeight / 2 + (Math.random() * 200 - 100), '#39ff14', 25); }, i * 100);
+        }
       }
     }
 
-    /* STEP 7: CRAFTING CIRCLE */
+    /* STEP 7: CRAFTING CIRCLE WITH GUIDES */
     function initStep7() {
       craftedItems = { dolly: false, wheel: false };
       document.getElementById('card-dolly').classList.remove('crafted');
       document.getElementById('card-wheel').classList.remove('crafted');
+      document.getElementById('guide-dolly').style.display = 'none';
+      document.getElementById('guide-wheel').style.display = 'none';
       document.getElementById('craft-success').style.display = 'none';
       const box = document.getElementById('craft-box');
       box.classList.remove('unlocked-element'); box.classList.add('locked-element');
@@ -537,11 +579,26 @@
       });
     }
 
+    function toggleCraftGuide(type, e) {
+      const guideDolly = document.getElementById('guide-dolly');
+      const guideWheel = document.getElementById('guide-wheel');
+      if (type === 'dolly') {
+        guideDolly.style.display = guideDolly.style.display === 'block' ? 'none' : 'block';
+        guideWheel.style.display = 'none';
+      } else {
+        guideWheel.style.display = guideWheel.style.display === 'block' ? 'none' : 'block';
+        guideDolly.style.display = 'none';
+      }
+      createSparkBurst(e.pageX, e.pageY, '#ffd700', 10);
+    }
+
     function craftItem(type, e) {
+      e.stopPropagation();
       craftedItems[type] = true;
       document.getElementById('card-' + type).classList.add('crafted');
-      createSparkBurst(e.pageX, e.pageY, '#ffd700', 25);
-      logInteraction(`Crafted Astral & Physical: ${type.toUpperCase()}`);
+      document.getElementById('guide-' + type).style.display = 'none';
+      createSparkBurst(e.pageX, e.pageY, '#39ff14', 30);
+      logInteraction(`Consecrated Craft in Astral & Physical: ${type.toUpperCase()}`);
       if (craftedItems.dolly && craftedItems.wheel) {
         document.getElementById('craft-success').style.display = 'block';
         logInteraction("Completed Full Crafting Circle: Corn Dollies & Sun Wheels.");
