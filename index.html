@@ -158,6 +158,13 @@ canvas.scene{display:block; margin:0 auto; border-radius:3px; max-width:100%; to
 .hold-note{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.16em;
   text-transform:uppercase; color:var(--moon-dim); margin-top:14px; transition:color .6s;}
 .hold-note.open{color:var(--lantern);}
+.aftercare{display:none; margin:26px auto 6px; max-width:60ch; text-align:left;
+  border:1px solid var(--path); border-radius:3px; padding:20px 22px; background:rgba(157,91,210,.07);}
+.aftercare.on{display:block; animation:rise .9s ease;}
+.aftercare-head{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--path-light); margin-bottom:12px;}
+.aftercare p{font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300;
+  line-height:1.7; color:#e8e6de; margin:0 0 12px;}
 .token-label{font-family:'IBM Plex Mono',monospace; font-size:8px; letter-spacing:.1em;
   text-transform:uppercase; color:var(--moon-dim); margin-top:5px;}
 .token-wrap{display:flex; flex-direction:column; align-items:center;}
@@ -216,6 +223,7 @@ input.field.small{width:100%; font-size:1rem; padding:10px 13px; text-align:left
     <div class="taper-wrap"><div class="taper" id="taper-3"></div><div class="taper-label">Unseen Path</div></div>
   </div>
   <div class="chrome-group">
+    <span class="btn-small" id="auto-badge" style="display:none; border-color:var(--path); color:var(--path-light);"></span>
     <button class="btn-small on" id="voice-toggle" onclick="toggleVoice()">&#9835; Officiant On</button>
     <button class="btn-small" id="coven-voice-toggle" onclick="toggleCovenVoice()" title="Your own part is yours to speak. Turn this on only if you need it read to you.">&#9835; My Part: I Read It</button>
     <button class="btn-small" id="sound-toggle" onclick="toggleAmbient()">&#9834; Drone Off</button>
@@ -400,7 +408,13 @@ input.field.small{width:100%; font-size:1rem; padding:10px 13px; text-align:left
       <input type="text" class="field" id="gratitude-input" placeholder="Gratitude, or a word for the circle" autocomplete="off" maxlength="200">
       <br><button class="btn" onclick="submitGratitude()">Leave it with the coven</button>
     </div>
-    <div class="done-note" id="done-10">The door is shut. Clergy are in Discord now, and will stay. Do not sit alone with what tonight turned over.</div>
+    <div class="done-note" id="done-10">The door is shut. Do not sit alone with what tonight turned over.</div>
+    <div class="aftercare" id="aftercare">
+      <div class="aftercare-head">Before you close this page</div>
+      <p>If tonight moved more than you expected, that is what the rite is for &mdash; not a failure of your practice.</p>
+      <p>The coven is in Discord, and the temple contact page is open. Reach out tonight or tomorrow; it is not an imposition. If what surfaced is heavier than a temple can carry, we will help you find someone trained to hold it. There is no shame in either door.</p>
+      <a href="https://discord.gg/XfkU5A5rp" target="_blank" rel="noopener" class="btn" style="display:inline-block; text-decoration:none;">Go to the Discord</a>
+    </div>
     <div class="response-chip" id="chip-10" onclick="speakResponse(this,'The door is shut. The road is lit.')">&ldquo;The door is shut. The road is lit.&rdquo;</div>
   </div>
 </div>
@@ -1637,6 +1651,8 @@ function scene10(){
     if(gb){ gb.classList.remove('locked'); gb.classList.add('unlocked'); }
     const t1 = document.getElementById('taper-1'); if(t1) t1.classList.remove('lit');
     finish(10, 'Extinguished the candle. The door is shut.');
+    const ac = document.getElementById('aftercare');
+    if(ac) setTimeout(() => ac.classList.add('on'), 1600);
   };
   return loop(t => {
     const x = S.x; x.clearRect(0,0,S.w,S.h);
@@ -1698,6 +1714,93 @@ let covenCandles = [];
 let myCandleLit = false;
 let officiantPresent = false;   // set by the officiant lighting his candle
 let firstPollDone = false;      // never replay a stale cue to someone who just joined
+
+/* ===================== SELF-GUIDED MODE =====================
+   ?auto=1                     run without an officiant
+   &at=20:00                   local start time tonight (recommended)
+   &start=2026-08-14T20:00     explicit start, if you prefer
+   Every screen computes its step from the same wall clock, so the whole
+   circle stays in step regardless of when each person opened the page,
+   and anyone arriving late drops straight into the right moment.
+   Without ?auto=1 nothing below runs and the console drives as usual.
+   ============================================================ */
+const QS = new URLSearchParams(location.search);
+const AUTO = QS.get('auto') === '1';
+// seconds per step, 1 through 10
+const AUTO_SECONDS = [190, 250, 190, 250, 320, 190, 250, 215, 250, 260];
+const AUTO_CUES = {
+  1:  [{ at: 4,  taper: 2 }],
+  2:  [{ at: 26, cue: 'moonrise' }],
+  3:  [{ at: 8,  cue: 'procession' }, { at: 46, taper: 1 }],
+  5:  [{ at: 12, cue: 'mist' }],
+  6:  [{ at: 40, cue: 'namesky' }],
+  7:  [{ at: 3,  cue: 'dim' }],
+  8:  [{ at: 30, cue: 'riverrise' }, { at: 40, taper: 3 }],
+  9:  [{ at: 24, cue: 'knell' }],
+  10: [{ at: 6,  cue: 'undim' }, { at: 120, cue: 'snuffall' }]
+};
+let autoStart = null, autoFired = {}, autoTicker = null;
+
+function autoStartTime(){
+  const explicit = QS.get('start');
+  if(explicit){ const d = new Date(explicit); if(!isNaN(d)) return d; }
+  const at = QS.get('at');
+  if(at && /^\d{1,2}:\d{2}$/.test(at)){
+    const [h,m] = at.split(':').map(Number);
+    const d = new Date(); d.setHours(h, m, 0, 0);
+    if(d.getTime() < Date.now() - 60*60*1000) d.setDate(d.getDate()+1);
+    return d;
+  }
+  return new Date(Date.now() + 60*1000);   // no time given: one minute from load
+}
+function autoStepAt(elapsed){
+  let acc = 0;
+  for(let i=0;i<AUTO_SECONDS.length;i++){
+    acc += AUTO_SECONDS[i];
+    if(elapsed < acc) return { step: i+1, into: elapsed - (acc - AUTO_SECONDS[i]) };
+  }
+  return { step: 10, into: 9999 };
+}
+function autoTick(){
+  const now = Date.now(), elapsed = Math.floor((now - autoStart.getTime())/1000);
+  const note = document.getElementById('hold-note');
+  if(elapsed < 0){
+    const left = -elapsed;
+    const mm = String(Math.floor(left/60)).padStart(2,'0'), ss = String(left%60).padStart(2,'0');
+    if(note){ note.classList.remove('open');
+      note.textContent = 'The service begins in ' + mm + ':' + ss + ' \u00b7 build your candle while you wait'; }
+    return;
+  }
+  if(!officiantPresent){
+    applyOfficiantState(true);            // the hour itself opens the door
+    if(note) note.textContent = 'The door is open. This service is self-guided tonight.';
+  }
+  const pos = autoStepAt(elapsed);
+  if(pos.step !== state.step) goToStep(pos.step);
+  const marks = AUTO_CUES[pos.step] || [];
+  marks.forEach((m, i) => {
+    const key = pos.step + ':' + i;
+    if(autoFired[key] || pos.into < m.at) return;
+    autoFired[key] = true;
+    if(m.cue) fireCue(m.cue);
+    if(m.taper){ const el = document.getElementById('taper-' + m.taper); if(el) el.classList.add('lit'); }
+  });
+  if(pos.step === 10 && pos.into > 130){
+    const t1 = document.getElementById('taper-1'); if(t1) t1.classList.remove('lit');
+  }
+}
+function startAutopilot(){
+  autoStart = autoStartTime();
+  document.body.classList.add('self-guided');
+  const badge = document.getElementById('auto-badge');
+  if(badge){
+    badge.style.display = 'inline-flex';
+    badge.textContent = 'Self-guided \u00b7 ' +
+      autoStart.toLocaleTimeString([], { hour:'numeric', minute:'2-digit' });
+  }
+  autoTick();
+  autoTicker = setInterval(autoTick, 1000);
+}
 
 function buildSwatches(boxId, list, key){
   const box = document.getElementById(boxId); if(!box) return;
@@ -2027,7 +2130,9 @@ async function pollState(){
   const data = await post({ action:'getRitualState' });
   if(!data || !data.success) return;
 
-  if(data.currentStep && data.currentStep !== state.step) goToStep(data.currentStep);
+  // In self-guided mode the clock drives the service. Server step, officiant
+  // state and cues are all ignored so a console left open cannot interfere.
+  if(!AUTO && data.currentStep && data.currentStep !== state.step) goToStep(data.currentStep);
 
   const t1 = document.getElementById('taper-1'), t2 = document.getElementById('taper-2'), t3 = document.getElementById('taper-3');
   if(t1) t1.classList.toggle('lit', !!data.taper1);
@@ -2041,10 +2146,10 @@ async function pollState(){
   }
   firstPollDone = true;
 
-  applyOfficiantState(data.communionActive);
+  if(!AUTO) applyOfficiantState(data.communionActive);
 
   // dedicated cue field, if the Apps Script ever gains one
-  if(data.cue && data.cueId && data.cueId !== lastCueId){
+  if(!AUTO && data.cue && data.cueId && data.cueId !== lastCueId){
     if(firstPollDone) fireCue(data.cue);
     lastCueId = data.cueId;
   }
@@ -2052,6 +2157,7 @@ async function pollState(){
   // cue-over-banner channel
   const b = data.activeBroadcast;
   const banner = document.getElementById('broadcast');
+  if(AUTO){ banner.classList.remove('show'); firstPollDone = true; return; }
   if(b && b.title === CUE_TITLE && b.text){
     const parts = String(b.text).split('|');
     const id = parts[1] || parts[0];
@@ -2079,6 +2185,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const t3 = document.getElementById('taper-3');
   setInterval(pollState, 3000);
   pollState();
+  if(AUTO) startAutopilot();
   document.addEventListener('pointerdown', function once(){ audio(); document.removeEventListener('pointerdown', once); });
 });
 </script>
