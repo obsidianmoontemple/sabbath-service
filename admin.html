@@ -1,302 +1,527 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Lughnasadh Command Dashboard: Reaping What We Sow</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
-    :root { --obsidian: #07060a; --obsidian-card: #0e0a17; --indigo: #130d24; --indigo-2: #1b1233; --amethyst: #6e3ba7; --amethyst-glow: #9d5bd2; --amethyst-light: #c092f0; --silver: #adabcc; --moonwhite: #f1effa; --acid-green: #39ff14; --acid-green-glow: rgba(57, 255, 20, 0.4); --line: rgba(157, 91, 210, 0.22); }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--obsidian); color: var(--moonwhite); font-family: 'Work Sans', sans-serif; font-weight: 300; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
-    
-    header { background: var(--indigo); border-bottom: 1px solid var(--line); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .brand { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--moonwhite); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 2px;}
-    .brand span { color: var(--acid-green); font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--acid-green); padding: 2px 6px; border-radius: 2px; }
-    .header-controls { display: flex; align-items: center; gap: 15px; }
-    .status-badge { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--acid-green); display: flex; align-items: center; gap: 8px; }
-    .dot { width: 8px; height: 8px; background: var(--acid-green); border-radius: 50%; box-shadow: 0 0 8px var(--acid-green); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{ opacity: 1; } 50%{ opacity: 0.3; } }
-    
-    .layout { display: grid; grid-template-columns: 340px 1fr 360px; gap: 20px; padding: 20px; flex: 1; }
-    @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
-    .panel { background: var(--obsidian-card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-    .panel-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--amethyst-light); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 0; display: flex; justify-content: space-between; align-items: center; }
-    
-    .step-btn { background: var(--indigo-2); border: 1px solid var(--line); color: var(--moonwhite); padding: 10px 14px; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 2px; }
-    .step-btn:hover { border-color: var(--amethyst-glow); }
-    .step-btn.active { background: #2a1b42; border-color: var(--acid-green); box-shadow: 0 0 10px var(--acid-green-glow); }
-    .step-btn .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--acid-green); text-transform: uppercase; }
-    .step-btn .step-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; }
-    
-    .taper-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
-    .taper-btn { background: var(--indigo); border: 1px solid var(--line); color: var(--silver); padding: 10px 6px; border-radius: 4px; cursor: pointer; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; transition: all 0.2s ease; }
-    .taper-btn.lit { background: rgba(57, 255, 20, 0.15); border-color: var(--acid-green); color: var(--acid-green); box-shadow: 0 0 12px var(--acid-green-glow); }
-    
-    .action-btn { background: #d4af37; color: var(--obsidian); font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
-    .action-btn:hover { background: #fadd70; }
-    .action-btn.active { background: #ff3860; color: white; box-shadow: 0 0 10px rgba(255,56,96,0.4); }
-    
-    .broadcast-input { background: var(--indigo); border: 1px solid var(--line); color: #fff; padding: 10px; font-family: 'Work Sans', sans-serif; font-size: 13px; border-radius: 4px; width: 100%; margin-bottom: 8px; }
-    .broadcast-input:focus { outline: none; border-color: var(--amethyst-light); }
+<meta charset="UTF-8">
+<title>The Two Fires — Officiant Console | Temple of the Obsidian Moon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Work+Sans:wght@300;400;500;600&family=Cinzel+Decorative:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root{
+  --obsidian:#06060a; --card:#0c0d14; --panel:#11121c; --panel-2:#171929;
+  --lantern:#f0a94c; --lantern-dim:#8a6330; --ember:#ff6b3d;
+  --moon:#cfd9e6; --moon-dim:#7d8798; --nemi:#3f9c9c; --path:#9d5bd2; --path-light:#c092f0;
+  --line:rgba(207,217,230,0.14); --ok:#39ff14;
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--obsidian); color:var(--moon);
+  font-family:'Work Sans',sans-serif; font-weight:300; min-height:100vh; display:flex; flex-direction:column;}
+header{background:var(--panel); border-bottom:1px solid var(--line); padding:13px 22px;
+  display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; gap:14px; flex-wrap:wrap;}
+.brand{font-family:'Cinzel Decorative',serif; font-size:17px; letter-spacing:.06em; color:#f1efe6;
+  display:flex; align-items:center; gap:11px;}
+.tag{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--lantern); border:1px solid var(--lantern-dim); padding:3px 7px; border-radius:2px;}
+.status{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.1em; color:var(--ok);
+  display:flex; align-items:center; gap:7px;}
+.dot{width:7px;height:7px;background:var(--ok);border-radius:50%;box-shadow:0 0 8px var(--ok);animation:p 2s infinite;}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
 
-    .script-container { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6; color: var(--moonwhite); overflow-y: auto; max-height: 72vh; padding-right: 10px; text-align: left; }
-    .script-container blockquote { border-left: 3px solid var(--acid-green); margin: 16px 0; padding-left: 18px; font-style: italic; color: #ffffff; }
-    .script-container h3 { font-size: 21px; color: var(--amethyst-light); margin-top: 20px; margin-bottom: 6px; }
-    .script-container .stage-dir { font-family: 'Work Sans', sans-serif; font-size: 12px; color: var(--silver); font-style: normal; background: var(--indigo); padding: 6px 12px; border-radius: 3px; display: inline-block; margin: 8px 0; border-left: 3px solid #d4af37; }
-    
-    .petitions-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 65vh; text-align: left; }
-    .petition-card { background: var(--indigo); border-left: 3px solid var(--amethyst-light); padding: 12px 14px; border-radius: 0 4px 4px 0; }
-    .petition-card.Shadow { border-left-color: #ff3860; }
-    .petition-card.Harvest { border-left-color: #d4af37; }
-    .petition-card.Interaction { border-left-color: #39ff14; }
-    .petition-card .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--silver); text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
-    .petition-card .text { font-family: 'Work Sans', sans-serif; font-size: 14px; margin: 0; color: var(--moonwhite); }
+.layout{display:grid; grid-template-columns:330px 1fr 330px; gap:16px; padding:16px; flex:1; align-items:start;}
+@media(max-width:1240px){ .layout{grid-template-columns:300px 1fr;} .col-feed{grid-column:1/-1;} }
+@media(max-width:860px){ .layout{grid-template-columns:1fr;} .col-feed{grid-column:auto;} }
+.panel{background:var(--card); border:1px solid var(--line); border-radius:4px; padding:16px;
+  display:flex; flex-direction:column; gap:13px; margin-bottom:16px;}
+.ptitle{font-family:'Cinzel Decorative',serif; font-size:14px; letter-spacing:.05em; color:var(--lantern);
+  border-bottom:1px solid var(--line); padding-bottom:7px; margin:0;
+  display:flex; justify-content:space-between; align-items:center;}
+.ptitle .meta{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--moon-dim); letter-spacing:.08em;}
+.lbl{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--moon-dim); display:block; margin-bottom:7px;}
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--amethyst); border-radius: 3px; }
-  </style>
+.step-btn{background:var(--panel); border:1px solid var(--line); color:var(--moon); padding:8px 11px;
+  border-radius:3px; text-align:left; cursor:pointer; transition:.18s; display:flex; align-items:baseline; gap:9px;}
+.step-btn:hover{border-color:var(--path); background:var(--panel-2);}
+.step-btn.active{background:#241a10; border-color:var(--lantern); box-shadow:0 0 12px rgba(240,169,76,.3);}
+.step-btn .n{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--lantern); min-width:20px;}
+.step-btn .t{font-family:'Cormorant Garamond',serif; font-size:15px; font-weight:600;}
+.step-btn.mv2 .n{color:var(--path-light);}
+.mv-divider{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.2em; color:var(--path-light);
+  text-transform:uppercase; padding:8px 0 3px; border-top:1px solid var(--line); margin-top:5px;}
+
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:7px;}
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:7px;}
+.taper-btn{background:var(--panel); border:1px solid var(--line); color:var(--moon-dim); padding:9px 4px;
+  border-radius:3px; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:9px;
+  letter-spacing:.06em; transition:.18s; text-align:center; line-height:1.5;}
+.taper-btn.lit{background:rgba(240,169,76,.14); border-color:var(--lantern); color:var(--lantern);
+  box-shadow:0 0 12px rgba(240,169,76,.28);}
+
+.btn{background:transparent; border:1px solid var(--line); color:var(--moon); padding:9px 12px;
+  font-family:'Work Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.1em;
+  text-transform:uppercase; border-radius:3px; cursor:pointer; transition:.2s;}
+.btn:hover{border-color:var(--lantern); color:var(--lantern);}
+.btn.primary{border-color:var(--lantern); color:var(--lantern);}
+.btn.primary:hover{background:var(--lantern); color:#08080c;}
+.btn.danger{border-color:#8a2b3a; color:#e0788a;}
+.btn.danger:hover{background:#8a2b3a; color:#fff;}
+.btn.full{width:100%;}
+.btn.arrival{border-color:var(--lantern); color:var(--lantern); padding:14px 12px; font-size:12px;}
+.btn.arrival:hover{background:var(--lantern); color:#08080c;}
+.btn.arrival.lit{background:var(--lantern); color:#08080c; box-shadow:0 0 20px rgba(240,169,76,.45);}
+.arrival-note{font-family:'Work Sans',sans-serif; font-size:11.5px; line-height:1.6; color:var(--moon-dim);}
+.arrival-note.open{color:var(--lantern);}
+
+.cue{background:var(--panel); border:1px solid var(--line); color:var(--moon); padding:9px 6px;
+  border-radius:3px; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:9.5px;
+  letter-spacing:.07em; text-transform:uppercase; transition:.16s; text-align:center;}
+.cue:hover{border-color:var(--path); color:var(--path-light); background:var(--panel-2);}
+.cue:active{background:var(--path); color:#fff;}
+.cue.fired{border-color:var(--ok); color:var(--ok);}
+.cue-group{border-top:1px dashed var(--line); padding-top:10px;}
+
+input.f, select.f{background:var(--panel); border:1px solid var(--line); color:#fff; padding:9px 11px;
+  font-family:'Work Sans',sans-serif; font-size:13px; border-radius:3px; width:100%;}
+input.f:focus, select.f:focus{outline:none; border-color:var(--lantern);}
+
+.script{font-family:'Cormorant Garamond',serif; font-size:18.5px; line-height:1.68; color:#e9e7df;
+  overflow-y:auto; max-height:calc(100vh - 190px); padding-right:12px; text-align:left;}
+.script h3{font-family:'Cinzel Decorative',serif; font-size:19px; color:var(--lantern);
+  margin:0 0 4px; letter-spacing:.03em;}
+.script .mv{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--path-light); margin-bottom:12px;}
+.script .dir{font-family:'Work Sans',sans-serif; font-size:11.5px; line-height:1.6; color:var(--moon-dim);
+  background:var(--panel); padding:9px 13px; border-left:2px solid var(--nemi); border-radius:0 3px 3px 0;
+  margin:14px 0; letter-spacing:.02em;}
+.script .dir b{color:var(--nemi); font-weight:500;}
+.script .say{margin:0 0 13px;}
+.script .coven{border-left:2px solid var(--path); padding:8px 15px; margin:15px 0;
+  font-style:italic; color:var(--path-light); background:rgba(157,91,210,.06);}
+.script .coven span{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--moon-dim); display:block; font-style:normal; margin-bottom:4px;}
+.script .cuehint{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--lantern);
+  letter-spacing:.06em; margin:12px 0; padding:7px 11px; border:1px dashed var(--lantern-dim); border-radius:3px;}
+
+.feed{display:flex; flex-direction:column; gap:9px; overflow-y:auto; max-height:calc(100vh - 210px); text-align:left;}
+.card{background:var(--panel); border-left:2px solid var(--moon-dim); padding:9px 12px; border-radius:0 3px 3px 0;}
+.card.Name{border-left-color:var(--lantern);}
+.card.Petition{border-left-color:var(--path);}
+.card.Gratitude{border-left-color:var(--nemi);}
+.card.Rite{border-left-color:var(--ok);}
+.card.Candle{border-left-color:#e8e2d2;}
+.candle-row{display:flex; align-items:center; gap:9px; margin-top:3px;}
+.candle-mini{width:11px; height:26px; border-radius:2px 2px 1px 1px; flex:0 0 auto;
+  border:1px solid rgba(0,0,0,.4); position:relative;}
+.candle-mini::after{content:''; position:absolute; top:-9px; left:50%; transform:translateX(-50%);
+  width:7px; height:11px; border-radius:50% 50% 50% 50%/60% 60% 40% 40%;}
+.candle-insc{font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic;}
+.candle-none{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--moon-dim);}
+.card .m{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--moon-dim); display:flex; justify-content:space-between; gap:8px; margin-bottom:4px;}
+.card .x{font-size:13.5px; margin:0; color:#e9e7df; font-family:'Work Sans',sans-serif; word-break:break-word;}
+.empty{font-size:12.5px; color:var(--moon-dim); font-style:italic; text-align:center; padding:22px 0;}
+::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-thumb{background:var(--path); border-radius:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+.toast{position:fixed; bottom:18px; left:50%; transform:translateX(-50%) translateY(14px); opacity:0;
+  background:var(--panel-2); border:1px solid var(--lantern); color:var(--lantern); padding:9px 20px;
+  border-radius:3px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em;
+  z-index:500; transition:.3s; pointer-events:none;}
+.toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
 </head>
 <body>
-
 <header>
-  <div class="brand">Lughnasadh Command Dashboard <span>High Priest Mode</span></div>
-  <div class="header-controls">
-    <div class="status-badge"><div class="dot"></div> ENGINE LIVE · FULL COVEN SYNC</div>
-  </div>
+  <div class="brand">The Two Fires <span class="tag">Officiant Console</span></div>
+  <div class="status"><span class="dot"></span><span id="conn">SYNC LIVE · COVEN CONNECTED</span></div>
 </header>
 
 <div class="layout">
-  <div class="panel">
-    <h2 class="panel-title">Master Temple Controls</h2>
-    <button class="action-btn" style="background: #ff3860; color: white; width: 100%; box-shadow: 0 0 10px rgba(255,56,96,0.4);" onclick="masterReset()">MASTER ENGINE RESET</button>
+  <div>
+    <div class="panel">
+      <h2 class="ptitle">The Officiant&rsquo;s Candle</h2>
+      <button class="btn full arrival" id="arrival-btn" onclick="toggleArrival()">Light my candle &middot; open the door</button>
+      <div class="arrival-note" id="arrival-note">Coven screens are held. Members can build their candles but cannot light them, and no liturgy is spoken until you light yours.</div>
+    </div>
 
-    <div style="margin-top: 5px; background: var(--indigo); padding: 12px; border-radius: 4px; border: 1px solid var(--line);">
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--acid-green); text-transform:uppercase; display:block; margin-bottom:6px;">Push Banner to Coven</label>
-      <input type="text" id="broadcast-text" class="broadcast-input" placeholder="Type message for early arrivals...">
-      <div style="display: flex; gap: 8px;">
-        <button class="action-btn" style="flex:1; padding:8px; font-size:11px; background:var(--amethyst); color:#fff;" onclick="sendBroadcast(true)">Broadcast</button>
-        <button class="action-btn" style="flex:1; padding:8px; font-size:11px; background:#333; color:#aaa;" onclick="sendBroadcast(false)">Clear Banner</button>
+    <div class="panel">
+      <h2 class="ptitle">Liturgy <span class="meta" id="step-meta">1 / 10</span></h2>
+      <div style="display:flex;flex-direction:column;gap:4px;" id="step-buttons"></div>
+    </div>
+
+    <div class="panel">
+      <h2 class="ptitle">Altar Tapers</h2>
+      <div class="grid3">
+        <button class="taper-btn" id="tb1" onclick="toggleTaper(1)">ANCESTORS<br><span id="ts1">OFF</span></button>
+        <button class="taper-btn" id="tb2" onclick="toggleTaper(2)">COVEN<br><span id="ts2">OFF</span></button>
+        <button class="taper-btn" id="tb3" onclick="toggleTaper(3)">UNSEEN PATH<br><span id="ts3">OFF</span></button>
       </div>
     </div>
 
-    <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">Altar Tapers (3 Main)</label>
-      <div class="taper-grid">
-        <button class="taper-btn" id="taper1-btn" onclick="toggleTaper(1)">TAPER 1<br><span id="taper1-status">OFF</span></button>
-        <button class="taper-btn" id="taper2-btn" onclick="toggleTaper(2)">TAPER 2<br><span id="taper2-status">OFF</span></button>
-        <button class="taper-btn" id="taper3-btn" onclick="toggleTaper(3)">TAPER 3<br><span id="taper3-status">OFF</span></button>
+    <div class="panel">
+      <h2 class="ptitle">Banner</h2>
+      <input type="text" id="bmsg" class="f" placeholder="Message to every coven screen…">
+      <div class="grid2">
+        <button class="btn primary" onclick="sendBanner(true)">Push</button>
+        <button class="btn" onclick="sendBanner(false)">Clear</button>
       </div>
     </div>
-    
-    <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">The Harvest Phase</label>
-      <button class="action-btn" id="breaking-btn" onclick="toggleBreaking()" style="width:100%;">Initiate Scythe Reaping</button>
-    </div>
-    
-    <div>
-      <label style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--silver); text-transform:uppercase; display:block; margin-bottom:6px;">Liturgy Sequence (8 Steps)</label>
-      <div style="display:flex; flex-direction:column; gap:4px;" id="step-buttons"></div>
+
+    <div class="panel">
+      <h2 class="ptitle">Reset</h2>
+      <button class="btn danger full" onclick="masterReset()">Return to step 1 · snuff all</button>
     </div>
   </div>
 
   <div class="panel">
-    <h2 class="panel-title">Officiant Full Teleprompter <span id="current-step-label" style="font-size:13px; color:var(--acid-green); font-family:'IBM Plex Mono', monospace;">Step 1 / 8</span></h2>
-    <div class="script-container" id="script-display"></div>
+    <h2 class="ptitle">Teleprompter <span class="meta" id="tp-meta">Movement One · The Welcome</span></h2>
+    <div class="script" id="script"></div>
   </div>
 
-  <div class="panel">
-    <h2 class="panel-title">Coven Audit Feed <span id="petition-count" style="font-size:12px; color:var(--acid-green);">0</span></h2>
-    <div class="petitions-list" id="petitions-feed">
-      <div style="font-size:13px; color:var(--silver); font-style:italic; text-align:center; padding:20px 0;">
-        Tracking seeker entries, node clicks, path choices, and crafting in real time...
+  <div class="col-feed">
+    <div class="panel">
+      <h2 class="ptitle">Cue Board <span class="meta">live to coven screens</span></h2>
+      <div>
+        <span class="lbl">Atmosphere</span>
+        <div class="grid2">
+          <button class="cue" onclick="cue('mist',this)">Mist sweep</button>
+          <button class="cue" onclick="cue('wind',this)">Ember wind</button>
+          <button class="cue" onclick="cue('ember',this)">Ember surge</button>
+          <button class="cue" onclick="cue('torchflare',this)">Torch flare</button>
+          <button class="cue" onclick="cue('heartbeat',this)">Heartbeat ⇄</button>
+          <button class="cue" onclick="cue('procession',this)">Procession</button>
+        </div>
+      </div>
+      <div class="cue-group">
+        <span class="lbl">Diana / the grove</span>
+        <div class="grid2">
+          <button class="cue" onclick="cue('moonrise',this)">Moonrise</button>
+          <button class="cue" onclick="cue('moonset',this)">Moonset</button>
+        </div>
+      </div>
+      <div class="cue-group">
+        <span class="lbl">Water &amp; sending</span>
+        <div class="grid2">
+          <button class="cue" onclick="cue('riverrise',this)">River rise</button>
+          <button class="cue" onclick="cue('riverfall',this)">River fall</button>
+          <button class="cue" onclick="cue('namesky',this)">Names across sky</button>
+          <button class="cue" onclick="cue('knell',this)">Passing bell</button>
+        </div>
+      </div>
+      <div class="cue-group">
+        <span class="lbl">Light level</span>
+        <div class="grid2">
+          <button class="cue" onclick="cue('dim',this)">Dim</button>
+          <button class="cue" onclick="cue('undim',this)">Undim</button>
+          <button class="cue" onclick="cue('bell',this)">Chime</button>
+          <button class="cue" onclick="cue('snuffall',this)">Snuff all</button>
+        </div>
+      </div>
+      <div class="cue-group">
+        <span class="lbl">Held silence</span>
+        <div style="display:flex; gap:7px;">
+          <select id="sil-len" class="f" style="flex:1;">
+            <option value="30">30 seconds</option>
+            <option value="45" selected>45 seconds</option>
+            <option value="60">60 seconds</option>
+            <option value="90">90 seconds</option>
+            <option value="120">2 minutes</option>
+          </select>
+          <button class="btn primary" style="flex:0 0 auto;" onclick="cueSilence()">Hold</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 class="ptitle">Coven Feed <span class="meta" id="feed-count">0</span></h2>
+      <div class="feed" id="feed">
+        <div class="empty">Names, petitions, gratitude and rite completions arrive here as the coven works.</div>
       </div>
     </div>
   </div>
 </div>
-
+<div class="toast" id="toast"></div>
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxwS9vipElPWxwCUA-0MUyYL5SBgt02zBXhOsvpuOTNOvvJz9fm3_1p-S-7rlzRk0ge/exec";
+const CUE_TITLE = "##CUE##";
+let S = { step:1, taper1:false, taper2:false, taper3:false, arrived:false, bannerText:'', bannerTitle:'Temple Clergy Notice' };
 
-  let currentState = {
-    currentStep: 1,
-    taper1: false,
-    taper2: false,
-    taper3: false,
-    breakingActive: false,
-    petitions: []
-  };
+const STEPS = [
+  { n:1,  mv:1, t:"The House Is Lit" },
+  { n:2,  mv:1, t:"The Torches at Nemi" },
+  { n:3,  mv:1, t:"The Fire at the Doorway" },
+  { n:4,  mv:1, t:"The Naming" },
+  { n:5,  mv:1, t:"Setting the Place" },
+  { n:6,  mv:1, t:"The Loving Cup" },
+  { n:7,  mv:2, t:"The Turn" },
+  { n:8,  mv:2, t:"Lighting the Road Out" },
+  { n:9,  mv:2, t:"The Dismissal" },
+  { n:10, mv:2, t:"Closing the Door" }
+];
 
-  const LITURGY_STEPS = [
-    { num: 1, title: "I. Early Threshold & Greeting", duration: "Pre-Gathering" },
-    { num: 2, title: "II. Casting the Compass", duration: "~5 mins" },
-    { num: 3, title: "III. Multipractice Focus", duration: "~5 mins" },
-    { num: 4, title: "IV. Deep Pruning & Blade", duration: "~10 mins" },
-    { num: 5, title: "V. The Golden Harvest Working", duration: "~5 mins" },
-    { num: 6, title: "VI. Multichrome Bonfire to Lugh", duration: "~10 mins" },
-    { num: 7, title: "VII. Corn Dollies & Sun Wheels", duration: "~10 mins" },
-    { num: 8, title: "VIII. Devocation & Closing", duration: "~3 mins" }
-  ];
+const SCRIPT = {
+1:{mv:"Movement One · The Welcome", html:`
+<h3>The House Is Lit</h3><div class="mv">Movement One · The Welcome</div>
+<div class="dir"><b>Before you speak:</b> tapers all out. Coven screen shows the doorway. Wait until arrivals have names in and candles set — the feed will show each one.</div>
+<p class="say">Welcome. Two festivals of fire are burning this night on opposite sides of the earth, and both concern the same traffic.</p>
+<p class="say">We are a house tonight, and a house must be lit before it can receive. Coven, name yourselves in the circle, and let your light be seen. Bring nothing else. A name and a flame are the whole requirement.</p>
+<div class="cuehint">CUE — light <b>COVEN</b> taper as the first candles appear in the feed.</div>
+<div class="coven"><span>Coven response</span>“The house is lit.”</div>`},
 
-  const SCRIPT_CONTENT = {
-    1: `<h3>I. Early Threshold & Greeting</h3><div class="stage-dir">Early arrivals are greeted with notice to await the High Priest and verify Discord connection. Keep altar tapers unlit until ready to open.</div><p>Welcome to this Weekly Temple Talk: Reaping What We Sow from a multipractice perspective. This Lughnasadh, we move far beyond standard holiday tropes and dig deep into the ancient, eclectic roots of the First Harvest.</p><blockquote>Across global cultures, the first cutting of grain has always symbolized a profound pact: what we cultivate through our dedication, our shadow work, and our will is precisely what we manifest in our lives. Bring your favorite seasonal brew, ensure you are engaged within our Discord sanctuary, and open your grimoire as we explore sacrifice, survival, and sovereignty.</blockquote>`,
-    2: `<h3>II. Casting the Multicultural Compass</h3><div class="stage-dir">Light Taper 1, 2, and 3 as you invoke each direction. Coven nodes unlock sequentially on participant screens.</div><p>We cast this compass not merely within four physical walls, but across the vast digital astral plane, uniting our energies. Listen closely as each quarter is invoked.</p><p><strong>To the East</strong>, we call upon the breath of intellect, the winds of change, and the clarity that cuts through mental fog.</p><p><strong>To the South</strong>, we ignite the fire of the sovereign will, the inner forge that refines our passions and incinerates hesitation.</p><p><strong>To the West</strong>, we plunge into the deep waters of the subconscious, honoring emotional resilience and ancestral memory.</p><p><strong>To the North</strong>, we anchor into the dark soil of the earth, the bone, the stone, and the silicon beneath our fingers—knowing intimately that decay is the ultimate fertilizer of growth.</p><blockquote>Now, we awaken the fifth element of Spirit, binding all quarters into one living, cyber-magical pentacle. The compass is cast. We stand between worlds.</blockquote>`,
-    3: `<h3>III. Multipractice Perspectives & Focus</h3><div class="stage-dir">Direct seekers to choose their path focus on their interactive screens.</div><p>Now we examine the duality of our working: reaping from both the light and the dark perspective. Traditional folk magic celebrates the tangible bounty of the sun, gratitude for the golden grain, and the preservation of communal survival.</p><p>Conversely, Left-Hand Path and esoteric shadow frameworks teach us the necessity of ruthless pruning—cutting away parasitic attachments, dead habits, and toxic obligations that drain our personal power.</p><blockquote>Wielding harvest magic requires absolute intent. Whether you cultivate the light of abundance or sever the rot with a razor-sharp blade, choose your focus for tonight's working.</blockquote>`,
-    4: `<h3>IV. Deep Pruning Meditation & Reaper's Blade</h3><div class="stage-dir">Monitor live shadow and harvest submissions streaming into the audit feed on the right as seekers complete their deep meditation and blade severing.</div><p>Close your eyes and breathe in deeply. Draw the golden warmth of the sun or face the cold, bracing wind of truth depending on your chosen path.</p><p>Confront the dead weight in your life—the draining obligations, the parasitic attachments, the outdated fears. In the quiet stillness of the golden fields, grasp your intention with absolute mental clarity, visualize the razor-sharp edge of the reaper's scythe slicing cleanly through every cord, and release it into the Temple Ledger.</p><blockquote>"Breathe out the chaff. Hold fast to your absolute intent. Cut the dead weight and claim your sovereignty."</blockquote>`,
-    5: `<h3>V. The Golden Harvest Working</h3><div class="stage-dir">Trigger Scythe Reaping phase so coven screens activate the active sun and wheat harvesting game.</div><p>Look at the golden fields and energies gathered across our temple network. We are legion, bound by sovereignty and shared purpose.</p><p>Hold up your seasonal brew, your grimoire, or your tokens to the digital ether. We swing the astral scythe through the rich wheat and break the bread of life to honor the eternal cycle.</p><blockquote>To live and evolve, we must consume illusion and discard weakness. Swing the scythe! Cut the dead weight! Claim your absolute golden harvest!</blockquote>`,
-    6: `<h3>VI. Multichrome Bonfire Offering to Lugh</h3><div class="stage-dir">Guide the coven as you chat and converse on Discord. Seekers feed the digital multichrome flame on screen.</div><p>As we gather on Discord to commune and converse, we now ignite and feed the great multichrome bonfire to Lugh, the shining master of skills, crafts, and light.</p><p>Notice the vibrant hues dancing upon the screen—fiery orange, electric purple, emerald green, and shimmering gold. Toss your personal offerings into the blazing fire, letting Lugh's radiant warmth fill our temple space.</p><blockquote>"Hail Lugh! Master of arts, illumination, and harvest! May our fires burn bright and true across the astral plane."</blockquote>`,
-    7: `<h3>VII. Corn Dollies & Sun Wheels Crafting Circle</h3><div class="stage-dir">Guide the coven through reviewing physical craft instructions and locking their creations in digitally.</div><p>Now we enter the Crafting Circle. Open the instruction guides for your corn dollies and sun wheels, learning the traditional methods of husks and twigs, then click your program nodes to consecrate your creations in the astral plane.</p><p>Bridging physical handicraft with digital magic anchors the spirit of Lughnasadh directly into our hearths and homes.</p><blockquote>"Weave the straw, bind the wheel, seal the craft in honor of the turning year."</blockquote>`,
-    8: `<h3>VIII. Devocation & Closing</h3><div class="stage-dir">Extinguish altar tapers and conclude transmission.</div><p>The harvest is claimed, the multichrome flames burn bright, the crafts are bound, and the Wheel turns inexorably onward. We give profound thanks to Lugh, the Clergy, the elemental forces, and the Ancestors who guide our craft.</p><p>Go forth in absolute power, retaining the sovereign ownership of your own path.</p><blockquote>The compass is open, but our connection remains unbroken. So it is done.</blockquote>`
-  };
+2:{mv:"Movement One · The Welcome", html:`
+<h3>The Torches at Nemi</h3><div class="mv">Movement One · The Welcome</div>
+<div class="dir"><b>Screen:</b> the lake. They drag a torch the full way round before the petition field unlocks. Give them time — the circuit takes a while on a phone.</div>
+<div class="cuehint">CUE — fire <b>Moonrise</b> on the words “Diana is met at the edge.”</div>
+<p class="say">On the shore of a lake in the Alban Hills the torches are moving tonight, as they have moved for longer than any of us can trace. Women walked that shore with lights in their hands and tied their petitions to the fence, and left them there, and went home lighter.</p>
+<p class="say">Mark what that grove understands. Diana is met at the edge. Never in the middle of the room, never at the hearth, never comfortably. She is a threshold power, and tonight we are working a threshold.</p>
+<p class="say">Carry your torch the whole way round the water. Tie your petition and leave it. What is left at the fence is not carried home.</p>
+<div class="coven"><span>Coven response</span>“We meet her at the edge.”</div>`},
 
-  function initButtons() {
-    const container = document.getElementById('step-buttons');
-    container.innerHTML = LITURGY_STEPS.map(s => `
-      <button class="step-btn ${currentState.currentStep === s.num ? 'active' : ''}" onclick="setStep(${s.num})" id="step-btn-${s.num}">
-        <span class="step-num">${s.duration}</span>
-        <span class="step-name">${s.title}</span>
-      </button>
-    `).join('');
-    renderScript();
+3:{mv:"Movement One · The Welcome", html:`
+<h3>The Fire at the Doorway</h3><div class="mv">Movement One · The Welcome</div>
+<div class="dir"><b>Screen:</b> a street of dim houses. As they feed the doorstep fire, the other houses fade and theirs comes up. It flares by itself when full.</div>
+<p class="say">And on the other side of the earth, a smaller fire. Hemp stalks, burned at the doorstep of the house, on the evening the dead come home. They call it mukaebi, the welcoming fire.</p>
+<p class="say">Understand what it is and what it is not. It does not summon. It does not compel. It is a signpost, and nothing more than a signpost, because there are a great many houses on that street and the dead must be able to find the right one. That is the whole theology of it. Here. This house.</p>
+<p class="say">Feed the fire at your door, and light your own candle now, wherever you are sitting.</p>
+<div class="cuehint">CUE — light <b>ANCESTORS</b> taper here. This is the moment the door opens.</div>
+<div class="coven"><span>Coven response</span>“Here. This house.”</div>`},
+
+4:{mv:"Movement One · The Welcome", html:`
+<h3>The Naming</h3><div class="mv">Movement One · The Welcome</div>
+<div class="dir"><b>Watch the feed.</b> Names arrive tagged <b>Name</b> in amber. Do not read them aloud unless you have said in advance that you will. Some people are writing a name they have never said to anyone.</div>
+<p class="say">You were asked to bring a name. One person you have not finished saying goodbye to. Not the whole of your dead. One.</p>
+<p class="say">Speak it aloud where you are, in your own room, in your own voice, because the mouth does something the mind cannot do alone. Then write it on the lantern.</p>
+<p class="say">That lantern is yours now for the rest of the service. You will carry it through the meal and through the cup, and at the end of the evening you will put it on the water and let it go. Know that going in. We are not building a shrine tonight. We are opening a door and then closing it.</p>
+<div class="coven"><span>Coven response</span>“Be welcome, and be named.”</div>`},
+
+5:{mv:"Movement One · The Welcome", html:`
+<h3>Setting the Place</h3><div class="mv">Movement One · The Welcome</div>
+<div class="dir"><b>Screen:</b> rice, cup and light drag onto the mat. When all three land, a <b>45-second silence</b> starts on its own. You can override the length from the Cue Board first, or hold a longer one after.</div>
+<p class="say">A guest who is welcomed and not seated has not been welcomed. So we set the place. Rice, and a cup, and a light. In the houses that keep this feast the place is set every year without embarrassment, and the food is real food, and nobody apologises for it.</p>
+<p class="say">Set yours. And then say the thing. Whatever the hospital room or the funeral or the twenty years since did not let you say. Say it out loud into the empty seat.</p>
+<p class="say">The circle will wait. We are not in a hurry, and there is nothing else on the schedule that matters more than this.</p>
+<div class="cuehint">CUE — <b>Hold</b> a silence. Say nothing over it. Let it run out on its own.</div>
+<div class="coven"><span>Coven response</span>“The seat is not empty tonight.”</div>`},
+
+6:{mv:"Movement One · The Welcome", html:`
+<h3>The Loving Cup</h3><div class="mv">Movement One · The Welcome</div>
+<div class="dir"><b>Screen:</b> press-and-hold the chalice. It takes about three seconds of contact. Drink with them on camera if you are on video.</div>
+<p class="say">Now the cup. Mark the preposition, because it carries the whole meaning. We do not drink to our dead tonight, as though they were absent and being toasted. We drink with them, because the place is set and the fire is at the door and for this hour the arrangement holds.</p>
+<p class="say">Take up whatever is in front of you. Hold the cup on your screen while you drink. It goes round the whole circle, one house to the next, and it comes back to you changed.</p>
+<div class="cuehint">CUE — <b>Names across sky</b> works well under the cup. Every name the coven wrote drifts past.</div>
+<div class="coven"><span>Coven response</span>“We drink with our dead.”</div>`},
+
+7:{mv:"Movement Two · The Dismissal", html:`
+<h3>The Turn</h3><div class="mv">Movement Two · The Dismissal</div>
+<div class="dir"><b>The hinge of the service.</b> Coven screens shift from amber to amethyst on this step. Slow down. This paragraph is the reason the rite exists.</div>
+<div class="cuehint">CUE — <b>Dim</b> as you begin. <b>Ember wind</b> on “turn it to face the way out.”</div>
+<p class="say">Now the second movement, and the one our own practice most often forgets. Welcome is easy. Welcome flatters us. Anyone can open a door and feel generous doing it.</p>
+<p class="say">But a house that only ever invites will accumulate guests, and grief that is never dismissed stops being grief and becomes residence.</p>
+<p class="say">Hear the honest part of this. The households that keep Obon give their dead three days between the welcoming fire and the sending fire, and the gap is the visit, and the visit is the point. We have one evening. So we will be deliberate about the compression, and we will not pretend it away.</p>
+<p class="say">What we opened, we close tonight. Not because the love ends. Because a door that will not shut is not a door. Take hold of the flame and turn it to face the way out.</p>
+<div class="coven"><span>Coven response</span>“A door that will not shut is not a door.”</div>`},
+
+8:{mv:"Movement Two · The Dismissal", html:`
+<h3>Lighting the Road Out</h3><div class="mv">Movement Two · The Dismissal</div>
+<div class="dir"><b>Screen:</b> they drag a line of light from their door to the gate. Light the <b>UNSEEN PATH</b> taper as the first roads complete.</div>
+<p class="say">The sending fire is not a different fire. It is the same fire, turned around, and that is the piece worth carrying out of tonight.</p>
+<p class="say">Nobody is being driven out. Nothing is being banished. A road is being lit, going the other way, and the guest is being walked to the gate, which is what a decent host does and has always done.</p>
+<p class="say">Draw the road from your door out to the horizon. Lay the light down the whole length of it. Make it wide enough to walk.</p>
+<div class="cuehint">CUE — <b>River rise</b> now, quietly, so the water is already there before step nine.</div>
+<div class="coven"><span>Coven response</span>“Go well. Go lit.”</div>`},
+
+9:{mv:"Movement Two · The Dismissal", html:`
+<h3>The Dismissal</h3><div class="mv">Movement Two · The Dismissal</div>
+<div class="dir"><b>Screen:</b> the inscribed lantern goes onto the river and drifts. Say the release sentence slowly and let them repeat it. Both halves matter — the second half is the one people skip.</div>
+<div class="cuehint">CUE — <b>Passing bell</b> as the first lanterns go out onto the water.</div>
+<p class="say">Speak the name once more. Out loud. And after the name, say the sentence, and say the whole of it, because both halves are load bearing.</p>
+<p class="say"><em>You are released, and so am I.</em></p>
+<p class="say">Then set the lantern on the water. Do not throw it. Set it down, the way you would set down something you had carried a long way, and take your hand off it, and let the current have it.</p>
+<p class="say">It will go without you. That is not abandonment. That is the river doing what the river is for.</p>
+<div class="coven"><span>Coven response</span>“You are released, and so am I.”</div>`},
+
+10:{mv:"Movement Two · The Dismissal", html:`
+<h3>Closing the Door</h3><div class="mv">Movement Two · The Dismissal</div>
+<div class="dir"><b>Snuff ANCESTORS. Leave UNSEEN PATH lit.</b> The road stays on their screens after the candle goes out — that is deliberate, so do not close the page for them.</div>
+<p class="say">Put out your candle. The door is shut. Notice that the road is still lit, and will stay lit, and that nothing has been lost by closing what was properly opened.</p>
+<p class="say">Some of you will find that this evening moved more than you expected it to. That is not a failure of your practice. That is what the rite is for.</p>
+<p class="say">The clergy are in the Discord now and will stay there, and the contact page is open, and if what surfaced tonight is heavier than a temple can carry we will help you find someone trained to hold it. There is no shame in either door.</p>
+<p class="say">Go and be with each other. So it is done.</p>
+<div class="dir"><b>After the service:</b> stay in Discord. The feed panel keeps every name and petition — check it before you close this console for anyone who wrote something you should follow up on.</div>
+<div class="coven"><span>Coven response</span>“The door is shut. The road is lit.”</div>`}
+};
+
+/* ---------------- transport ---------------- */
+async function post(payload){
+  try{
+    const r = await fetch(API_URL, { method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+    return await r.json();
+  }catch(e){ return null; }
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t.__h); t.__h = setTimeout(()=>t.classList.remove('on'), 2100);
+}
+
+/* ---------------- steps ---------------- */
+function renderSteps(){
+  const box = document.getElementById('step-buttons');
+  box.innerHTML = STEPS.map((s,i) => {
+    const div = (i === 6) ? '<div class="mv-divider">Movement Two · The Dismissal</div>' : '';
+    return div + '<button class="step-btn ' + (s.mv===2?'mv2 ':'') + (S.step===s.n?'active':'') +
+      '" onclick="setStep(' + s.n + ')" id="sb-' + s.n + '">' +
+      '<span class="n">' + String(s.n).padStart(2,'0') + '</span><span class="t">' + s.t + '</span></button>';
+  }).join('');
+}
+function renderScript(){
+  const sc = SCRIPT[S.step];
+  document.getElementById('script').innerHTML = sc ? sc.html : '';
+  document.getElementById('tp-meta').textContent = sc ? sc.mv : '';
+  document.getElementById('step-meta').textContent = S.step + ' / 10';
+  document.getElementById('script').scrollTop = 0;
+}
+async function setStep(n){
+  S.step = n; renderSteps(); renderScript();
+  await post({ action:'setStep', step:n });
+  toast('Step ' + n + ' pushed to coven');
+}
+
+/* ---------------- tapers ---------------- */
+async function toggleTaper(n){
+  const k = 'taper'+n; S[k] = !S[k]; paintTaper(n);
+  await post({ action:'toggleTaper', taperNumber:n, isLit:S[k] });
+}
+function paintTaper(n){
+  const b = document.getElementById('tb'+n), s = document.getElementById('ts'+n);
+  if(!b) return;
+  b.classList.toggle('lit', !!S['taper'+n]);
+  s.textContent = S['taper'+n] ? 'LIT' : 'OFF';
+}
+
+/* ---------------- banner + cues ----------------
+   Cues ride the banner channel using the reserved title ##CUE##.
+   The coven page runs the effect and never renders it as a banner.
+   Any standing banner is restored a moment later.
+------------------------------------------------ */
+async function sendBanner(active){
+  const v = document.getElementById('bmsg').value.trim();
+  S.bannerText = active ? (v || 'Await your officiant. Verify you are connected in Discord.') : '';
+  await post({ action:'setBroadcast', active:active, title:S.bannerTitle, text:S.bannerText });
+  toast(active ? 'Banner pushed' : 'Banner cleared');
+}
+async function cue(name, el){
+  const id = String(Date.now());
+  await post({ action:'setBroadcast', active:true, title:CUE_TITLE, text:name + '|' + id });
+  if(el){ el.classList.add('fired'); setTimeout(()=>el.classList.remove('fired'), 900); }
+  toast('Cue fired · ' + name);
+  setTimeout(() => {
+    post({ action:'setBroadcast', active: !!S.bannerText, title:S.bannerTitle, text:S.bannerText });
+  }, 4000);
+}
+function cueSilence(){
+  const secs = document.getElementById('sil-len').value;
+  cue('silence:' + secs, null);
+  toast('Holding ' + secs + ' seconds of silence');
+}
+
+/* ---------------- the officiant's candle ----------------
+   Rides the existing communion flag, which getRitualState already returns, so
+   the coven screens know he has arrived even if they join late. Until it is
+   lit no liturgy is spoken and no member candle can be set on the doorstep.
+--------------------------------------------------------- */
+async function toggleArrival(){
+  S.arrived = !S.arrived;
+  paintArrival();
+  await post({ action:'toggleCommunion', active:S.arrived });
+  toast(S.arrived ? 'Your candle is lit. The door is open.' : 'Door closed. Coven screens held.');
+}
+function paintArrival(){
+  const b = document.getElementById('arrival-btn'), n = document.getElementById('arrival-note');
+  if(!b) return;
+  b.classList.toggle('lit', S.arrived);
+  b.textContent = S.arrived ? 'Candle lit \u00b7 door open \u00b7 click to close' : 'Light my candle \u00b7 open the door';
+  n.classList.toggle('open', S.arrived);
+  n.textContent = S.arrived
+    ? 'The door is open. Members can light their candles and the liturgy is speaking on their screens.'
+    : 'Coven screens are held. Members can build their candles but cannot light them, and no liturgy is spoken until you light yours.';
+}
+
+/* ---------------- feed ---------------- */
+function renderFeed(list){
+  document.getElementById('feed-count').textContent = list.length;
+  const box = document.getElementById('feed');
+  if(!list.length){
+    box.innerHTML = '<div class="empty">Names, petitions, gratitude and rite completions arrive here as the coven works.</div>';
+    return;
   }
+  box.innerHTML = list.slice().reverse().map(p => {
+    const type = (p.type || 'Interaction').replace(/[^A-Za-z]/g,'');
+    const head = '<div class="card ' + type + '"><div class="m"><span>' +
+      esc(p.name || 'Anonymous') + '</span><span>' + esc(type) + '</span></div>';
+    if(type === 'Candle') return head + candleRow(p.text || '') + '</div>';
+    return head + '<p class="x">' + esc(p.text || '') + '</p></div>';
+  }).join('');
+}
 
-  function renderScript() {
-    document.getElementById('script-display').innerHTML = SCRIPT_CONTENT[currentState.currentStep] || '';
-    document.getElementById('current-step-label').textContent = `Step ${currentState.currentStep} / 8`;
-  }
+/* Candles arrive on the wire as:  <inscription> ||TAPER|FLAME|INK
+   Render them as an actual little candle rather than the raw string. */
+function candleRow(raw){
+  const parts = String(raw).split('||');
+  const cols = (parts[1] || '').split('|');
+  const taper = safeHex(cols[0], '#e8e2d2'), flame = safeHex(cols[1], '#ffd89b'), ink = safeHex(cols[2], '#1a1008');
+  const text = (parts[0] || '').trim();
+  return '<div class="candle-row">' +
+    '<span class="candle-mini" style="background:' + taper + ';">' +
+      '<style></style></span>' +
+    '<span class="candle-mini" style="background:' + flame + '; height:11px; width:11px; border-radius:50%; box-shadow:0 0 9px ' + flame + ';"></span>' +
+    (text ? '<span class="candle-insc" style="color:' + ink + '">&ldquo;' + esc(text) + '&rdquo;</span>'
+          : '<span class="candle-none">no inscription</span>') +
+    '</div>';
+}
+function safeHex(v, fb){ return /^#[0-9a-fA-F]{3,8}$/.test(String(v||'').trim()) ? String(v).trim() : fb;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-  async function setStep(num) {
-    currentState.currentStep = num;
-    document.querySelectorAll('.step-btn').forEach((btn, i) => {
-      btn.classList.toggle('active', (i + 1) === num);
-    });
-    renderScript();
+/* ---------------- reset ---------------- */
+async function masterReset(){
+  if(!confirm('Return EVERY screen to the beginning?\n\nThis reloads the coven pages, snuffs all tapers, closes the door and goes back to step 1. Members keep the candles they designed.')) return;
+  S.taper1 = S.taper2 = S.taper3 = false; S.arrived = false; S.bannerText = '';
+  paintTaper(1); paintTaper(2); paintTaper(3); paintArrival();
+  await post({ action:'toggleTaper', taperNumber:1, isLit:false });
+  await post({ action:'toggleTaper', taperNumber:2, isLit:false });
+  await post({ action:'toggleTaper', taperNumber:3, isLit:false });
+  await post({ action:'toggleCommunion', active:false });
+  await post({ action:'setStep', step:1 });
+  S.step = 1; renderSteps(); renderScript();
+  // last: the reset cue reloads every coven screen, which re-reads the state above
+  await post({ action:'setBroadcast', active:true, title:CUE_TITLE, text:'reset|' + Date.now() });
+  setTimeout(() => { post({ action:'setBroadcast', active:false, title:S.bannerTitle, text:'' }); }, 6000);
+  toast('Every screen returned to the beginning');
+}
 
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'setStep', step: num })
-      });
-    } catch(err) {}
-  }
+/* ---------------- poll ---------------- */
+async function poll(){
+  const d = await post({ action:'getRitualState' });
+  const conn = document.getElementById('conn');
+  if(!d || !d.success){ conn.textContent = 'SYNC LOST · RETRYING'; return; }
+  conn.textContent = 'SYNC LIVE · COVEN CONNECTED';
+  S.taper1 = !!d.taper1; S.taper2 = !!d.taper2; S.taper3 = !!d.taper3;
+  paintTaper(1); paintTaper(2); paintTaper(3);
+  S.arrived = !!d.communionActive; paintArrival();
+  if(Array.isArray(d.petitions)) renderFeed(d.petitions);
+}
 
-  async function toggleTaper(num) {
-    const key = `taper${num}`;
-    currentState[key] = !currentState[key];
-    updateTaperUI(num);
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if(e.key === 'ArrowRight' && S.step < 10) setStep(S.step + 1);
+  if(e.key === 'ArrowLeft'  && S.step > 1)  setStep(S.step - 1);
+});
 
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'toggleTaper', taperNumber: num, isLit: currentState[key] })
-      });
-    } catch(err) {}
-  }
-
-  function updateTaperUI(num) {
-    const isLit = currentState[`taper${num}`];
-    const btn = document.getElementById(`taper${num}-btn`);
-    const status = document.getElementById(`taper${num}-status`);
-    if(btn) {
-      btn.classList.toggle('lit', isLit);
-      status.textContent = isLit ? 'LIT 🔥' : 'OFF';
-    }
-  }
-
-  async function sendBroadcast(active) {
-    const textVal = document.getElementById('broadcast-text').value.trim();
-    const payload = {
-      action: 'setBroadcast',
-      active: active,
-      title: "Temple Clergy Notice",
-      text: active ? (textVal || "Please await your High Priest and verify you are connected in Discord!") : ""
-    };
-
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
-      alert(active ? "Broadcast banner pushed to coven screens." : "Broadcast banner cleared.");
-    } catch(err) {
-      alert("Error sending broadcast.");
-    }
-  }
-
-  async function toggleBreaking() {
-    currentState.breakingActive = !currentState.breakingActive;
-    const btn = document.getElementById('breaking-btn');
-    btn.classList.toggle('active', currentState.breakingActive);
-    btn.textContent = currentState.breakingActive ? 'End Reaping Phase' : 'Initiate Scythe Reaping';
-
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'toggleCommunion', active: currentState.breakingActive }) 
-      });
-    } catch(err) {}
-  }
-
-  async function masterReset() {
-    if(!confirm("Reset the temple to Step 1 and extinguish all tapers?")) return;
-    currentState.breakingActive = false;
-    currentState.taper1 = false;
-    currentState.taper2 = false;
-    currentState.taper3 = false;
-    updateTaperUI(1); updateTaperUI(2); updateTaperUI(3);
-    setStep(1);
-
-    try {
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'setStep', step: 1 }) });
-      setTimeout(() => { location.reload(); }, 1000);
-    } catch(err) {}
-  }
-
-  async function pollState() {
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'getRitualState' })
-      });
-      const data = await res.json();
-      if(data.success) {
-        currentState.taper1 = data.taper1;
-        currentState.taper2 = data.taper2;
-        currentState.taper3 = data.taper3;
-        currentState.breakingActive = data.communionActive; 
-        
-        updateTaperUI(1); updateTaperUI(2); updateTaperUI(3);
-
-        if(data.petitions && data.petitions.length > 0) {
-          renderPetitions(data.petitions);
-        }
-      }
-    } catch(err) {}
-  }
-
-  function renderPetitions(petitions) {
-    document.getElementById('petition-count').textContent = petitions.length;
-    const list = document.getElementById('petitions-feed');
-    list.innerHTML = petitions.map(p => `
-      <div class="petition-card ${p.type}">
-        <div class="meta">
-          <span>${p.name || 'Anonymous'}</span>
-          <span>${p.type}</span>
-        </div>
-        <p class="text">"${p.text}"</p>
-      </div>
-    `).join('');
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    initButtons();
-    setInterval(pollState, 3000); 
-  });
+window.addEventListener('DOMContentLoaded', () => {
+  renderSteps(); renderScript(); paintArrival();
+  poll(); setInterval(poll, 3000);
+});
 </script>
 </body>
 </html>
