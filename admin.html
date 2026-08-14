@@ -71,6 +71,18 @@ header{background:var(--panel); border-bottom:1px solid var(--line); padding:13p
 .btn.arrival.lit{background:var(--lantern); color:#08080c; box-shadow:0 0 20px rgba(240,169,76,.45);}
 .arrival-note{font-family:'Work Sans',sans-serif; font-size:11.5px; line-height:1.6; color:var(--moon-dim);}
 .arrival-note.open{color:var(--lantern);}
+.oc-row{margin-bottom:11px;}
+.oc-lbl{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--moon-dim); display:block; margin-bottom:6px;}
+.oc-sw{display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
+.sw{width:21px; height:21px; border-radius:50%; cursor:pointer; padding:0;
+  border:1px solid rgba(255,255,255,.2); transition:.18s;}
+.sw:hover{transform:scale(1.15);}
+.sw.sel{box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--moon); transform:scale(1.1);}
+.sw-custom{width:21px; height:21px; border-radius:50%; padding:0; overflow:hidden;
+  border:1px dashed rgba(207,217,230,.4); background:transparent;}
+.sw-custom input{opacity:0; width:100%; height:100%; border:none; padding:0; cursor:pointer;}
+.oc-preview{display:flex; justify-content:center; margin:6px 0 2px;}
 
 .cue{background:var(--panel); border:1px solid var(--line); color:var(--moon); padding:9px 6px;
   border-radius:3px; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:9.5px;
@@ -139,6 +151,19 @@ input.f:focus, select.f:focus{outline:none; border-color:var(--lantern);}
   <div>
     <div class="panel">
       <h2 class="ptitle">The Officiant&rsquo;s Candle</h2>
+      <div class="oc-row">
+        <span class="oc-lbl">Your name as the circle sees it</span>
+        <input type="text" id="oc-name" class="f" placeholder="Father Sebastian" maxlength="40" oninput="updateOfficiantCandle()">
+      </div>
+      <div class="oc-row">
+        <span class="oc-lbl">Inscription</span>
+        <input type="text" id="oc-text" class="f" placeholder="A word on the wax" maxlength="42" oninput="updateOfficiantCandle()">
+      </div>
+      <div class="oc-row"><span class="oc-lbl">Taper</span><div class="oc-sw" id="oc-sw-taper"></div></div>
+      <div class="oc-row"><span class="oc-lbl">Flame</span><div class="oc-sw" id="oc-sw-flame"></div></div>
+      <div class="oc-row"><span class="oc-lbl">Inscription colour</span><div class="oc-sw" id="oc-sw-ink"></div></div>
+      <div class="oc-preview"><canvas id="oc-preview" width="150" height="180"></canvas></div>
+
       <button class="btn full arrival" id="arrival-btn" onclick="toggleArrival()">Light my candle &middot; open the door</button>
       <div class="arrival-note" id="arrival-note">Coven screens are held. Members can build their candles but cannot light them, and no liturgy is spoken until you light yours.</div>
     </div>
@@ -425,6 +450,89 @@ function cueSilence(){
   toast('Holding ' + secs + ' seconds of silence');
 }
 
+/* ================= the officiant's own candle =================
+   Same wire format as a member's, with a fourth field marking it as his:
+     <inscription> ||TAPER|FLAME|INK|O
+   Coven screens burn it larger, with a halo, and drop it when he closes
+   the door. It is published the moment he lights it.
+   ============================================================== */
+const OC_TAPER=['#e8e2d2','#f0a94c','#9d5bd2','#3f9c9c','#c0392b','#2c3e50','#0d0d12'];
+const OC_FLAME=['#ffd89b','#ff6b3d','#c092f0','#7fe7dc','#39ff14','#ff5d8f','#9fc4ff'];
+const OC_INK  =['#1a1008','#f0a94c','#9d5bd2','#3f9c9c','#cfd9e6','#c0392b','#39ff14'];
+let ocCandle = { taper:'#f0a94c', flame:'#ffd89b', ink:'#1a1008', text:'', name:'' };
+
+function ocSwatches(box, list, key){
+  const el=document.getElementById(box); if(!el) return;
+  el.innerHTML = list.map(c => '<button class="sw'+(ocCandle[key]===c?' sel':'')+'" style="background:'+c+
+    '" onclick="ocPick(\''+key+'\',\''+c+'\',this)"></button>').join('') +
+    '<span class="sw-custom" style="background:'+ocCandle[key]+'"><input type="color" value="'+ocCandle[key]+
+    '" oninput="ocPick(\''+key+'\',this.value,null); this.parentNode.style.background=this.value;"></span>';
+}
+function ocPick(key, colour, el){
+  ocCandle[key]=colour;
+  if(el){ el.parentNode.querySelectorAll('.sw').forEach(b=>b.classList.remove('sel')); el.classList.add('sel'); }
+  updateOfficiantCandle();
+}
+function updateOfficiantCandle(){
+  const n=document.getElementById('oc-name'), t=document.getElementById('oc-text');
+  ocCandle.name = n ? n.value.trim() : '';
+  ocCandle.text = t ? t.value.trim() : '';
+  try{ localStorage.setItem('tf_officiant_candle', JSON.stringify(ocCandle)); }catch(e){}
+}
+function ocEncode(){ return (ocCandle.text||'') + ' ||' + ocCandle.taper + '|' + ocCandle.flame + '|' + ocCandle.ink + '|O'; }
+
+function ocPaint(x, cx, cy, scale, C, t, lit){
+  const w=17*scale, h=62*scale;
+  x.fillStyle=C.taper; x.beginPath();
+  if(x.roundRect) x.roundRect(cx-w/2, cy-h/2, w, h, [3*scale,3*scale,1,1]); else x.rect(cx-w/2, cy-h/2, w, h);
+  x.fill(); x.strokeStyle='rgba(0,0,0,0.3)'; x.lineWidth=1; x.stroke();
+  const sh=x.createLinearGradient(cx-w/2,0,cx+w/2,0);
+  sh.addColorStop(0,'rgba(255,255,255,0.18)'); sh.addColorStop(0.4,'rgba(255,255,255,0)');
+  sh.addColorStop(1,'rgba(0,0,0,0.3)'); x.fillStyle=sh; x.fillRect(cx-w/2, cy-h/2, w, h);
+  if(C.text){
+    x.save(); x.beginPath(); x.rect(cx-w/2, cy-h/2, w, h); x.clip();
+    x.translate(cx, cy+2); x.rotate(-Math.PI/2);
+    x.fillStyle=C.ink; x.textAlign='center'; x.textBaseline='middle';
+    const room=h-11*scale; let fs=11*scale;
+    x.font='italic '+fs.toFixed(1)+'px Georgia, serif';
+    const mw=x.measureText(C.text).width;
+    if(mw>room){ fs=Math.max(4.5*scale, fs*(room/mw)); x.font='italic '+fs.toFixed(1)+'px Georgia, serif'; }
+    x.fillText(C.text,0,0.5); x.restore();
+  }
+  x.strokeStyle='#2a2a2a'; x.lineWidth=1.4*scale;
+  x.beginPath(); x.moveTo(cx, cy-h/2); x.lineTo(cx, cy-h/2-5*scale); x.stroke();
+  if(!lit) return;
+  const fl=1+Math.sin(t/70)*0.11+Math.sin(t/29)*0.06, fy=cy-h/2-11*scale;
+  const g=x.createRadialGradient(cx,fy,0,cx,fy,30*scale*fl);
+  g.addColorStop(0,'#ffffff'); g.addColorStop(0.2,C.flame);
+  g.addColorStop(0.55,C.flame+'66'); g.addColorStop(1,C.flame+'00');
+  x.fillStyle=g; x.beginPath(); x.arc(cx,fy,30*scale*fl,0,7); x.fill();
+  x.fillStyle=C.flame; x.beginPath(); x.ellipse(cx,fy,3.6*scale*fl,8*scale*fl,0,0,7); x.fill();
+  x.fillStyle='#fff8e6'; x.beginPath(); x.ellipse(cx,fy+2*scale,1.7*scale*fl,4*scale*fl,0,0,7); x.fill();
+}
+function ocPreviewLoop(){
+  const c=document.getElementById('oc-preview'); if(!c) return;
+  const x=c.getContext('2d');
+  (function f(t){
+    x.clearRect(0,0,c.width,c.height);
+    ocPaint(x, c.width/2, c.height/2, 1.25, ocCandle, t, S.arrived);
+    x.fillStyle=S.arrived?'rgba(240,169,76,0.6)':'rgba(207,217,230,0.3)';
+    x.font='9px "IBM Plex Mono", monospace'; x.textAlign='center';
+    x.fillText((ocCandle.name||'UNNAMED').toUpperCase().slice(0,20), c.width/2, c.height-6);
+    requestAnimationFrame(f);
+  })(performance.now());
+}
+function ocRestore(){
+  try{ const r=localStorage.getItem('tf_officiant_candle'); if(r) Object.assign(ocCandle, JSON.parse(r)); }catch(e){}
+  const n=document.getElementById('oc-name'), t=document.getElementById('oc-text');
+  if(n && ocCandle.name) n.value=ocCandle.name;
+  if(t && ocCandle.text) t.value=ocCandle.text;
+  ocSwatches('oc-sw-taper', OC_TAPER, 'taper');
+  ocSwatches('oc-sw-flame', OC_FLAME, 'flame');
+  ocSwatches('oc-sw-ink',   OC_INK,   'ink');
+  ocPreviewLoop();
+}
+
 /* ---------------- the officiant's candle ----------------
    Rides the existing communion flag, which getRitualState already returns, so
    the coven screens know he has arrived even if they join late. Until it is
@@ -434,6 +542,11 @@ async function toggleArrival(){
   S.arrived = !S.arrived;
   paintArrival();
   await post({ action:'toggleCommunion', active:S.arrived });
+  if(S.arrived){
+    updateOfficiantCandle();
+    await post({ action:'addPetition', name: ocCandle.name || 'The Officiant',
+                 type:'Candle', text: ocEncode() });
+  }
   toast(S.arrived ? 'Your candle is lit. The door is open.' : 'Door closed. Coven screens held.');
 }
 function paintArrival(){
@@ -519,7 +632,7 @@ document.addEventListener('keydown', e => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderSteps(); renderScript(); paintArrival();
+  renderSteps(); renderScript(); ocRestore(); paintArrival();
   poll(); setInterval(poll, 3000);
 });
 </script>
